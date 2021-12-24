@@ -1,0 +1,5 @@
+*.db
+.idea
+*.exe
+public/upload
+upload

@@ -1,0 +1,23 @@
+{{define "footer"}}
+<footer class="py-4 border-top bg-white">
+    <div class="container d-flex flex-md-row flex-column justify-content-between align-items-center px-lg-2">
+        <div>
+            <span class="text-muted">
+                <b>config.site_name © year </b>
+                <span class="mx-2 d-none d-sm-inline-block">
+                    Powered by <a href="https://github.com/songquanpeng/gin-template">Go Blog</a> with theme
+                    <a href="https://github.com/songquanpeng/blog-theme-bootstrap5">Bootstrap5</a>
+                </span>
+            </span>
+        </div>
+    </div>
+</footer>
+<div id="backTop" class="back-top" style="display: block;" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span><i class="bi bi-caret-up-fill"></i></span>
+</div>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/highlight.min.js"></script>
+<script>
+    hljs.highlightAll();
+</script>
+</body>
+{{end}}

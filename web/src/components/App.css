@@ -1,0 +1,58 @@
+@import "~antd/dist/antd.css";
+
+.trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.trigger:hover {
+    color: #1890ff;
+}
+
+.logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 16px 8px;
+    line-height: 32px;
+    cursor: pointer;
+}
+
+.logo h1 {
+    color: white;
+    margin: auto;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.ant-layout-content {
+    overflow-y: auto;
+}
+
+.content-area {
+    background: #fff;
+    padding: 24px;
+    margin: 24px 16px;
+}
+
+.bottom-right {
+    position: absolute !important;
+    bottom: 30px !important;
+    right: 30px !important;
+    z-index: 1000;
+}
+
+textarea {
+    font-family: 'Cascadia Code', Consolas, monospace, 微软雅黑;
+}
+
+.disabled-row {
+    display: none;
+}
