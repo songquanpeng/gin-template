@@ -1,6 +1,8 @@
 # Gin Template
 
 ## TODOs
++ [ ] Clean the frontend part.
++ [ ] Clean the backend part.
 + [ ] User management.
 + [ ] File management.
 

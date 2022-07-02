@@ -19,7 +19,7 @@ func SetIndexRouter(router *gin.Engine) {
 	router.Static("/public/upload", UploadPath)
 	router.GET("/status", controllers.GetStatus)
 	router.POST("/auth", controllers.Login)
-	router.StaticFS("/admin", common.EmbedFolder(buildFS, "admin/build"))
+	router.StaticFS("/admin", common.EmbedFolder(buildFS, "web/build"))
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"code":    common.StatusError,
