@@ -5,8 +5,6 @@ import { Container } from 'semantic-ui-react';
 import App from './App';
 import Header from './components/Header';
 import Footer from './components/Footer';
-// import { Provider } from 'react-redux';
-import { store } from './helpers';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import { UserProvider } from './context/User';

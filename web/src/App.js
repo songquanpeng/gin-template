@@ -1,12 +1,7 @@
-import React, { lazy, Suspense, useEffect } from 'react';
-import { Routes, Router, Route, Switch, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Loading from './components/Loading';
 import User from './pages/User';
-import Login from './components/LoginForm';
-import Register from './components/RegisterForm';
-import { history } from './helpers';
-import { alertActions } from './actions';
 import { PrivateRoute } from './components/PrivateRoute';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
