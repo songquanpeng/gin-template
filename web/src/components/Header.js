@@ -44,6 +44,9 @@ const Header = () => {
               {button.name}
             </Menu.Item>
           ))}
+          <Menu.Menu position='right'>
+            <Menu.Item name="Login" as={Link} to="/login" className="btn btn-link" />
+          </Menu.Menu>
         </Container>
       </Menu>
     </>

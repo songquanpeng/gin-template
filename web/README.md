@@ -10,4 +10,5 @@ npm run build
 ```
 
 ## Reference
-https://github.com/OIerDb-ng/OIerDb
+1. https://github.com/OIerDb-ng/OIerDb
+2. https://github.com/cornflourblue/react-hooks-redux-registration-login-example
