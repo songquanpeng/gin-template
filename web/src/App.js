@@ -15,16 +15,6 @@ const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 
 function App() {
-  const alert = useSelector(state => state.alert);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    history.listen((location, action) => {
-      // clear alert on location change
-      dispatch(alertActions.clear());
-    });
-  }, []);
-
   return (
     <Routes>
       <Route
@@ -43,7 +33,6 @@ function App() {
           </PrivateRoute>
         }
       />
-      {/*<PrivateRoute exact path="/user" component={User} />*/}  // TODO: fix PrivateRoute
       <Route path="/login" element={
         <Suspense fallback={<Loading></Loading>}>
           <LoginForm />

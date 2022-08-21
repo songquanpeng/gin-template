@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-
-import { userActions } from '../actions';
+import { UserContext } from '../context/User';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
@@ -12,26 +12,29 @@ const LoginForm = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const { username, password } = inputs;
-  const loggingIn = useSelector(state => state.authentication.loggingIn);
-  const dispatch = useDispatch();
-  const location = useLocation();
-
-  // reset login status
-  useEffect(() => {
-    dispatch(userActions.logout());
-  }, []);
+  const [userState, userDispatch] = useContext(UserContext);
+  let navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
     setInputs(inputs => ({ ...inputs, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     setSubmitted(true);
     if (username && password) {
-      // get return url from location state or default to home page
-      const { from } = location.state || { from: { pathname: '/' } };
-      dispatch(userActions.login(username, password, from));
+      const res = await axios.post('/api/user/login', {
+        username,
+        password
+      });
+      const { success, message, data } = res.data;
+      if (success) {
+        userDispatch({ type: 'login', payload: data });
+        localStorage.setItem('user', JSON.stringify(data));
+        navigate('/user');
+      } else {
+        console.error(message);
+      }
     }
   }
 
@@ -48,7 +51,7 @@ const LoginForm = () => {
               icon='user'
               iconPosition='left'
               placeholder='Username'
-              name="username"
+              name='username'
               value={username}
               onChange={handleChange} />
             <Form.Input
@@ -56,7 +59,7 @@ const LoginForm = () => {
               icon='lock'
               iconPosition='left'
               placeholder='Password'
-              name="password"
+              name='password'
               type='password'
               value={password}
               onChange={handleChange}
@@ -67,7 +70,7 @@ const LoginForm = () => {
           </Segment>
         </Form>
         <Message>
-          New to us? <Link to="/register" className="btn btn-link">Register</Link>
+          New to us? <Link to='/register' className='btn btn-link'>Register</Link>
         </Message>
       </Grid.Column>
     </Grid>
