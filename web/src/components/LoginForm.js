@@ -4,6 +4,7 @@ import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui
 import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../context/User';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
@@ -32,7 +33,9 @@ const LoginForm = () => {
         userDispatch({ type: 'login', payload: data });
         localStorage.setItem('user', JSON.stringify(data));
         navigate('/user');
+        toast.success("Login successfully!")
       } else {
+        toast.error("Error: " + message);
         console.error(message);
       }
     }
