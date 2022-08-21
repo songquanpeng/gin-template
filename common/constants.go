@@ -1,7 +1,6 @@
 package common
 
 import (
-	"embed"
 	"flag"
 	"fmt"
 	"github.com/google/uuid"
@@ -65,9 +64,6 @@ var UploadPath = "upload"
 var ExplorerRootPath = UploadPath
 var ImageUploadPath = "upload/images"
 var VideoServePath = "upload"
-
-//go:embed public
-var FS embed.FS
 
 var SessionSecret = uuid.New().String()
 

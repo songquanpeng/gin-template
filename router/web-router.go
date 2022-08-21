@@ -1,22 +1,16 @@
 package router
 
 import (
+	"embed"
 	"gin-react-template/common"
 	"gin-react-template/controller"
 	"gin-react-template/middleware"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
-func setWebRouter(router *gin.Engine) {
+func setWebRouter(router *gin.Engine, buildFS embed.FS) {
 	router.Use(middleware.GlobalWebRateLimit())
-	// Always available
-	router.GET("/", controller.GetIndexPage)
-	router.GET("/public/static/:file", controller.GetStaticFile)
-	router.GET("/public/lib/:file", controller.GetLibFile)
-	router.GET("/login", controller.GetLoginPage)
-	router.POST("/login", middleware.CriticalRateLimit(), controller.Login)
-	router.GET("/logout", controller.Logout)
-	router.GET("/help", controller.GetHelpPage)
 
 	// Download files
 	fileDownloadAuth := router.Group("/")
@@ -25,20 +19,5 @@ func setWebRouter(router *gin.Engine) {
 		fileDownloadAuth.GET("/upload/:file", controller.DownloadFile)
 		fileDownloadAuth.GET("/explorer", controller.GetExplorerPageOrFile)
 	}
-
-	imageDownloadAuth := router.Group("/")
-	imageDownloadAuth.Use(middleware.DownloadRateLimit(), middleware.ImageDownloadPermissionCheck())
-	{
-		imageDownloadAuth.Static("/image", common.ImageUploadPath)
-	}
-
-	router.GET("/image", controller.GetImagePage)
-
-	router.GET("/video", controller.GetVideoPage)
-
-	basicAuth := router.Group("/")
-	basicAuth.Use(middleware.WebAuth())
-	{
-		basicAuth.GET("/manage", controller.GetManagePage)
-	}
+	router.Use(static.Serve("/", common.EmbedFolder(buildFS, "web/build")))
 }

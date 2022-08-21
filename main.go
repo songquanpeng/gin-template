@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"gin-react-template/common"
 	"gin-react-template/model"
 	"gin-react-template/router"
@@ -8,19 +9,13 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
-	"html/template"
 	"log"
 	"os"
 	"strconv"
 )
 
-func loadTemplate() *template.Template {
-	var funcMap = template.FuncMap{
-		"unescape": common.UnescapeHTML,
-	}
-	t := template.Must(template.New("").Funcs(funcMap).ParseFS(common.FS, "public/*.html"))
-	return t
-}
+//go:embed web/build
+var buildFS embed.FS
 
 func main() {
 	if os.Getenv("GIN_MODE") != "debug" {
@@ -44,7 +39,6 @@ func main() {
 
 	// Initialize HTTP server
 	server := gin.Default()
-	server.SetHTMLTemplate(loadTemplate())
 
 	// Initialize session store
 	if common.RedisEnabled {
@@ -56,7 +50,7 @@ func main() {
 		server.Use(sessions.Sessions("session", store))
 	}
 
-	router.SetRouter(server)
+	router.SetRouter(server, buildFS)
 	var realPort = os.Getenv("PORT")
 	if realPort == "" {
 		realPort = strconv.Itoa(*common.Port)

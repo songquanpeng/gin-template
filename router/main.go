@@ -1,14 +1,18 @@
 package router
 
 import (
-	"gin-react-template/controller"
+	"embed"
 	"gin-react-template/middleware"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-func SetRouter(router *gin.Engine) {
+func SetRouter(router *gin.Engine, buildFS embed.FS) {
 	router.Use(middleware.AllStat())
-	setWebRouter(router)
+
 	setApiRouter(router)
-	router.NoRoute(controller.Get404Page)
+	setWebRouter(router, buildFS)
+	router.NoRoute(func(c *gin.Context) {
+		c.Redirect(http.StatusSeeOther, "/")
+	})
 }

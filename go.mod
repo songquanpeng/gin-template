@@ -5,9 +5,9 @@ go 1.16
 
 require (
 	github.com/gin-contrib/sessions v0.0.5
+	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.7.4
-	github.com/go-redis/redis/v8 v8.11.5 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/uuid v1.3.0
 	github.com/jinzhu/gorm v1.9.12
 )
