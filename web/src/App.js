@@ -5,6 +5,7 @@ import User from './pages/User';
 import { PrivateRoute } from './components/PrivateRoute';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
+import NotFound from './pages/NotFound';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -46,6 +47,7 @@ function App() {
           </Suspense>
         }
       />
+      <Route path='*' element={NotFound}/>
     </Routes>
   );
 }
