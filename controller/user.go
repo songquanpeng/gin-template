@@ -58,7 +58,10 @@ func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Options(sessions.Options{MaxAge: -1})
 	session.Save()
-	c.Redirect(http.StatusFound, "/login")
+	c.JSON(http.StatusOK, gin.H{
+		"message": "",
+		"success": true,
+	})
 }
 
 func UpdateSelf(c *gin.Context) {

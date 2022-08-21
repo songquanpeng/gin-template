@@ -12,6 +12,7 @@ func setApiRouter(router *gin.Engine) {
 	router.POST("/api/image", middleware.ImageUploadPermissionCheck(), controller.UploadImage)
 	router.GET("/api/notice", controller.GetNotice)
 	router.POST("/api/user/login", controller.Login)
+	router.POST("/api/user/logout", controller.Logout)
 	basicAuth := router.Group("/api")
 	basicAuth.Use(middleware.ApiAuth())
 	{

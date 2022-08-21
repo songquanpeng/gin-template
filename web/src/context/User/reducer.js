@@ -1,16 +1,21 @@
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "login":
+    case 'login':
       return {
         ...state,
         user: action.payload
-      }
+      };
+    case 'logout':
+      return {
+        ...state,
+        user: undefined
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const initialState = {
   user: undefined
-}
+};
