@@ -11,18 +11,25 @@ import (
 	"strings"
 )
 
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func Login(c *gin.Context) {
-	username := c.PostForm("username")
-	password := c.PostForm("password")
+	var loginRequest LoginRequest
+	err := json.NewDecoder(c.Request.Body).Decode(&loginRequest)
+	username := loginRequest.Username
+	password := loginRequest.Password
 	user := model.User{
 		Username: username,
 		Password: password,
 	}
 	user.ValidateAndFill()
 	if user.Status != common.UserStatusEnabled {
-		c.HTML(http.StatusForbidden, "login.html", gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "用户名或密码错误，或者该用户已被封禁",
-			"option":  common.OptionMap,
+			"success": false,
 		})
 		return
 	}
@@ -31,19 +38,19 @@ func Login(c *gin.Context) {
 	session.Set("id", user.Id)
 	session.Set("username", username)
 	session.Set("role", user.Role)
-	err := session.Save()
+	err = session.Save()
 	if err != nil {
-		c.HTML(http.StatusForbidden, "login.html", gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "无法保存会话信息，请重试",
-			"option":  common.OptionMap,
+			"success": false,
 		})
 		return
 	}
-	redirectUrl := c.Request.Referer()
-	if strings.HasSuffix(redirectUrl, "/login") {
-		redirectUrl = "/"
-	}
-	c.Redirect(http.StatusFound, redirectUrl)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "",
+		"success": true,
+		"data":    user,
+	})
 	return
 }
 

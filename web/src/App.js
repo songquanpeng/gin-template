@@ -7,7 +7,7 @@ import Login from './components/LoginForm';
 import Register from './components/RegisterForm';
 import { history } from './helpers';
 import { alertActions } from './actions';
-import PrivateRoute from './components/PrivateRoute';
+import { PrivateRoute } from './components/PrivateRoute';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 
@@ -33,6 +33,14 @@ function App() {
           <Suspense fallback={<Loading></Loading>}>
             <Home />
           </Suspense>
+        }
+      />
+      <Route
+        path="/user"
+        element={
+          <PrivateRoute>
+            <User />
+          </PrivateRoute>
         }
       />
       {/*<PrivateRoute exact path="/user" component={User} />*/}  // TODO: fix PrivateRoute

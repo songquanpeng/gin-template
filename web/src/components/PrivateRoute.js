@@ -1,18 +1,14 @@
-import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-  return (
-    <Route {...rest} render={props => {
-      if (!localStorage.getItem('user')) {
-        // not logged in so redirect to login page with the return url
-        return <Navigate to={{ pathname: '/login', state: { from: props.location } }} />;
-      }
+import { history } from '../helpers';
 
-      // logged in so return component
-      return <Component {...props} />;
-    }} />
-  );
-};
 
-export default PrivateRoute;
+function PrivateRoute({ children }) {
+  if (!localStorage.getItem('user')) {
+    return <Navigate to='/login' state={{ from: history.location }} />;
+  }
+  return children;
+}
+
+export { PrivateRoute };
