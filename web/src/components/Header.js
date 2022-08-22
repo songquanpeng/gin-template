@@ -5,6 +5,7 @@ import { UserContext } from '../context/User';
 import { Container, Icon, Menu } from 'semantic-ui-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { toastConstants } from '../constants';
 
 // Header Buttons
 const headerButtons = [
@@ -36,7 +37,7 @@ const Header = () => {
 
   async function logout() {
     await axios.get('/api/user/logout');
-    toast.success('Logout successfully!');
+    toast.success('Logout successfully!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
     userDispatch({ type: 'logout' });
     localStorage.removeItem('user');
     navigate('/user');

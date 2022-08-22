@@ -128,6 +128,36 @@ func DeleteUser(c *gin.Context) {
 	return
 }
 
+func Register(c *gin.Context) {
+	var user model.User
+	err := json.NewDecoder(c.Request.Body).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无效的参数",
+		})
+		return
+	}
+	cleanUser := model.User{
+		Username:    user.Username,
+		Password:    user.Password,
+		DisplayName: user.Username,
+	}
+	if err := cleanUser.Insert(); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+	})
+	return
+}
+
 // CreateUser Only admin user can call this, so we can trust it
 func CreateUser(c *gin.Context) {
 	var user model.User

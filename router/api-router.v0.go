@@ -15,8 +15,9 @@ func setApiRouter(router *gin.Engine) {
 
 		userRoute := apiRouter.Group("/user")
 		{
-			userRoute.GET("/logout", controller.Logout)
+			userRoute.POST("/register", controller.Register)
 			userRoute.POST("/login", controller.Login)
+			userRoute.GET("/logout", controller.Logout)
 			userRoute.POST("/token", controller.GetToken)
 
 			adminRoute := userRoute.Group("/")

@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../context/User';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { toastConstants } from '../constants';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
@@ -33,9 +34,9 @@ const LoginForm = () => {
         userDispatch({ type: 'login', payload: data });
         localStorage.setItem('user', JSON.stringify(data));
         navigate('/user');
-        toast.success("Login successfully!")
+        toast.success('Login successfully!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
       } else {
-        toast.error("Error: " + message);
+        toast.error('Error: ' + message, {autoClose: toastConstants.ERROR_TIMEOUT});
         console.error(message);
       }
     }
