@@ -3,7 +3,7 @@
 
 ## Features
 + [ ] Build-in user managements.
-+ [ ] Build-int file managements.
++ [ ] Build-in file managements.
 + [ ] GitHub OAuth login.
 + [ ] Email verification & password reset.
 + [ ] Request rate limitation.
