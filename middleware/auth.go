@@ -8,26 +8,7 @@ import (
 	"net/http"
 )
 
-func WebAuth() func(c *gin.Context) {
-	return func(c *gin.Context) {
-		session := sessions.Default(c)
-		username := session.Get("username")
-		if username == nil {
-			c.HTML(http.StatusForbidden, "login.html", gin.H{
-				"message": "未登录或登录已过期",
-				"option":  common.OptionMap,
-			})
-			c.Abort()
-			return
-		}
-		c.Set("username", username)
-		c.Set("role", session.Get("role"))
-		c.Set("id", session.Get("id"))
-		c.Next()
-	}
-}
-
-func ApiAuth() func(c *gin.Context) {
+func UserAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		username := session.Get("username")
@@ -58,7 +39,7 @@ func ApiAuth() func(c *gin.Context) {
 	}
 }
 
-func ApiAdminAuth() func(c *gin.Context) {
+func AdminAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		username := session.Get("username")

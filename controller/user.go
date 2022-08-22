@@ -64,34 +64,66 @@ func Logout(c *gin.Context) {
 	})
 }
 
-func UpdateSelf(c *gin.Context) {
-	var user model.User
-	err := json.NewDecoder(c.Request.Body).Decode(&user)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "无效的参数",
-		})
-		return
-	}
-	user.Id = c.GetInt("id")
-	role := c.GetInt("role")
-	if role != common.RoleAdminUser {
-		user.Role = 0
-		user.Status = 0
-	}
-	// TODO: check Display Name to avoid XSS attack
-	if err := user.Update(); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-
+func GetAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func GetUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func GetToken(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func GetSelf(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func UpdateUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func UpdateSelf(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func DeleteSelf(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
+	})
+	return
+}
+
+func DeleteUser(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"success": false,
+		"message": "TODO",
 	})
 	return
 }

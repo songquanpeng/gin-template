@@ -38,7 +38,6 @@ func InitDB() (db *gorm.DB, err error) {
 	if err == nil {
 		DB = db
 		db.AutoMigrate(&File{})
-		db.AutoMigrate(&Image{})
 		db.AutoMigrate(&User{})
 		db.AutoMigrate(&Option{})
 		createAdminAccount()
