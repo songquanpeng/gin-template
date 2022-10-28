@@ -21,6 +21,13 @@ func Login(c *gin.Context) {
 	err := json.NewDecoder(c.Request.Body).Decode(&loginRequest)
 	username := loginRequest.Username
 	password := loginRequest.Password
+	if username == "" || password == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "无效的参数",
+			"success": false,
+		})
+		return
+	}
 	user := model.User{
 		Username: username,
 		Password: password,
