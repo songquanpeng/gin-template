@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -45,6 +46,7 @@ func Login(c *gin.Context) {
 	session.Set("id", user.Id)
 	session.Set("username", username)
 	session.Set("role", user.Role)
+	session.Set("status", user.Status)
 	err = session.Save()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -64,75 +66,18 @@ func Login(c *gin.Context) {
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Options(sessions.Options{MaxAge: -1})
-	session.Save()
+	err := session.Save()
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": err.Error(),
+			"success": false,
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "",
 		"success": true,
 	})
-}
-
-func GetAllUsers(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func GetUser(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func GetToken(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func GetSelf(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func UpdateUser(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func UpdateSelf(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func DeleteSelf(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
-}
-
-func DeleteUser(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"success": false,
-		"message": "TODO",
-	})
-	return
 }
 
 func Register(c *gin.Context) {
@@ -165,12 +110,238 @@ func Register(c *gin.Context) {
 	return
 }
 
+func GetAllUsers(c *gin.Context) {
+	users, err := model.GetAllUsers()
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    users,
+	})
+	return
+}
+
+func GetUser(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	user, err := model.GetUserById(id, false)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    user,
+	})
+	return
+}
+
+func GenerateToken(c *gin.Context) {
+	user := model.User{Id: c.GetInt("id")}
+	err := model.DB.Where(&user).First(&user).Error
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	user.Token = uuid.New().String()
+	user.Token = strings.Replace(user.Token, "-", "", -1)
+
+	if err := user.Update(); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    user.Token,
+	})
+	return
+}
+
+func GetSelf(c *gin.Context) {
+	id := c.GetInt("id")
+	user, err := model.GetUserById(id, true)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    user,
+	})
+	return
+}
+
+func UpdateUser(c *gin.Context) {
+	var updatedUser model.User
+	err := json.NewDecoder(c.Request.Body).Decode(&updatedUser)
+	if err != nil || updatedUser.Id == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无效的参数",
+		})
+		return
+	}
+	originUser, err := model.GetUserById(updatedUser.Id, false)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	myRole := c.GetInt("role")
+	if myRole <= originUser.Role {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无权更新同权限等级或更高权限等级的用户信息",
+		})
+		return
+	}
+	if myRole <= updatedUser.Role {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无权将其他用户权限等级提升到大于等于自己的权限等级",
+		})
+		return
+	}
+	if err := updatedUser.Update(); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+	})
+	return
+}
+
+func UpdateSelf(c *gin.Context) {
+	var user model.User
+	err := json.NewDecoder(c.Request.Body).Decode(&user)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无效的参数",
+		})
+		return
+	}
+	// User cannot change its id, role, status itself
+	user.Id = c.GetInt("id")
+	user.Role = c.GetInt("role")
+	user.Status = c.GetInt("status")
+
+	// TODO: check Display Name to avoid XSS attack
+	if err := user.Update(); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+	})
+	return
+}
+
+func DeleteUser(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	originUser, err := model.GetUserById(id, false)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	myRole := c.GetInt("role")
+	if myRole <= originUser.Role {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无权删除同权限等级或更高权限等级的用户",
+		})
+		return
+	}
+	err = model.DeleteUserById(id)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"message": "",
+		})
+		return
+	}
+}
+
+func DeleteSelf(c *gin.Context) {
+	id := c.GetInt("id")
+	err := model.DeleteUserById(id)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+	})
+	return
+}
+
 // CreateUser Only admin user can call this, so we can trust it
 func CreateUser(c *gin.Context) {
 	var user model.User
 	err := json.NewDecoder(c.Request.Body).Decode(&user)
 	user.DisplayName = user.Username
-	// TODO: Check user.Status && user.Role
+	myRole := c.GetInt("role")
+	if user.Role >= myRole {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无法创建权限大于等于自己的用户",
+		})
+		return
+	}
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -223,6 +394,14 @@ func ManageUser(c *gin.Context) {
 		})
 		return
 	}
+	myRole := c.GetInt("role")
+	if myRole <= user.Role {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无权更新同权限等级或更高权限等级的用户信息",
+		})
+		return
+	}
 	switch req.Action {
 	case "disable":
 		user.Status = common.UserStatusDisabled
@@ -237,6 +416,13 @@ func ManageUser(c *gin.Context) {
 			return
 		}
 	case "promote":
+		if myRole != common.RoleRootUser {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "普通管理员用户无法提升其他用户为管理员",
+			})
+			return
+		}
 		user.Role = common.RoleAdminUser
 	case "demote":
 		user.Role = common.RoleCommonUser
@@ -253,37 +439,6 @@ func ManageUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
-	})
-	return
-}
-
-func GenerateNewUserToken(c *gin.Context) {
-	var user model.User
-	user.Id = c.GetInt("id")
-	// Fill attributes
-	model.DB.Where(&user).First(&user)
-	if user.Id == 0 {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "用户不存在",
-		})
-		return
-	}
-	user.Token = uuid.New().String()
-	user.Token = strings.Replace(user.Token, "-", "", -1)
-
-	if err := user.Update(); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"message": "",
-		"data":    user.Token,
 	})
 	return
 }

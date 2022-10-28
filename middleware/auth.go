@@ -14,6 +14,7 @@ func UserAuth() func(c *gin.Context) {
 		username := session.Get("username")
 		role := session.Get("role")
 		id := session.Get("id")
+		status := session.Get("status")
 		if username == nil {
 			// Check token
 			token := c.Request.Header.Get("Authorization")
@@ -23,6 +24,7 @@ func UserAuth() func(c *gin.Context) {
 				username = user.Username
 				role = user.Role
 				id = user.Id
+				status = user.Status
 			} else {
 				c.JSON(http.StatusForbidden, gin.H{
 					"success": false,
@@ -31,6 +33,14 @@ func UserAuth() func(c *gin.Context) {
 				c.Abort()
 				return
 			}
+		}
+		if status.(int) == common.UserStatusDisabled {
+			c.JSON(http.StatusForbidden, gin.H{
+				"success": false,
+				"message": "用户已被封禁",
+			})
+			c.Abort()
+			return
 		}
 		c.Set("username", username)
 		c.Set("role", role)
@@ -56,7 +66,7 @@ func AdminAuth() func(c *gin.Context) {
 				id = user.Id
 			}
 		}
-		if role != common.RoleAdminUser {
+		if role.(int) < common.RoleAdminUser {
 			c.JSON(http.StatusForbidden, gin.H{
 				"success": false,
 				"message": "无权进行此操作，未登录或 token 无效，或没有权限",

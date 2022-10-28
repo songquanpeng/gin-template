@@ -18,7 +18,15 @@ func SetApiRouter(router *gin.Engine) {
 			userRoute.POST("/register", controller.Register)
 			userRoute.POST("/login", controller.Login)
 			userRoute.GET("/logout", controller.Logout)
-			userRoute.POST("/token", controller.GetToken)
+			userRoute.GET("/token", controller.GenerateToken)
+
+			selfRoute := userRoute.Group("/")
+			selfRoute.Use(middleware.UserAuth())
+			{
+				selfRoute.GET("/self", controller.GetSelf)
+				selfRoute.PUT("/self", controller.UpdateSelf)
+				selfRoute.DELETE("/self", controller.DeleteSelf)
+			}
 
 			adminRoute := userRoute.Group("/")
 			adminRoute.Use(middleware.AdminAuth())
@@ -26,15 +34,9 @@ func SetApiRouter(router *gin.Engine) {
 				adminRoute.GET("/", controller.GetAllUsers)
 				adminRoute.GET("/:id", controller.GetUser)
 				adminRoute.POST("/", controller.CreateUser)
-				adminRoute.PUT("/:id", controller.UpdateUser)
+				adminRoute.POST("/manage", controller.ManageUser)
+				adminRoute.PUT("/", controller.UpdateUser)
 				adminRoute.DELETE("/:id", controller.DeleteUser)
-			}
-			selfRoute := userRoute.Group("/self")
-			selfRoute.Use(middleware.UserAuth())
-			{
-				selfRoute.GET("/", controller.GetSelf)
-				selfRoute.PUT("/", controller.UpdateSelf)
-				selfRoute.DELETE("/", controller.DeleteSelf)
 			}
 		}
 		optionRoute := apiRouter.Group("/options")

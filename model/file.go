@@ -19,15 +19,7 @@ type File struct {
 	DownloadCounter int    `json:"download_counter"`
 }
 
-type LocalFile struct {
-	Name         string
-	Link         string
-	Size         string
-	IsFolder     bool
-	ModifiedTime string
-}
-
-func AllFiles() ([]*File, error) {
+func GetAllFiles() ([]*File, error) {
 	var files []*File
 	var err error
 	err = DB.Find(&files).Error

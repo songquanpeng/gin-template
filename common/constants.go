@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var StartTime = time.Now()
+var StartTime = time.Now().Unix() // unit: second
 var Version = "v0.0.0"
 var OptionMap map[string]string
 
