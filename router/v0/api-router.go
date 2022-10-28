@@ -1,4 +1,4 @@
-package router
+package v0
 
 import (
 	"gin-react-template/controller"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func setApiRouter(router *gin.Engine) {
+func SetApiRouter(router *gin.Engine) {
 	apiRouter := router.Group("/api")
 	apiRouter.Use(middleware.GlobalAPIRateLimit())
 	{
