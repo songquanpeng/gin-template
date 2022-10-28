@@ -83,8 +83,8 @@ func AdminAuth() func(c *gin.Context) {
 
 func NoTokenAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		authByToken := c.GetString("authByToken")
-		if authByToken == "true" {
+		token := c.Request.Header.Get("Authorization")
+		if token != "" {
 			c.JSON(http.StatusForbidden, gin.H{
 				"success": false,
 				"message": "该接口不能使用 token 进行验证",
