@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Loading from './components/Loading';
 import User from './pages/User';
 import { PrivateRoute } from './components/PrivateRoute';
@@ -25,7 +25,7 @@ function App() {
         }
       />
       <Route
-        path="/user"
+        path='/user'
         element={
           <PrivateRoute>
             <User />
@@ -56,12 +56,12 @@ function App() {
           </Suspense>
         }
       />
-      <Route path="/login" element={
+      <Route path='/login' element={
         <Suspense fallback={<Loading></Loading>}>
           <LoginForm />
         </Suspense>
       } />
-      <Route path="/register" element={
+      <Route path='/register' element={
         <Suspense fallback={<Loading></Loading>}>
           <RegisterForm />
         </Suspense>
@@ -69,9 +69,11 @@ function App() {
       <Route
         path='/setting'
         element={
-          <Suspense fallback={<Loading></Loading>}>
-            <Setting />
-          </Suspense>
+          <PrivateRoute>
+            <Suspense fallback={<Loading></Loading>}>
+              <Setting />
+            </Suspense>
+          </PrivateRoute>
         }
       />
       <Route
@@ -82,7 +84,7 @@ function App() {
           </Suspense>
         }
       />
-      <Route path='*' element={NotFound}/>
+      <Route path='*' element={NotFound} />
     </Routes>
   );
 }

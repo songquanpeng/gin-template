@@ -21,21 +21,26 @@ const RegisterForm = () => {
 
   async function handleSubmit(e) {
     if (password !== password2) {
-      toast.info('The two entered passwords do not match.', { autoClose: toastConstants.INFO_TIMEOUT });
+      toast.info('两次输入的密码不一致', { autoClose: toastConstants.INFO_TIMEOUT });
       return;
     }
     if (username && password) {
-      const res = await axios.post('/api/user/register', {
-        username,
-        password
-      });
-      const { success, message } = res.data;
-      if (success) {
-        navigate('/login');
-        toast.success('注册成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
-      } else {
-        toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-        console.error(message);
+      try {
+        const res = await axios.post('/api/user/register', {
+          username,
+          password
+        });
+        const { success, message } = res.data;
+        if (success) {
+          navigate('/login');
+          toast.success('注册成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+        } else {
+          toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+          console.error(message);
+        }
+      } catch (e) {
+        toast.error('错误：' + e, { autoClose: toastConstants.ERROR_TIMEOUT });
+        console.error(e);
       }
     }
   }

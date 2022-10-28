@@ -41,7 +41,10 @@ const UsersTable = () => {
   };
 
   useEffect(() => {
-    loadUsers().then();
+    loadUsers().then().catch(reason => {
+      console.error(reason);
+      toast.error('错误：' + reason, { autoClose: toastConstants.ERROR_TIMEOUT });
+    });
   }, []);
 
   const manageUser = (username, action) => {
@@ -51,7 +54,7 @@ const UsersTable = () => {
       });
       const { success, message } = res.data;
       if (success) {
-        toast.success("操作成功完成！", {autoClose: toastConstants.SUCCESS_TIMEOUT})
+        toast.success('操作成功完成！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
         await loadUsers();
       } else {
         toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
@@ -72,7 +75,7 @@ const UsersTable = () => {
 
   return (
     <>
-      <Table basic loading={loading}>
+      <Table basic>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>用户名</Table.HeaderCell>
@@ -106,7 +109,7 @@ const UsersTable = () => {
                       <Button size={'small'} onClick={() => {
                         manageUser(user.username, user.status === 1 ? 'disable' : 'enable');
                       }}>{user.status === 1 ? '禁用' : '启用'}</Button>
-                      <Button size={'small'} as={Link} to={"/user/edit/" + user.id}>编辑</Button>
+                      <Button size={'small'} as={Link} to={'/user/edit/' + user.id}>编辑</Button>
                     </div>
                   </Table.Cell>
                 </Table.Row>

@@ -36,7 +36,10 @@ const EditUser = () => {
     setLoading(false);
   };
   useEffect(() => {
-    loadUser().then();
+    loadUser().then().catch(reason => {
+      console.error(reason);
+      toast.error('错误：' + reason, { autoClose: toastConstants.ERROR_TIMEOUT });
+    });
   }, []);
 
   const submit = async () => {

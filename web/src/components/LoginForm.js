@@ -24,19 +24,24 @@ const LoginForm = () => {
   async function handleSubmit(e) {
     setSubmitted(true);
     if (username && password) {
-      const res = await axios.post('/api/user/login', {
-        username,
-        password
-      });
-      const { success, message, data } = res.data;
-      if (success) {
-        userDispatch({ type: 'login', payload: data });
-        localStorage.setItem('user', JSON.stringify(data));
-        navigate('/user');
-        toast.success('登录成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
-      } else {
-        toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-        console.error(message);
+      try {
+        const res = await axios.post('/api/user/login', {
+          username,
+          password
+        });
+        const { success, message, data } = res.data;
+        if (success) {
+          userDispatch({ type: 'login', payload: data });
+          localStorage.setItem('user', JSON.stringify(data));
+          navigate('/user');
+          toast.success('登录成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+        } else {
+          toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+          console.error(message);
+        }
+      } catch (e) {
+        toast.error('错误：' + e, { autoClose: toastConstants.ERROR_TIMEOUT });
+        console.error(e);
       }
     }
   }
