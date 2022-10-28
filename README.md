@@ -1,4 +1,4 @@
-# Gin React Template
+# Gin Template
 > Template for Gin & React projects.
 
 ## Features

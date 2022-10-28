@@ -17,7 +17,7 @@ const Setting = () => {
   };
 
   return <Segment>
-    <Header as='h3'>Demo Setting</Header>
+    <Header as='h3'>示例设置</Header>
     <Grid columns={1}>
       <Grid.Column>
         <Form as={Segment}>

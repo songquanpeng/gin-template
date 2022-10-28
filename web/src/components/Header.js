@@ -10,22 +10,22 @@ import { toastConstants } from '../constants';
 // Header Buttons
 const headerButtons = [
   {
-    name: 'Home',
+    name: '首页',
     to: '/',
     icon: 'home'
   },
   {
-    name: 'User',
+    name: '用户',
     to: '/user',
     icon: 'user'
   },
   {
-    name: 'Setting',
+    name: '设置',
     to: '/setting',
     icon: 'setting'
   },
   {
-    name: 'About',
+    name: '关于',
     to: '/about',
     icon: 'info circle'
   }
@@ -37,7 +37,7 @@ const Header = () => {
 
   async function logout() {
     await axios.get('/api/user/logout');
-    toast.success('Logout successfully!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+    toast.success('注销成功!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
     userDispatch({ type: 'logout' });
     localStorage.removeItem('user');
     navigate('/user');
@@ -50,7 +50,7 @@ const Header = () => {
           <Menu.Item as={Link} to='/'>
             <img src='/logo.png' alt='logo' style={{ marginRight: '0.75em' }} />
             <div style={{ fontSize: '20px' }}>
-              <b>React Template</b>
+              <b>项目模板</b>
             </div>
           </Menu.Item>
           {headerButtons.map((button) => (
@@ -61,8 +61,8 @@ const Header = () => {
           ))}
           <Menu.Menu position='right'>
             {userState.user ?
-              <Menu.Item name='Logout' onClick={logout} className='btn btn-link' /> :
-              <Menu.Item name='Login' as={Link} to='/login' className='btn btn-link' />}
+              <Menu.Item name='注销' onClick={logout} className='btn btn-link' /> :
+              <Menu.Item name='登录' as={Link} to='/login' className='btn btn-link' />}
           </Menu.Menu>
         </Container>
       </Menu>

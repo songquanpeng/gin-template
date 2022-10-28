@@ -33,9 +33,9 @@ const LoginForm = () => {
         userDispatch({ type: 'login', payload: data });
         localStorage.setItem('user', JSON.stringify(data));
         navigate('/user');
-        toast.success('Login successfully!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+        toast.success('登录成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
       } else {
-        toast.error('Error: ' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+        toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
         console.error(message);
       }
     }
@@ -45,7 +45,7 @@ const LoginForm = () => {
     <Grid textAlign='center' style={{ marginTop: '48px' }}>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as='h2' color='teal' textAlign='center'>
-          <Image src='/logo.png' /> Login to your account
+          <Image src='/logo.png' /> 用户登录
         </Header>
         <Form size='large'>
           <Segment>
@@ -53,7 +53,7 @@ const LoginForm = () => {
               fluid
               icon='user'
               iconPosition='left'
-              placeholder='Username'
+              placeholder='用户名'
               name='username'
               value={username}
               onChange={handleChange} />
@@ -61,19 +61,19 @@ const LoginForm = () => {
               fluid
               icon='lock'
               iconPosition='left'
-              placeholder='Password'
+              placeholder='密码'
               name='password'
               type='password'
               value={password}
               onChange={handleChange}
             />
             <Button color='teal' fluid size='large' onClick={handleSubmit}>
-              Login
+              登录
             </Button>
           </Segment>
         </Form>
         <Message>
-          New to us? <Link to='/register' className='btn btn-link'>Register</Link>
+          没有账户？<Link to='/register' className='btn btn-link'>点击注册</Link>
         </Message>
       </Grid.Column>
     </Grid>

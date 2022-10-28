@@ -12,7 +12,7 @@ const NotFound = () => (
       className="small-icon"
     />
     <Segment attached="bottom">
-      Page not found.
+      未找到所请求的页面
     </Segment>
   </>
 );

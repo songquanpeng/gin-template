@@ -10,13 +10,13 @@ const itemsPerPage = 10;
 function renderRole(role) {
   switch (role) {
     case 1:
-      return <Label>Common User</Label>;
+      return <Label>普通用户</Label>;
     case 10:
-      return <Label color='yellow'>Administrator</Label>;
+      return <Label color='yellow'>管理员</Label>;
     case 100:
-      return <Label color='orange'>Root User</Label>;
+      return <Label color='orange'>超级管理员</Label>;
     default:
-      return <Label color='red'>Unknown Role</Label>;
+      return <Label color='red'>未知身份</Label>;
   }
 }
 
@@ -31,7 +31,7 @@ const UsersTable = () => {
     if (success) {
       setUsers(data);
     } else {
-      toast.error('Error: ' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+      toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
     }
     setLoading(false);
   };
@@ -53,7 +53,7 @@ const UsersTable = () => {
       if (success) {
         await loadUsers();
       } else {
-        toast.error('Error: ' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+        toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
       }
     })();
   };
@@ -61,11 +61,11 @@ const UsersTable = () => {
   const renderStatus = (status, id) => {
     switch (status) {
       case 1:
-        return 'Active';
+        return '已激活';
       case 2:
-        return 'Banned';
+        return '已封禁';
       default:
-        return 'Unknown Status';
+        return '未知状态';
     }
   };
 
@@ -74,11 +74,11 @@ const UsersTable = () => {
       <Table basic loading={loading}>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>Username</Table.HeaderCell>
-            <Table.HeaderCell>Display Name</Table.HeaderCell>
-            <Table.HeaderCell>Role</Table.HeaderCell>
-            <Table.HeaderCell>Status</Table.HeaderCell>
-            <Table.HeaderCell>Actions</Table.HeaderCell>
+            <Table.HeaderCell>用户名</Table.HeaderCell>
+            <Table.HeaderCell>显示名称</Table.HeaderCell>
+            <Table.HeaderCell>用户角色</Table.HeaderCell>
+            <Table.HeaderCell>状态</Table.HeaderCell>
+            <Table.HeaderCell>操作</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -116,7 +116,7 @@ const UsersTable = () => {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan='5'>
-              <Button size='small' as={Link} to='/user/add'>Add User</Button>
+              <Button size='small' as={Link} to='/user/add'>添加新的用户</Button>
               <Pagination
                 floated='right'
                 activePage={activePage}

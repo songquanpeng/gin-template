@@ -32,9 +32,9 @@ const RegisterForm = () => {
       const { success, message } = res.data;
       if (success) {
         navigate('/login');
-        toast.success('Register successfully!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+        toast.success('注册成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
       } else {
-        toast.error('Error: ' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+        toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
         console.error(message);
       }
     }
@@ -44,7 +44,7 @@ const RegisterForm = () => {
     <Grid textAlign='center' style={{ marginTop: '48px' }}>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as='h2' color='teal' textAlign='center'>
-          <Image src='/logo.png' /> Register a new account
+          <Image src='/logo.png' /> 新用户注册
         </Header>
         <Form size='large'>
           <Segment>
@@ -52,7 +52,7 @@ const RegisterForm = () => {
               fluid
               icon='user'
               iconPosition='left'
-              placeholder='Username'
+              placeholder='输入一个新的用户名'
               onChange={handleChange}
               name='username'
             />
@@ -60,7 +60,7 @@ const RegisterForm = () => {
               fluid
               icon='lock'
               iconPosition='left'
-              placeholder='Input a new password'
+              placeholder='输入密码'
               onChange={handleChange}
               name='password'
               type='password'
@@ -69,18 +69,18 @@ const RegisterForm = () => {
               fluid
               icon='lock'
               iconPosition='left'
-              placeholder='Input your password again'
+              placeholder='再次输入密码'
               onChange={handleChange}
               name='password2'
               type='password'
             />
             <Button color='teal' fluid size='large' onClick={handleSubmit}>
-              Register
+              注册
             </Button>
           </Segment>
         </Form>
         <Message>
-          Already has an account? <Link to='/login' className='btn btn-link'>Login</Link>
+          已有有账户了？<Link to='/login' className='btn btn-link'>点击登录</Link>
         </Message>
       </Grid.Column>
     </Grid>

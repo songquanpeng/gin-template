@@ -4,7 +4,7 @@ import { Grid, Placeholder, Segment, Header } from 'semantic-ui-react';
 const Home = () => (
   <>
     <Segment>
-      <Header as='h3'>Demo Title</Header>
+      <Header as='h3'>示例标题</Header>
       <Grid columns={3} stackable>
         <Grid.Column>
           <Segment raised>
