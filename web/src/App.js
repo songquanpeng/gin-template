@@ -6,6 +6,7 @@ import { PrivateRoute } from './components/PrivateRoute';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 import NotFound from './pages/NotFound';
+import Setting from './pages/Setting';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -39,6 +40,14 @@ function App() {
           <RegisterForm />
         </Suspense>
       } />
+      <Route
+        path='/setting'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <Setting />
+          </Suspense>
+        }
+      />
       <Route
         path='/about'
         element={

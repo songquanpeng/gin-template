@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/User';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { toastConstants } from '../constants';
@@ -22,7 +21,7 @@ const RegisterForm = () => {
 
   async function handleSubmit(e) {
     if (password !== password2) {
-      toast.info('The two entered passwords do not match.', {autoClose: toastConstants.INFO_TIMEOUT});
+      toast.info('The two entered passwords do not match.', { autoClose: toastConstants.INFO_TIMEOUT });
       return;
     }
     if (username && password) {

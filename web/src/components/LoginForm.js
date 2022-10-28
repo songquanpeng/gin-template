@@ -1,9 +1,8 @@
 import axios from 'axios';
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { toastConstants } from '../constants';
 
@@ -36,7 +35,7 @@ const LoginForm = () => {
         navigate('/user');
         toast.success('Login successfully!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
       } else {
-        toast.error('Error: ' + message, {autoClose: toastConstants.ERROR_TIMEOUT});
+        toast.error('Error: ' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
         console.error(message);
       }
     }

@@ -3,15 +3,8 @@ import { Segment, Header } from 'semantic-ui-react';
 
 const About = () => (
   <>
-    <Header
-      block
-      as="h4"
-      content="About"
-      attached="top"
-      icon="info"
-      className="small-icon"
-    />
-    <Segment attached="bottom">
+    <Segment>
+      <Header as='h3'>About</Header>
       GitHub:{' '}
       <a href="https://github.com/songquanpeng/react-template">
         https://github.com/songquanpeng/react-template

@@ -1,18 +1,56 @@
 import React from 'react';
-import { Segment, Header } from 'semantic-ui-react';
+import { Grid, Placeholder, Segment, Header } from 'semantic-ui-react';
 
 const Home = () => (
   <>
-    <Header
-      block
-      as="h4"
-      content="Demo Block"
-      attached="top"
-      icon="info"
-      className="small-icon"
-    />
-    <Segment attached="bottom">
-      <h4>Time to conquer the world!</h4>
+    <Segment>
+      <Header as='h3'>Demo Title</Header>
+      <Grid columns={3} stackable>
+        <Grid.Column>
+          <Segment raised>
+            <Placeholder>
+              <Placeholder.Header image>
+                <Placeholder.Line />
+                <Placeholder.Line />
+              </Placeholder.Header>
+              <Placeholder.Paragraph>
+                <Placeholder.Line length='medium' />
+                <Placeholder.Line length='short' />
+              </Placeholder.Paragraph>
+            </Placeholder>
+          </Segment>
+        </Grid.Column>
+
+        <Grid.Column>
+          <Segment raised>
+            <Placeholder>
+              <Placeholder.Header image>
+                <Placeholder.Line />
+                <Placeholder.Line />
+              </Placeholder.Header>
+              <Placeholder.Paragraph>
+                <Placeholder.Line length='medium' />
+                <Placeholder.Line length='short' />
+              </Placeholder.Paragraph>
+            </Placeholder>
+          </Segment>
+        </Grid.Column>
+
+        <Grid.Column>
+          <Segment raised>
+            <Placeholder>
+              <Placeholder.Header image>
+                <Placeholder.Line />
+                <Placeholder.Line />
+              </Placeholder.Header>
+              <Placeholder.Paragraph>
+                <Placeholder.Line length='medium' />
+                <Placeholder.Line length='short' />
+              </Placeholder.Paragraph>
+            </Placeholder>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     </Segment>
   </>
 );
