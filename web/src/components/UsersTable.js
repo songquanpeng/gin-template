@@ -51,6 +51,7 @@ const UsersTable = () => {
       });
       const { success, message } = res.data;
       if (success) {
+        toast.success("操作成功完成！", {autoClose: toastConstants.SUCCESS_TIMEOUT})
         await loadUsers();
       } else {
         toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
@@ -95,16 +96,17 @@ const UsersTable = () => {
                     <div>
                       <Button size={'small'} positive onClick={() => {
                         manageUser(user.username, 'promote');
-                      }}>Promote</Button>
+                      }}>提升</Button>
                       <Button size={'small'} color={'yellow'} onClick={() => {
                         manageUser(user.username, 'demote');
-                      }}>Demote</Button>
+                      }}>降级</Button>
                       <Button size={'small'} negative onClick={() => {
                         manageUser(user.username, 'delete');
-                      }}>Delete</Button>
+                      }}>删除</Button>
                       <Button size={'small'} onClick={() => {
                         manageUser(user.username, user.status === 1 ? 'disable' : 'enable');
-                      }}>{user.status === 1 ? 'Disable' : 'Enable'}</Button>
+                      }}>{user.status === 1 ? '禁用' : '启用'}</Button>
+                      <Button size={'small'} as={Link} to={"/user/edit/" + user.id}>编辑</Button>
                     </div>
                   </Table.Cell>
                 </Table.Row>

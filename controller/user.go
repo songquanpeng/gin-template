@@ -144,6 +144,14 @@ func GetUser(c *gin.Context) {
 		})
 		return
 	}
+	myRole := c.GetInt("role")
+	if myRole <= user.Role {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无权获取同级或更高等级用户的信息",
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -333,19 +341,21 @@ func DeleteSelf(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	var user model.User
 	err := json.NewDecoder(c.Request.Body).Decode(&user)
-	user.DisplayName = user.Username
+	if err != nil || user.Username == "" || user.Password == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无效的参数",
+		})
+		return
+	}
+	if user.DisplayName == "" {
+		user.DisplayName = user.Username
+	}
 	myRole := c.GetInt("role")
 	if user.Role >= myRole {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "无法创建权限大于等于自己的用户",
-		})
-		return
-	}
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "无效的参数",
 		})
 		return
 	}

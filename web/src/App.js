@@ -7,6 +7,8 @@ import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm';
 import NotFound from './pages/NotFound';
 import Setting from './pages/Setting';
+import EditUser from './pages/User/EditUser';
+import AddUser from './pages/User/AddUser';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -28,6 +30,30 @@ function App() {
           <PrivateRoute>
             <User />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path='/user/edit/:id'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <EditUser />
+          </Suspense>
+        }
+      />
+      <Route
+        path='/user/edit'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <EditUser />
+          </Suspense>
+        }
+      />
+      <Route
+        path='/user/add'
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <AddUser />
+          </Suspense>
         }
       />
       <Route path="/login" element={
