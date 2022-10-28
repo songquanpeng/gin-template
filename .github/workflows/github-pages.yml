@@ -1,5 +1,10 @@
 name: Build GitHub Pages
-on: [push]
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Reason'
+        required: false
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
