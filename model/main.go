@@ -11,14 +11,14 @@ import (
 
 var DB *gorm.DB
 
-func createAdminAccount() {
+func createRootAccount() {
 	var user User
-	DB.Where(User{Role: common.RoleAdminUser}).Attrs(User{
-		Username:    "admin",
+	DB.Where(User{Role: common.RoleRootUser}).Attrs(User{
+		Username:    "root",
 		Password:    "123456",
-		Role:        common.RoleAdminUser,
+		Role:        common.RoleRootUser,
 		Status:      common.UserStatusEnabled,
-		DisplayName: "Administrator",
+		DisplayName: "Root User",
 	}).FirstOrCreate(&user)
 }
 
@@ -40,7 +40,7 @@ func InitDB() (db *gorm.DB, err error) {
 		db.AutoMigrate(&File{})
 		db.AutoMigrate(&User{})
 		db.AutoMigrate(&Option{})
-		createAdminAccount()
+		createRootAccount()
 		return DB, err
 	} else {
 		log.Fatal(err)

@@ -29,6 +29,7 @@ const (
 	RoleGuestUser  = 0
 	RoleCommonUser = 1
 	RoleAdminUser  = 10
+	RoleRootUser   = 100
 )
 
 var (
