@@ -13,7 +13,7 @@ type User struct {
 	DisplayName string `json:"display_name"`
 	Role        int    `json:"role" gorm:"type:int;default:1"`   // admin, common
 	Status      int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
-	Token       string `json:"token" gorm:"unique;"`
+	Token       string `json:"token"`
 }
 
 func GetAllUsers() (users []*User, err error) {

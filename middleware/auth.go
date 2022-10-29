@@ -26,7 +26,7 @@ func UserAuth() func(c *gin.Context) {
 				id = user.Id
 				status = user.Status
 			} else {
-				c.JSON(http.StatusForbidden, gin.H{
+				c.JSON(http.StatusOK, gin.H{
 					"success": false,
 					"message": "无权进行此操作，未登录或 token 无效",
 				})
@@ -35,7 +35,7 @@ func UserAuth() func(c *gin.Context) {
 			}
 		}
 		if status.(int) == common.UserStatusDisabled {
-			c.JSON(http.StatusForbidden, gin.H{
+			c.JSON(http.StatusOK, gin.H{
 				"success": false,
 				"message": "用户已被封禁",
 			})
@@ -64,10 +64,12 @@ func AdminAuth() func(c *gin.Context) {
 				username = user.Username
 				role = user.Role
 				id = user.Id
+			} else {
+				role = common.RoleGuestUser
 			}
 		}
 		if role.(int) < common.RoleAdminUser {
-			c.JSON(http.StatusForbidden, gin.H{
+			c.JSON(http.StatusOK, gin.H{
 				"success": false,
 				"message": "无权进行此操作，未登录或 token 无效，或没有权限",
 			})
@@ -85,7 +87,7 @@ func NoTokenAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
 		if token != "" {
-			c.JSON(http.StatusForbidden, gin.H{
+			c.JSON(http.StatusOK, gin.H{
 				"success": false,
 				"message": "该接口不能使用 token 进行验证",
 			})
