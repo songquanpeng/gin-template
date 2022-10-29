@@ -27,6 +27,13 @@ func Login(c *gin.Context) {
 	}
 	var loginRequest LoginRequest
 	err := json.NewDecoder(c.Request.Body).Decode(&loginRequest)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "无效的参数",
+			"success": false,
+		})
+		return
+	}
 	username := loginRequest.Username
 	password := loginRequest.Password
 	if username == "" || password == "" {
@@ -41,6 +48,10 @@ func Login(c *gin.Context) {
 		Password: password,
 	}
 	user.ValidateAndFill()
+	setupLogin(&user, c)
+}
+
+func setupLogin(user *model.User, c *gin.Context) {
 	if user.Status != common.UserStatusEnabled {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "用户名或密码错误，或者该用户已被封禁",
@@ -51,10 +62,10 @@ func Login(c *gin.Context) {
 
 	session := sessions.Default(c)
 	session.Set("id", user.Id)
-	session.Set("username", username)
+	session.Set("username", user.Username)
 	session.Set("role", user.Role)
 	session.Set("status", user.Status)
-	err = session.Save()
+	err := session.Save()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "无法保存会话信息，请重试",
@@ -62,12 +73,12 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	user.Password = ""
 	c.JSON(http.StatusOK, gin.H{
 		"message": "",
 		"success": true,
 		"data":    user,
 	})
-	return
 }
 
 func Logout(c *gin.Context) {
@@ -194,8 +205,8 @@ func GetUser(c *gin.Context) {
 }
 
 func GenerateToken(c *gin.Context) {
-	user := model.User{Id: c.GetInt("id")}
-	err := model.DB.Where(&user).First(&user).Error
+	id := c.GetInt("id")
+	user, err := model.GetUserById(id, true)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,

@@ -71,6 +71,10 @@ func (user *User) ValidateAndFill() {
 	DB.Where(&user).First(&user)
 }
 
+func (user *User) FillUserByUsername() {
+	DB.Where(User{Username: user.Username}).First(user)
+}
+
 func ValidateUserToken(token string) (user *User) {
 	if token == "" {
 		return nil
@@ -85,6 +89,10 @@ func ValidateUserToken(token string) (user *User) {
 
 func IsEmailAlreadyTaken(email string) bool {
 	return DB.Where("email = ?", email).Find(&User{}).RowsAffected == 1
+}
+
+func IsUsernameAlreadyTaken(username string) bool {
+	return DB.Where("username = ?", username).Find(&User{}).RowsAffected == 1
 }
 
 func ResetUserPasswordByEmail(email string, password string) error {

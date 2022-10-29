@@ -34,6 +34,8 @@ func InitOptionMap() {
 	common.OptionMap["SMTPToken"] = ""
 	common.OptionMap["Notice"] = ""
 	common.OptionMap["ServerAddress"] = ""
+	common.OptionMap["GitHubClientId"] = ""
+	common.OptionMap["GitHubClientSecret"] = ""
 	common.OptionMapRWMutex.Unlock()
 	options, _ := AllOption()
 	for _, option := range options {
@@ -92,6 +94,8 @@ func updateOptionMap(key string, value string) {
 		common.PasswordLoginEnabled = boolValue
 	case "EmailVerificationEnabled":
 		common.EmailVerificationEnabled = boolValue
+	case "GitHubOAuthEnabled":
+		common.GitHubOAuthEnabled = boolValue
 	case "SMTPServer":
 		common.SMTPServer = value
 	case "SMTPAccount":
@@ -100,5 +104,9 @@ func updateOptionMap(key string, value string) {
 		common.SMTPToken = value
 	case "ServerAddress":
 		common.ServerAddress = value
+	case "GitHubClientId":
+		common.GitHubClientId = value
+	case "GitHubClientSecret":
+		common.GitHubClientSecret = value
 	}
 }

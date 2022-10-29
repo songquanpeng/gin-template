@@ -12,6 +12,7 @@ import AddUser from './pages/User/AddUser';
 import axios from 'axios';
 import { showError } from './helpers';
 import PasswordResetForm from './components/PasswordResetForm';
+import GitHubOAuth from './components/GitHubOAuth';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -86,6 +87,11 @@ function App() {
       <Route path='/reset' element={
         <Suspense fallback={<Loading></Loading>}>
           <PasswordResetForm />
+        </Suspense>
+      } />
+      <Route path='/oauth/github' element={
+        <Suspense fallback={<Loading></Loading>}>
+          <GitHubOAuth />
         </Suspense>
       } />
       <Route

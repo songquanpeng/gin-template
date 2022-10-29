@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Divider, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
 import { toast } from 'react-toastify';
@@ -15,6 +15,20 @@ const LoginForm = () => {
   const { username, password } = inputs;
   const [userState, userDispatch] = useContext(UserContext);
   let navigate = useNavigate();
+
+  const [status, setStatus] = useState({});
+
+  useEffect(() => {
+    let status = localStorage.getItem('status');
+    if (status) {
+      status = JSON.parse(status);
+      setStatus(status);
+    }
+  }, []);
+
+  const onGitHubOAuthClicked = () => {
+    window.open(`https://github.com/login/oauth/authorize?client_id=${status.github_client_id}&scope=user:email`);
+  };
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -81,6 +95,13 @@ const LoginForm = () => {
           忘记密码？<Link to='/reset' className='btn btn-link'>点击重置</Link>；
           没有账户？<Link to='/register' className='btn btn-link'>点击注册</Link>
         </Message>
+        {
+          status.github_oauth ? <>
+              <Divider horizontal>Or</Divider>
+              <Button circular color='black' icon='github' onClick={onGitHubOAuthClicked} />
+            </>
+            : <></>
+        }
       </Grid.Column>
     </Grid>
   );

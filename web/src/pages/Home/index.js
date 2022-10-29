@@ -10,7 +10,7 @@ const Home = () => {
     const { success, message, data } = res.data;
     if (success) {
       let oldNotice = localStorage.getItem('notice');
-      if (data !== oldNotice) {
+      if (data !== oldNotice && data !== "") {
         toast.info(data, { autoClose: false });
         localStorage.setItem('notice', data);
       }

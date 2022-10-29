@@ -17,6 +17,9 @@ import (
 //go:embed web/build
 var buildFS embed.FS
 
+//go:embed web/build/index.html
+var indexPage []byte
+
 func main() {
 	if os.Getenv("GIN_MODE") != "debug" {
 		gin.SetMode(gin.ReleaseMode)
@@ -50,7 +53,7 @@ func main() {
 		server.Use(sessions.Sessions("session", store))
 	}
 
-	router.SetRouter(server, buildFS)
+	router.SetRouter(server, buildFS, indexPage)
 	var realPort = os.Getenv("PORT")
 	if realPort == "" {
 		realPort = strconv.Itoa(*common.Port)

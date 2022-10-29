@@ -15,13 +15,13 @@ func SetApiRouter(router *gin.Engine) {
 		apiRouter.GET("/verification", middleware.CriticalRateLimit(), controller.SendEmailVerification)
 		apiRouter.GET("/reset_password", middleware.CriticalRateLimit(), controller.SendPasswordResetEmail)
 		apiRouter.GET("/user/reset", controller.SendNewPasswordEmail)
+		apiRouter.GET("/oauth/github", controller.GitHubOAuth)
 
 		userRoute := apiRouter.Group("/user")
 		{
 			userRoute.POST("/register", controller.Register)
 			userRoute.POST("/login", controller.Login)
 			userRoute.GET("/logout", controller.Logout)
-			userRoute.GET("/token", controller.GenerateToken)
 
 			selfRoute := userRoute.Group("/")
 			selfRoute.Use(middleware.NoTokenAuth(), middleware.UserAuth())
@@ -29,6 +29,7 @@ func SetApiRouter(router *gin.Engine) {
 				selfRoute.GET("/self", controller.GetSelf)
 				selfRoute.PUT("/self", controller.UpdateSelf)
 				selfRoute.DELETE("/self", controller.DeleteSelf)
+				selfRoute.GET("/token", controller.GenerateToken)
 			}
 
 			adminRoute := userRoute.Group("/")
@@ -43,7 +44,7 @@ func SetApiRouter(router *gin.Engine) {
 			}
 		}
 		optionRoute := apiRouter.Group("/option")
-		optionRoute.Use(middleware.NoTokenAuth(), middleware.AdminAuth())
+		optionRoute.Use(middleware.NoTokenAuth(), middleware.RootAuth())
 		{
 			optionRoute.GET("/", controller.GetOptions)
 			optionRoute.PUT("/", controller.UpdateOption)

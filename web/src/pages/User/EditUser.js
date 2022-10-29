@@ -10,10 +10,11 @@ const EditUser = () => {
   const userId = params.id;
   const [loading, setLoading] = useState(true);
   const [inputs, setInputs] = useState({
+    username: '',
     display_name: '',
     password: ''
   });
-  const { display_name, password } = inputs;
+  const { username, display_name, password } = inputs;
   const handleInputChange = (e, { name, value }) => {
     setInputs(inputs => ({ ...inputs, [name]: value }));
   };
@@ -64,11 +65,11 @@ const EditUser = () => {
       <Form autoComplete='off'>
         <Form.Field>
           <Form.Input
-            label='显示名称'
-            name='display_name'
-            placeholder={'请输入新的显示名称'}
+            label='用户名'
+            name='username'
+            placeholder={'请输入新的用户名'}
             onChange={handleInputChange}
-            value={display_name}
+            value={username}
             autoComplete='off'
           />
         </Form.Field>
@@ -80,6 +81,16 @@ const EditUser = () => {
             placeholder={'请输入新的密码'}
             onChange={handleInputChange}
             value={password}
+            autoComplete='off'
+          />
+        </Form.Field>
+        <Form.Field>
+          <Form.Input
+            label='显示名称'
+            name='display_name'
+            placeholder={'请输入新的显示名称'}
+            onChange={handleInputChange}
+            value={display_name}
             autoComplete='off'
           />
         </Form.Field>

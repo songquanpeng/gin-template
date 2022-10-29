@@ -5,15 +5,11 @@ import (
 	"gin-react-template/middleware"
 	"gin-react-template/router/v0"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-func SetRouter(router *gin.Engine, buildFS embed.FS) {
+func SetRouter(router *gin.Engine, buildFS embed.FS, indexPage []byte) {
 	router.Use(middleware.AllStat())
 
 	v0.SetApiRouter(router)
-	setWebRouter(router, buildFS)
-	router.NoRoute(func(c *gin.Context) {
-		c.Redirect(http.StatusSeeOther, "/")
-	})
+	setWebRouter(router, buildFS, indexPage)
 }

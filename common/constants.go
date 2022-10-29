@@ -28,10 +28,14 @@ var StatReqTimeout = 30   // Day
 var PasswordLoginEnabled = true
 var RegisterEnabled = true
 var EmailVerificationEnabled = true
+var GitHubOAuthEnabled = true
 
 var SMTPServer = ""
 var SMTPAccount = ""
 var SMTPToken = ""
+
+var GitHubClientId = ""
+var GitHubClientSecret = ""
 
 const (
 	RoleGuestUser  = 0

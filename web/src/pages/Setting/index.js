@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { toastConstants } from '../../constants';
-import { copy, isAdmin } from '../../helpers';
+import { copy, isAdmin, isRoot } from '../../helpers';
 
 
 const Setting = () => {
@@ -25,7 +25,7 @@ const Setting = () => {
     <Button as={Link} to={`/user/edit/`}>更新个人信息</Button>
     <Button onClick={generateToken}>生成访问令牌</Button>
     {
-      isAdmin() ? <>
+      isRoot() ? <>
         <Header as='h3'>系统设置</Header>
         <SystemSetting />
       </> : <>

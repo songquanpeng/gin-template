@@ -8,6 +8,9 @@ const SystemSetting = () => {
     PasswordLoginEnabled: '',
     RegisterEnabled: '',
     EmailVerificationEnabled: '',
+    GitHubOAuthEnabled: '',
+    GitHubClientId: '',
+    GitHubClientSecret: '',
     Notice: '',
     SMTPServer: '',
     SMTPAccount: '',
@@ -42,6 +45,7 @@ const SystemSetting = () => {
       case 'PasswordLoginEnabled':
       case 'RegisterEnabled':
       case 'EmailVerificationEnabled':
+      case 'GitHubOAuthEnabled':
         value = inputs[key] === 'true' ? 'false' : 'true';
         break;
     }
@@ -58,7 +62,8 @@ const SystemSetting = () => {
   };
 
   const handleInputChange = async (e, { name, value }) => {
-    if (name === 'Notice' || name.startsWith('SMTP') || name === 'ServerAddress') {
+    if (name === 'Notice' || name.startsWith('SMTP') || name === 'ServerAddress'
+      || name === 'GitHubClientId' || name === 'GitHubClientSecret') {
       setInputs(inputs => ({ ...inputs, [name]: value }));
     } else {
       await updateOption(name, value);
@@ -86,6 +91,15 @@ const SystemSetting = () => {
     }
     if (originInputs['SMTPToken'] !== inputs.SMTPToken && inputs.SMTPToken !== '') {
       await updateOption('SMTPToken', inputs.SMTPToken);
+    }
+  };
+
+  const submitGitHubOAuth = async () => {
+    if (originInputs['GitHubClientId'] !== inputs.GitHubClientId) {
+      await updateOption('GitHubClientId', inputs.GitHubClientId);
+    }
+    if (originInputs['GitHubClientSecret'] !== inputs.GitHubClientSecret && inputs.GitHubClientSecret !== '') {
+      await updateOption('GitHubClientSecret', inputs.GitHubClientSecret);
     }
   };
 
@@ -120,8 +134,14 @@ const SystemSetting = () => {
             />
             <Form.Checkbox
               checked={inputs.EmailVerificationEnabled === 'true'}
-              label='用户注册时必须通过邮箱验证'
+              label='强制邮箱验证'
               name='EmailVerificationEnabled'
+              onChange={handleInputChange}
+            />
+            <Form.Checkbox
+              checked={inputs.GitHubOAuthEnabled === 'true'}
+              label='允许通过 GitHub 账户登录'
+              name='GitHubOAuthEnabled'
               onChange={handleInputChange}
             />
           </Form.Group>
@@ -150,6 +170,24 @@ const SystemSetting = () => {
             />
           </Form.Group>
           <Form.Button onClick={submitSMTP}>保存 SMTP 设置</Form.Button>
+          <Form.Group widths={3}>
+            <Form.Input
+              label='GitHub Client ID'
+              name='GitHubClientId'
+              onChange={handleInputChange}
+              autoComplete='off'
+              value={inputs.GitHubClientId}
+            />
+            <Form.Input
+              label='GitHub Client Secret'
+              name='GitHubClientSecret'
+              onChange={handleInputChange}
+              type='password'
+              autoComplete='off'
+              value={inputs.GitHubClientSecret}
+            />
+          </Form.Group>
+          <Form.Button onClick={submitGitHubOAuth}>保存 GitHub OAuth 设置</Form.Button>
         </Form>
       </Grid.Column>
     </Grid>
