@@ -27,7 +27,7 @@ var StatReqTimeout = 30   // Day
 
 var PasswordLoginEnabled = true
 var RegisterEnabled = true
-var EmailVerificationEnabled = true
+var EmailVerificationEnabled = false
 var GitHubOAuthEnabled = true
 
 var SMTPServer = ""
