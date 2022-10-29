@@ -12,21 +12,29 @@ type verificationValue struct {
 	time time.Time
 }
 
+const (
+	EmailVerificationPurpose = "v"
+	PasswordResetPurpose     = "r"
+)
+
 var verificationMutex sync.Mutex
 var verificationMap map[string]verificationValue
 var verificationMapMaxSize = 10
 var VerificationValidMinutes = 10
 
-func GenerateVerificationCode() string {
+func GenerateVerificationCode(length int) string {
 	code := uuid.New().String()
 	code = strings.Replace(code, "-", "", -1)
-	return code[:6]
+	if length == 0 {
+		return code
+	}
+	return code[:length]
 }
 
-func RegisterVerificationCodeWithKey(key string, code string) {
+func RegisterVerificationCodeWithKey(key string, code string, purpose string) {
 	verificationMutex.Lock()
 	defer verificationMutex.Unlock()
-	verificationMap[key] = verificationValue{
+	verificationMap[purpose+key] = verificationValue{
 		code: code,
 		time: time.Now(),
 	}
@@ -35,15 +43,21 @@ func RegisterVerificationCodeWithKey(key string, code string) {
 	}
 }
 
-func VerifyCodeWithKey(key string, code string) bool {
+func VerifyCodeWithKey(key string, code string, purpose string) bool {
 	verificationMutex.Lock()
 	defer verificationMutex.Unlock()
-	value, okay := verificationMap[key]
+	value, okay := verificationMap[purpose+key]
 	now := time.Now()
 	if !okay || int(now.Sub(value.time).Seconds()) >= VerificationValidMinutes*60 {
 		return false
 	}
 	return code == value.code
+}
+
+func DeleteKey(key string, purpose string) {
+	verificationMutex.Lock()
+	defer verificationMutex.Unlock()
+	delete(verificationMap, purpose+key)
 }
 
 // no lock inside!

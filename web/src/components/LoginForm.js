@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
 import { toast } from 'react-toastify';
 import { toastConstants } from '../constants';
-import { showError } from '../helpers';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
@@ -79,6 +78,7 @@ const LoginForm = () => {
           </Segment>
         </Form>
         <Message>
+          忘记密码？<Link to='/reset' className='btn btn-link'>点击重置</Link>；
           没有账户？<Link to='/register' className='btn btn-link'>点击注册</Link>
         </Message>
       </Grid.Column>

@@ -112,7 +112,7 @@ func Register(c *gin.Context) {
 			})
 			return
 		}
-		if !common.VerifyCodeWithKey(user.Email, user.VerificationCode) {
+		if !common.VerifyCodeWithKey(user.Email, user.VerificationCode, common.EmailVerificationPurpose) {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
 				"message": "验证码错误！",

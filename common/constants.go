@@ -14,6 +14,7 @@ import (
 var StartTime = time.Now().Unix() // unit: second
 var Version = "v0.0.0"
 var SystemName = "项目模板"
+var ServerAddress = "http://localhost:3000"
 
 var OptionMap map[string]string
 var OptionMapRWMutex sync.RWMutex

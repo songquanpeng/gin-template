@@ -82,3 +82,12 @@ func ValidateUserToken(token string) (user *User) {
 	}
 	return nil
 }
+
+func IsEmailAlreadyTaken(email string) bool {
+	return DB.Where("email = ?", email).Find(&User{}).RowsAffected == 1
+}
+
+func ResetUserPasswordByEmail(email string, password string) error {
+	err := DB.Model(&User{}).Where("email = ?", email).Update("password", password).Error
+	return err
+}

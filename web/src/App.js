@@ -11,6 +11,7 @@ import EditUser from './pages/User/EditUser';
 import AddUser from './pages/User/AddUser';
 import axios from 'axios';
 import { showError } from './helpers';
+import PasswordResetForm from './components/PasswordResetForm';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -80,6 +81,11 @@ function App() {
       <Route path='/register' element={
         <Suspense fallback={<Loading></Loading>}>
           <RegisterForm />
+        </Suspense>
+      } />
+      <Route path='/reset' element={
+        <Suspense fallback={<Loading></Loading>}>
+          <PasswordResetForm />
         </Suspense>
       } />
       <Route
