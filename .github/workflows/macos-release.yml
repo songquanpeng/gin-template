@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: 16
       - name: Build Frontend
+        env:
+          CI: ""
         run: |
           cd web
           npm install
