@@ -11,7 +11,8 @@ const SystemSetting = () => {
     Notice: '',
     SMTPServer: '',
     SMTPAccount: '',
-    SMTPToken: ''
+    SMTPToken: '',
+    ServerAddress: ''
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -57,7 +58,7 @@ const SystemSetting = () => {
   };
 
   const handleInputChange = async (e, { name, value }) => {
-    if (name === 'Notice' || name.startsWith('SMTP')) {
+    if (name === 'Notice' || name.startsWith('SMTP') || name === 'ServerAddress') {
       setInputs(inputs => ({ ...inputs, [name]: value }));
     } else {
       await updateOption(name, value);
@@ -66,6 +67,14 @@ const SystemSetting = () => {
 
   const submitNotice = async () => {
     await updateOption('Notice', inputs.Notice);
+  };
+
+  const submitServerAddress = async () => {
+    let ServerAddress = inputs.ServerAddress;
+    if (ServerAddress.endsWith('/')) {
+      ServerAddress = ServerAddress.slice(0, ServerAddress.length - 1);
+    }
+    await updateOption('ServerAddress', ServerAddress);
   };
 
   const submitSMTP = async () => {
@@ -85,7 +94,12 @@ const SystemSetting = () => {
       <Grid.Column>
         <Form as={Segment} loading={loading}>
           <Form.Group widths='equal'>
-            {/*<TextArea placeholder='Tell us more' style={{ minHeight: 100 }}  />*/}
+            <Form.Input label='服务器地址' placeholder='例如：https://yourdomain.com' value={inputs.ServerAddress}
+                        name='ServerAddress'
+                        onChange={handleInputChange} />
+          </Form.Group>
+          <Form.Button onClick={submitServerAddress}>更新服务器地址</Form.Button>
+          <Form.Group widths='equal'>
             <Form.TextArea label='公告' placeholder='在此输入新的公告' value={inputs.Notice} name='Notice'
                            onChange={handleInputChange}
                            style={{ minHeight: 150, fontFamily: 'JetBrains Mono, Consolas' }} />

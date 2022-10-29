@@ -33,6 +33,7 @@ func InitOptionMap() {
 	common.OptionMap["SMTPAccount"] = ""
 	common.OptionMap["SMTPToken"] = ""
 	common.OptionMap["Notice"] = ""
+	common.OptionMap["ServerAddress"] = ""
 	common.OptionMapRWMutex.Unlock()
 	options, _ := AllOption()
 	for _, option := range options {
@@ -97,5 +98,7 @@ func updateOptionMap(key string, value string) {
 		common.SMTPAccount = value
 	case "SMTPToken":
 		common.SMTPToken = value
+	case "ServerAddress":
+		common.ServerAddress = value
 	}
 }
