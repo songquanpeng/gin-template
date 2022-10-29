@@ -18,6 +18,13 @@ type LoginRequest struct {
 }
 
 func Login(c *gin.Context) {
+	if !common.PasswordLoginEnabled {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "管理员关闭了密码登录",
+			"success": false,
+		})
+		return
+	}
 	var loginRequest LoginRequest
 	err := json.NewDecoder(c.Request.Body).Decode(&loginRequest)
 	username := loginRequest.Username
@@ -81,6 +88,13 @@ func Logout(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
+	if !common.RegisterEnabled {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "管理员关闭了新用户注册",
+			"success": false,
+		})
+		return
+	}
 	var user model.User
 	err := json.NewDecoder(c.Request.Body).Decode(&user)
 	if err != nil {

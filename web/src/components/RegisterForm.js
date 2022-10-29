@@ -57,7 +57,7 @@ const RegisterForm = () => {
               fluid
               icon='user'
               iconPosition='left'
-              placeholder='输入一个新的用户名'
+              placeholder='输入用户名'
               onChange={handleChange}
               name='username'
             />

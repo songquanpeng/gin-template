@@ -61,7 +61,7 @@ const EditUser = () => {
   return <>
     <Segment loading={loading}>
       <Header as='h3'>更新用户信息</Header>
-      <Form autocomplete='off'>
+      <Form autoComplete='off'>
         <Form.Field>
           <Form.Input
             label='显示名称'
@@ -69,7 +69,7 @@ const EditUser = () => {
             placeholder={'请输入新的显示名称'}
             onChange={handleInputChange}
             value={display_name}
-            autocomplete='off'
+            autoComplete='off'
           />
         </Form.Field>
         <Form.Field>
@@ -80,7 +80,7 @@ const EditUser = () => {
             placeholder={'请输入新的密码'}
             onChange={handleInputChange}
             value={password}
-            autocomplete='off'
+            autoComplete='off'
           />
         </Form.Field>
         <Button onClick={submit}>提交</Button>

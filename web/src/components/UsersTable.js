@@ -90,7 +90,7 @@ const UsersTable = () => {
           {
             users.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage).map((user, idx) => {
               return (
-                <Table.Row id={user.id}>
+                <Table.Row key={user.id}>
                   <Table.Cell>{user.username}</Table.Cell>
                   <Table.Cell>{user.display_name}</Table.Cell>
                   <Table.Cell>{renderRole(user.role)}</Table.Cell>

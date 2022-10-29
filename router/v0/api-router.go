@@ -39,11 +39,11 @@ func SetApiRouter(router *gin.Engine) {
 				adminRoute.DELETE("/:id", controller.DeleteUser)
 			}
 		}
-		optionRoute := apiRouter.Group("/options")
+		optionRoute := apiRouter.Group("/option")
 		optionRoute.Use(middleware.NoTokenAuth(), middleware.AdminAuth())
 		{
-			optionRoute.GET("/option", controller.GetOptions)
-			optionRoute.PUT("/option", controller.UpdateOption)
+			optionRoute.GET("/", controller.GetOptions)
+			optionRoute.PUT("/", controller.UpdateOption)
 		}
 		fileRoute := apiRouter.Group("/file")
 		{

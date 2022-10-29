@@ -6,6 +6,7 @@ import { Container, Icon, Menu } from 'semantic-ui-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { toastConstants } from '../constants';
+import { isAdmin } from '../helpers';
 
 // Header Buttons
 const headerButtons = [
@@ -17,7 +18,8 @@ const headerButtons = [
   {
     name: '用户',
     to: '/user',
-    icon: 'user'
+    icon: 'user',
+    admin: true
   },
   {
     name: '设置',
@@ -53,12 +55,15 @@ const Header = () => {
               <b>项目模板</b>
             </div>
           </Menu.Item>
-          {headerButtons.map((button) => (
-            <Menu.Item key={button.name} as={Link} to={button.to}>
-              <Icon name={button.icon} />
-              {button.name}
-            </Menu.Item>
-          ))}
+          {headerButtons.map((button) => {
+            if (button.admin && !isAdmin()) return <></>;
+            return (
+              <Menu.Item key={button.name} as={Link} to={button.to}>
+                <Icon name={button.icon} />
+                {button.name}
+              </Menu.Item>
+            );
+          })}
           <Menu.Menu position='right'>
             {userState.user ?
               <Menu.Item name='注销' onClick={logout} className='btn btn-link' /> :

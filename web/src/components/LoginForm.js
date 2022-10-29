@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
 import { toast } from 'react-toastify';
 import { toastConstants } from '../constants';
+import { showError } from '../helpers';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
@@ -33,7 +34,7 @@ const LoginForm = () => {
         if (success) {
           userDispatch({ type: 'login', payload: data });
           localStorage.setItem('user', JSON.stringify(data));
-          navigate('/user');
+          navigate('/');
           toast.success('登录成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
         } else {
           toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });

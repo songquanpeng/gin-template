@@ -7,23 +7,24 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"sync"
 	"time"
 )
 
 var StartTime = time.Now().Unix() // unit: second
 var Version = "v0.0.0"
 var OptionMap map[string]string
+var OptionMapRWMutex sync.RWMutex
 
 var ItemsPerPage = 10
-
-var ExplorerCacheEnabled = false // After my test, enable this will make the server slower...
-var ExplorerCacheTimeout = 600   // Second
 
 var StatEnabled = true
 var StatCacheTimeout = 24 // Hour
 var StatReqTimeout = 30   // Day
-var StatIPNum = 20
-var StatURLNum = 20
+
+var PasswordLoginEnabled = true
+var RegisterEnabled = true
+var EmailVerificationEnabled = true
 
 const (
 	RoleGuestUser  = 0

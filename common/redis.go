@@ -14,9 +14,7 @@ var RedisEnabled = true
 func InitRedisClient() (err error) {
 	if os.Getenv("REDIS_CONN_STRING") == "" {
 		RedisEnabled = false
-		// The cache depends on Redis
-		ExplorerCacheEnabled = false
-		// This stat feature also depends on Redis
+		// This stat feature depends on Redis
 		StatEnabled = false
 		return nil
 	}

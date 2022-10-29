@@ -10,12 +10,14 @@ import (
 
 func GetOptions(c *gin.Context) {
 	var options []*model.Option
+	common.OptionMapRWMutex.Lock()
 	for k, v := range common.OptionMap {
 		options = append(options, &model.Option{
 			Key:   k,
 			Value: common.Interface2String(v),
 		})
 	}
+	common.OptionMapRWMutex.Unlock()
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",

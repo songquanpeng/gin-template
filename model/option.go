@@ -20,15 +20,17 @@ func AllOption() ([]*Option, error) {
 }
 
 func InitOptionMap() {
+	common.OptionMapRWMutex.Lock()
 	common.OptionMap = make(map[string]string)
 	common.OptionMap["FileUploadPermission"] = strconv.Itoa(common.FileUploadPermission)
 	common.OptionMap["FileDownloadPermission"] = strconv.Itoa(common.FileDownloadPermission)
 	common.OptionMap["ImageUploadPermission"] = strconv.Itoa(common.ImageUploadPermission)
 	common.OptionMap["ImageDownloadPermission"] = strconv.Itoa(common.ImageDownloadPermission)
-	common.OptionMap["WebsiteName"] = "Go File"
-	common.OptionMap["FooterInfo"] = ""
-	common.OptionMap["Version"] = common.Version
+	common.OptionMap["PasswordLoginEnabled"] = strconv.FormatBool(common.PasswordLoginEnabled)
+	common.OptionMap["RegisterEnabled"] = strconv.FormatBool(common.RegisterEnabled)
+	common.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(common.EmailVerificationEnabled)
 	common.OptionMap["Notice"] = ""
+	common.OptionMapRWMutex.Unlock()
 	options, _ := AllOption()
 	for _, option := range options {
 		updateOptionMap(option.Key, option.Value)
@@ -56,6 +58,8 @@ func UpdateOption(key string, value string) error {
 }
 
 func updateOptionMap(key string, value string) {
+	common.OptionMapRWMutex.Lock()
+	defer common.OptionMapRWMutex.Unlock()
 	common.OptionMap[key] = value
 	if strings.HasSuffix(key, "Permission") {
 		intValue, _ := strconv.Atoi(value)
@@ -70,11 +74,19 @@ func updateOptionMap(key string, value string) {
 			common.ImageDownloadPermission = intValue
 		}
 	}
-	if key == "StatEnabled" {
-		common.StatEnabled = value == "true"
+	boolValue := value == "true"
+	switch key {
+	case "StatEnabled":
+		common.StatEnabled = boolValue
 		if !common.RedisEnabled {
 			common.StatEnabled = false
 			common.OptionMap["StatEnabled"] = "false"
 		}
+	case "RegisterEnabled":
+		common.RegisterEnabled = boolValue
+	case "PasswordLoginEnabled":
+		common.PasswordLoginEnabled = boolValue
+	case "EmailVerificationEnabled":
+		common.EmailVerificationEnabled = boolValue
 	}
 }
