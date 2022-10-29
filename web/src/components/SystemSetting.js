@@ -8,8 +8,12 @@ const SystemSetting = () => {
     PasswordLoginEnabled: '',
     RegisterEnabled: '',
     EmailVerificationEnabled: '',
-    Notice: ''
+    Notice: '',
+    SMTPServer: '',
+    SMTPAccount: '',
+    SMTPToken: ''
   });
+  let originInputs = {};
   let [loading, setLoading] = useState(false);
 
   const getOptions = async () => {
@@ -21,6 +25,7 @@ const SystemSetting = () => {
         newInputs[item.key] = item.value;
       });
       setInputs(newInputs);
+      originInputs = newInputs;
     } else {
       showError(message);
     }
@@ -52,7 +57,7 @@ const SystemSetting = () => {
   };
 
   const handleInputChange = async (e, { name, value }) => {
-    if (name === 'Notice') {
+    if (name === 'Notice' || name.startsWith('SMTP')) {
       setInputs(inputs => ({ ...inputs, [name]: value }));
     } else {
       await updateOption(name, value);
@@ -61,6 +66,18 @@ const SystemSetting = () => {
 
   const submitNotice = async () => {
     await updateOption('Notice', inputs.Notice);
+  };
+
+  const submitSMTP = async () => {
+    if (originInputs['SMTPServer'] !== inputs.SMTPServer) {
+      await updateOption('SMTPServer', inputs.SMTPServer);
+    }
+    if (originInputs['SMTPAccount'] !== inputs.SMTPAccount) {
+      await updateOption('SMTPAccount', inputs.SMTPAccount);
+    }
+    if (originInputs['SMTPToken'] !== inputs.SMTPToken && inputs.SMTPToken !== '') {
+      await updateOption('SMTPToken', inputs.SMTPToken);
+    }
   };
 
   return (
@@ -94,6 +111,31 @@ const SystemSetting = () => {
               onChange={handleInputChange}
             />
           </Form.Group>
+          <Form.Group widths={3}>
+            <Form.Input
+              label='SMTP 服务器地址'
+              name='SMTPServer'
+              onChange={handleInputChange}
+              autoComplete='off'
+              value={inputs.SMTPServer}
+            />
+            <Form.Input
+              label='SMTP 账户'
+              name='SMTPAccount'
+              onChange={handleInputChange}
+              autoComplete='off'
+              value={inputs.SMTPAccount}
+            />
+            <Form.Input
+              label='SMTP 访问凭证'
+              name='SMTPToken'
+              onChange={handleInputChange}
+              type='password'
+              autoComplete='off'
+              value={inputs.SMTPToken}
+            />
+          </Form.Group>
+          <Form.Button onClick={submitSMTP}>保存 SMTP 设置</Form.Button>
         </Form>
       </Grid.Column>
     </Grid>

@@ -12,6 +12,9 @@ func GetOptions(c *gin.Context) {
 	var options []*model.Option
 	common.OptionMapRWMutex.Lock()
 	for k, v := range common.OptionMap {
+		if k == "SMTPToken" {
+			continue
+		}
 		options = append(options, &model.Option{
 			Key:   k,
 			Value: common.Interface2String(v),

@@ -104,10 +104,29 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+	if common.EmailVerificationEnabled {
+		if user.Email == "" || user.VerificationCode == "" {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "管理员开启了邮箱验证，请输入邮箱地址和验证码",
+			})
+			return
+		}
+		if !common.VerifyCodeWithKey(user.Email, user.VerificationCode) {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "验证码错误！",
+			})
+			return
+		}
+	}
 	cleanUser := model.User{
 		Username:    user.Username,
 		Password:    user.Password,
 		DisplayName: user.Username,
+	}
+	if common.EmailVerificationEnabled {
+		cleanUser.Email = user.Email
 	}
 	if err := cleanUser.Insert(); err != nil {
 		c.JSON(http.StatusOK, gin.H{

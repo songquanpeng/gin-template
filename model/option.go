@@ -29,6 +29,9 @@ func InitOptionMap() {
 	common.OptionMap["PasswordLoginEnabled"] = strconv.FormatBool(common.PasswordLoginEnabled)
 	common.OptionMap["RegisterEnabled"] = strconv.FormatBool(common.RegisterEnabled)
 	common.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(common.EmailVerificationEnabled)
+	common.OptionMap["SMTPServer"] = ""
+	common.OptionMap["SMTPAccount"] = ""
+	common.OptionMap["SMTPToken"] = ""
 	common.OptionMap["Notice"] = ""
 	common.OptionMapRWMutex.Unlock()
 	options, _ := AllOption()
@@ -88,5 +91,11 @@ func updateOptionMap(key string, value string) {
 		common.PasswordLoginEnabled = boolValue
 	case "EmailVerificationEnabled":
 		common.EmailVerificationEnabled = boolValue
+	case "SMTPServer":
+		common.SMTPServer = value
+	case "SMTPAccount":
+		common.SMTPAccount = value
+	case "SMTPToken":
+		common.SMTPToken = value
 	}
 }

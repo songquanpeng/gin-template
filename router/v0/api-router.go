@@ -12,6 +12,7 @@ func SetApiRouter(router *gin.Engine) {
 	{
 		apiRouter.GET("/status", controller.GetStatus)
 		apiRouter.GET("/notice", controller.GetNotice)
+		apiRouter.GET("/verification", middleware.CriticalRateLimit(), controller.SendEmailVerification)
 
 		userRoute := apiRouter.Group("/user")
 		{

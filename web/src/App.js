@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Loading from './components/Loading';
 import User from './pages/User';
@@ -9,11 +9,27 @@ import NotFound from './pages/NotFound';
 import Setting from './pages/Setting';
 import EditUser from './pages/User/EditUser';
 import AddUser from './pages/User/AddUser';
+import axios from 'axios';
+import { showError } from './helpers';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 
 function App() {
+  const loadStatus = async () => {
+    const res = await axios.get('/api/status');
+    const { success, message, data } = res.data;
+    if (success) {
+      localStorage.setItem('status', JSON.stringify(data));
+    } else {
+      showError('无法正常连接至服务器！');
+    }
+  };
+
+  useEffect(() => {
+    loadStatus().then();
+  }, []);
+
   return (
     <Routes>
       <Route

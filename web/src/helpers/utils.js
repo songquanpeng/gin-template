@@ -23,3 +23,7 @@ export function showError(message) {
   toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
   console.error(message);
 }
+
+export function showSuccess(message) {
+  toast.success(message, { autoClose: toastConstants.SUCCESS_TIMEOUT });
+}

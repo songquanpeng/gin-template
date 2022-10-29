@@ -13,6 +13,8 @@ import (
 
 var StartTime = time.Now().Unix() // unit: second
 var Version = "v0.0.0"
+var SystemName = "项目模板"
+
 var OptionMap map[string]string
 var OptionMapRWMutex sync.RWMutex
 
@@ -25,6 +27,10 @@ var StatReqTimeout = 30   // Day
 var PasswordLoginEnabled = true
 var RegisterEnabled = true
 var EmailVerificationEnabled = true
+
+var SMTPServer = ""
+var SMTPAccount = ""
+var SMTPToken = ""
 
 const (
 	RoleGuestUser  = 0

@@ -7,17 +7,19 @@ import (
 )
 
 type User struct {
-	Id          int    `json:"id"`
-	Username    string `json:"username" gorm:"unique;"`
-	Password    string `json:"password" gorm:"not null;"`
-	DisplayName string `json:"display_name"`
-	Role        int    `json:"role" gorm:"type:int;default:1"`   // admin, common
-	Status      int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
-	Token       string `json:"token"`
+	Id               int    `json:"id"`
+	Username         string `json:"username" gorm:"unique;"`
+	Password         string `json:"password" gorm:"not null;"`
+	DisplayName      string `json:"display_name"`
+	Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, common
+	Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
+	Token            string `json:"token"`
+	Email            string `json:"email"`
+	VerificationCode string `json:"verification_code" gorm:"-:all"`
 }
 
 func GetAllUsers() (users []*User, err error) {
-	err = DB.Select([]string{"id", "username", "display_name", "role", "status"}).Find(&users).Error
+	err = DB.Select([]string{"id", "username", "display_name", "role", "status", "email"}).Find(&users).Error
 	return users, err
 }
 
@@ -27,7 +29,7 @@ func GetUserById(id int, selectAll bool) (*User, error) {
 	if selectAll {
 		err = DB.First(&user, "id = ?", id).Error
 	} else {
-		err = DB.Select([]string{"id", "username", "display_name", "role", "status"}).First(&user, "id = ?", id).Error
+		err = DB.Select([]string{"id", "username", "display_name", "role", "status", "email"}).First(&user, "id = ?", id).Error
 	}
 	return &user, err
 }

@@ -80,6 +80,7 @@ const UsersTable = () => {
           <Table.Row>
             <Table.HeaderCell>用户名</Table.HeaderCell>
             <Table.HeaderCell>显示名称</Table.HeaderCell>
+            <Table.HeaderCell>邮箱地址</Table.HeaderCell>
             <Table.HeaderCell>用户角色</Table.HeaderCell>
             <Table.HeaderCell>状态</Table.HeaderCell>
             <Table.HeaderCell>操作</Table.HeaderCell>
@@ -93,6 +94,7 @@ const UsersTable = () => {
                 <Table.Row key={user.id}>
                   <Table.Cell>{user.username}</Table.Cell>
                   <Table.Cell>{user.display_name}</Table.Cell>
+                  <Table.Cell>{user.email ? user.email : "无"}</Table.Cell>
                   <Table.Cell>{renderRole(user.role)}</Table.Cell>
                   <Table.Cell>{renderStatus(user.status, user.id)}</Table.Cell>
                   <Table.Cell>
