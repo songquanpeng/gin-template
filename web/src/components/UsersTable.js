@@ -122,7 +122,7 @@ const UsersTable = () => {
 
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell colSpan='5'>
+            <Table.HeaderCell colSpan='6'>
               <Button size='small' as={Link} to='/user/add'>添加新的用户</Button>
               <Pagination
                 floated='right'
