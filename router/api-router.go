@@ -1,4 +1,4 @@
-package v0
+package router
 
 import (
 	"gin-template/controller"
