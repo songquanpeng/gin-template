@@ -21,10 +21,6 @@ var OptionMapRWMutex sync.RWMutex
 
 var ItemsPerPage = 10
 
-var StatEnabled = true
-var StatCacheTimeout = 24 // Hour
-var StatReqTimeout = 30   // Day
-
 var PasswordLoginEnabled = true
 var RegisterEnabled = true
 var EmailVerificationEnabled = false
