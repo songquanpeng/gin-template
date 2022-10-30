@@ -28,7 +28,7 @@ jobs:
       - name: Build Backend
         run: |
           go mod download
-          go build -ldflags "-X 'gin-template/common.Version=${git describe --tags}'" -o gin-template-macos
+          go build -ldflags "-X 'gin-template/common.Version=$(git describe --tags)'" -o gin-template-macos
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
