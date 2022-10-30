@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../../constants';
+import { showError, showSuccess } from '../../helpers';
 
 const EditUser = () => {
   const params = useParams();
@@ -31,15 +30,13 @@ const EditUser = () => {
       data.password = '';
       setInputs(data);
     } else {
-      toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-      console.error(message);
+      showError(message);
     }
     setLoading(false);
   };
   useEffect(() => {
     loadUser().then().catch(reason => {
-      console.error(reason);
-      toast.error('错误：' + reason, { autoClose: toastConstants.ERROR_TIMEOUT });
+      showError(reason);
     });
   }, []);
 
@@ -52,10 +49,9 @@ const EditUser = () => {
     }
     const { success, message } = res.data;
     if (success) {
-      toast.success('用户信息更新成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+      showSuccess('用户信息更新成功！');
     } else {
-      toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-      console.error(message);
+      showError('错误：');
     }
   };
 

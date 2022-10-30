@@ -4,9 +4,8 @@ import { UserContext } from '../context/User';
 
 import { Container, Icon, Menu } from 'semantic-ui-react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../constants';
-import { isAdmin } from '../helpers';
+import { isAdmin, isMobile, showSuccess } from '../helpers';
+import '../index.css';
 
 // Header Buttons
 const headerButtons = [
@@ -36,10 +35,11 @@ const headerButtons = [
 const Header = () => {
   const [userState, userDispatch] = useContext(UserContext);
   let navigate = useNavigate();
+  let size = isMobile() ? 'large' : '';
 
   async function logout() {
     await axios.get('/api/user/logout');
-    toast.success('注销成功!', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+    showSuccess('注销成功!');
     userDispatch({ type: 'logout' });
     localStorage.removeItem('user');
     navigate('/user');
@@ -47,9 +47,9 @@ const Header = () => {
 
   return (
     <>
-      <Menu fixed='top' borderless>
+      <Menu borderless size={size} style={{ borderTop: 'none' }}>
         <Container>
-          <Menu.Item as={Link} to='/'>
+          <Menu.Item as={Link} to='/' className={'hide-on-mobile'}>
             <img src='/logo.png' alt='logo' style={{ marginRight: '0.75em' }} />
             <div style={{ fontSize: '20px' }}>
               <b>项目模板</b>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Label, Pagination, Table } from 'semantic-ui-react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../constants';
 import { Link } from 'react-router-dom';
+import { showError, showSuccess } from '../helpers';
 
 const itemsPerPage = 10;
 
@@ -31,7 +30,7 @@ const UsersTable = () => {
     if (success) {
       setUsers(data);
     } else {
-      toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+      showError(message)
     }
     setLoading(false);
   };
@@ -42,8 +41,7 @@ const UsersTable = () => {
 
   useEffect(() => {
     loadUsers().then().catch(reason => {
-      console.error(reason);
-      toast.error('错误：' + reason, { autoClose: toastConstants.ERROR_TIMEOUT });
+      showError(reason)
     });
   }, []);
 
@@ -54,10 +52,10 @@ const UsersTable = () => {
       });
       const { success, message } = res.data;
       if (success) {
-        toast.success('操作成功完成！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+        showSuccess('操作成功完成！');
         await loadUsers();
       } else {
-        toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
+        showError(message);
       }
     })();
   };
@@ -94,7 +92,7 @@ const UsersTable = () => {
                 <Table.Row key={user.id}>
                   <Table.Cell>{user.username}</Table.Cell>
                   <Table.Cell>{user.display_name}</Table.Cell>
-                  <Table.Cell>{user.email ? user.email : "无"}</Table.Cell>
+                  <Table.Cell>{user.email ? user.email : '无'}</Table.Cell>
                   <Table.Cell>{renderRole(user.role)}</Table.Cell>
                   <Table.Cell>{renderStatus(user.status, user.id)}</Table.Cell>
                   <Table.Cell>

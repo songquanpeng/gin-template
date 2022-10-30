@@ -2,9 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { showError } from '../helpers';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../constants';
+import { showError, showSuccess } from '../helpers';
 import { UserContext } from '../context/User';
 
 const GitHubOAuth = () => {
@@ -21,7 +19,7 @@ const GitHubOAuth = () => {
       userDispatch({ type: 'login', payload: data });
       localStorage.setItem('user', JSON.stringify(data));
       navigate('/');
-      toast.success('登录成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+      showSuccess('登录成功！');
     } else {
       showError(message);
     }

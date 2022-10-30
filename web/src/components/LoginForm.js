@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Divider, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../constants';
+import { showError, showSuccess } from '../helpers';
 
 const LoginForm = () => {
   const [inputs, setInputs] = useState({
@@ -48,14 +47,12 @@ const LoginForm = () => {
           userDispatch({ type: 'login', payload: data });
           localStorage.setItem('user', JSON.stringify(data));
           navigate('/');
-          toast.success('登录成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+          showSuccess('登录成功！');
         } else {
-          toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-          console.error(message);
+          showError(message);
         }
       } catch (e) {
-        toast.error('错误：' + e, { autoClose: toastConstants.ERROR_TIMEOUT });
-        console.error(e);
+        showError(e);
       }
     }
   }

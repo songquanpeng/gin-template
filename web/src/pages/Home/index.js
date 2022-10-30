@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
-import { Grid, Placeholder, Segment, Header } from 'semantic-ui-react';
+import { Grid, Header, Placeholder, Segment } from 'semantic-ui-react';
 import axios from 'axios';
-import { showError } from '../../helpers';
-import { toast } from 'react-toastify';
+import { showError, showNotice } from '../../helpers';
 
 const Home = () => {
-  const showNotice = async () => {
+  const displayNotice = async () => {
     const res = await axios.get('/api/notice');
     const { success, message, data } = res.data;
     if (success) {
       let oldNotice = localStorage.getItem('notice');
-      if (data !== oldNotice && data !== "") {
-        toast.info(data, { autoClose: false });
+      if (data !== oldNotice && data !== '') {
+        showNotice(data);
         localStorage.setItem('notice', data);
       }
     } else {
@@ -20,7 +19,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    showNotice().then();
+    displayNotice().then();
   }, []);
   return <>
     <Segment>

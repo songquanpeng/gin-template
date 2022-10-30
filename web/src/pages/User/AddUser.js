@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Header, Segment } from 'semantic-ui-react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../../constants';
+import { showError, showSuccess } from '../../helpers';
 
 const AddUser = () => {
   const originInputs = {
@@ -19,15 +17,14 @@ const AddUser = () => {
   };
 
   const submit = async () => {
-    if (inputs.username === "" || inputs.password === "") return
+    if (inputs.username === '' || inputs.password === '') return;
     const res = await axios.post(`/api/user/`, inputs);
     const { success, message } = res.data;
     if (success) {
-      toast.success('用户账户创建成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+      showSuccess('用户账户创建成功！');
       setInputs(originInputs);
     } else {
-      toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-      console.error(message);
+      showError(message);
     }
   };
 

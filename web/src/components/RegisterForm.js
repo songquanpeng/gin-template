@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { toastConstants } from '../constants';
-import { showError, showSuccess } from '../helpers';
+import { showError, showInfo, showSuccess } from '../helpers';
 
 const RegisterForm = () => {
   const [inputs, setInputs] = useState({
@@ -18,13 +16,13 @@ const RegisterForm = () => {
 
   const [showEmailVerification, setShowEmailVerification] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     let status = localStorage.getItem('status');
     if (status) {
       status = JSON.parse(status);
       setShowEmailVerification(status.email_verification);
     }
-  })
+  });
 
   let navigate = useNavigate();
 
@@ -36,7 +34,7 @@ const RegisterForm = () => {
 
   async function handleSubmit(e) {
     if (password !== password2) {
-      toast.info('两次输入的密码不一致', { autoClose: toastConstants.INFO_TIMEOUT });
+      showInfo('两次输入的密码不一致');
       return;
     }
     if (username && password) {
@@ -45,14 +43,12 @@ const RegisterForm = () => {
         const { success, message } = res.data;
         if (success) {
           navigate('/login');
-          toast.success('注册成功！', { autoClose: toastConstants.SUCCESS_TIMEOUT });
+          showSuccess('注册成功！');
         } else {
-          toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
-          console.error(message);
+          showError(message);
         }
       } catch (e) {
-        toast.error('错误：' + e, { autoClose: toastConstants.ERROR_TIMEOUT });
-        console.error(e);
+        showError(e);
       }
     }
   }

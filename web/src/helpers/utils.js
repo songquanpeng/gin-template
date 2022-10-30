@@ -26,11 +26,42 @@ export async function copy(text) {
   return okay;
 }
 
+export function isMobile() {
+  return navigator.userAgentData.mobile;
+}
+
+let showErrorOptions = { autoClose: toastConstants.ERROR_TIMEOUT };
+let showSuccessOptions = { autoClose: toastConstants.SUCCESS_TIMEOUT };
+let showInfoOptions = { autoClose: toastConstants.INFO_TIMEOUT };
+let showNoticeOptions = { autoClose: false };
+
+if (isMobile()) {
+  showErrorOptions.position = 'top-center';
+  // showErrorOptions.transition = 'flip';
+
+  showSuccessOptions.position = 'top-center';
+  // showSuccessOptions.transition = 'flip';
+
+  showInfoOptions.position = 'top-center';
+  // showInfoOptions.transition = 'flip';
+
+  showNoticeOptions.position = 'top-center';
+  // showNoticeOptions.transition = 'flip';
+}
+
 export function showError(message) {
-  toast.error('错误：' + message, { autoClose: toastConstants.ERROR_TIMEOUT });
   console.error(message);
+  toast.error('错误：' + message, showErrorOptions);
 }
 
 export function showSuccess(message) {
-  toast.success(message, { autoClose: toastConstants.SUCCESS_TIMEOUT });
+  toast.success(message, showSuccessOptions);
+}
+
+export function showInfo(message) {
+  toast.info(message, showInfoOptions);
+}
+
+export function showNotice(message) {
+  toast.info(message, showNoticeOptions);
 }
