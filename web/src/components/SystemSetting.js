@@ -106,7 +106,7 @@ const SystemSetting = () => {
   return (
     <Grid columns={1}>
       <Grid.Column>
-        <Form as={Segment} loading={loading}>
+        <Form loading={loading}>
           <Form.Group widths='equal'>
             <Form.Input label='服务器地址' placeholder='例如：https://yourdomain.com' value={inputs.ServerAddress}
                         name='ServerAddress'
