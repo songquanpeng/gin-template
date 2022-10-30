@@ -30,7 +30,7 @@ const Setting = () => {
   };
 
   const checkUpdate = async () => {
-    const res = await axios.get('https://api.github.com/repos/songquanpeng/go-file/releases/latest');
+    const res = await axios.get('https://api.github.com/repos/songquanpeng/gin-template/releases/latest');
     const { tag_name, body } = res.data;
     if (tag_name === process.env.REACT_APP_VERSION) {
       showSuccess(`已是最新版本：${tag_name}`);
