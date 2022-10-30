@@ -24,7 +24,7 @@ var ItemsPerPage = 10
 var PasswordLoginEnabled = true
 var RegisterEnabled = true
 var EmailVerificationEnabled = false
-var GitHubOAuthEnabled = true
+var GitHubOAuthEnabled = false
 
 var SMTPServer = ""
 var SMTPAccount = ""

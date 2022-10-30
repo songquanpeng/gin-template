@@ -39,6 +39,13 @@ func UpdateOption(c *gin.Context) {
 		})
 		return
 	}
+	if option.Key == "GitHubOAuthEnabled" && option.Value == "true" && common.GitHubClientId == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无法启用 GitHub OAuth，请先填入 GitHub Client ID 以及 GitHub Client Secret！",
+		})
+		return
+	}
 	err = model.UpdateOption(option.Key, option.Value)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
