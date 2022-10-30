@@ -42,7 +42,7 @@ const Header = () => {
     showSuccess('注销成功!');
     userDispatch({ type: 'logout' });
     localStorage.removeItem('user');
-    navigate('/user');
+    navigate('/login');
   }
 
   return (
