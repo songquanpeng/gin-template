@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 		Username: username,
 		Password: password,
 	}
-	user.ValidateAndFill()
+	user.FillUserByUsernameAndPassword()
 	setupLogin(&user, c)
 }
 

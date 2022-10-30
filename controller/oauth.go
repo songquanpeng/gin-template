@@ -110,7 +110,7 @@ func GitHubOAuth(c *gin.Context) {
 		Email: githubUser.Email,
 	}
 	if githubUser.Email != "" && model.IsEmailAlreadyTaken(githubUser.Email) {
-		user.ValidateAndFill()
+		user.FillUserByEmail()
 	} else {
 		if githubUser.Login == "" {
 			c.JSON(http.StatusOK, gin.H{

@@ -64,11 +64,15 @@ func (user *User) Delete() error {
 	return err
 }
 
-func (user *User) ValidateAndFill() {
+func (user *User) FillUserByUsernameAndPassword() {
 	// When querying with struct, GORM will only query with non-zero fields,
 	// that means if your field’s value is 0, '', false or other zero values,
 	// it won’t be used to build query conditions
-	DB.Where(&user).First(&user)
+	DB.Where(User{Username: user.Username, Password: user.Password}).First(user)
+}
+
+func (user *User) FillUserByEmail() {
+	DB.Where(User{Email: user.Email}).First(user)
 }
 
 func (user *User) FillUserByUsername() {
