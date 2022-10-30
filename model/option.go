@@ -83,12 +83,6 @@ func updateOptionMap(key string, value string) {
 	}
 	boolValue := value == "true"
 	switch key {
-	case "StatEnabled":
-		common.StatEnabled = boolValue
-		if !common.RedisEnabled {
-			common.StatEnabled = false
-			common.OptionMap["StatEnabled"] = "false"
-		}
 	case "RegisterEnabled":
 		common.RegisterEnabled = boolValue
 	case "PasswordLoginEnabled":
