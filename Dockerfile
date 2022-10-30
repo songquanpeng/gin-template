@@ -15,7 +15,7 @@ WORKDIR /build
 COPY . .
 COPY --from=builder /build/build ./web/build
 RUN go mod download
-RUN go build -ldflags "-s -w -extldflags '-static'" -o gin-template
+RUN go build -ldflags "-s -w" -o gin-template
 
 FROM scratch
 
