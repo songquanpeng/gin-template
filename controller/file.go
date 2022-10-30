@@ -3,8 +3,8 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"gin-react-template/common"
-	"gin-react-template/model"
+	"gin-template/common"
+	"gin-template/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"

@@ -1,7 +1,7 @@
 package model
 
 import (
-	"gin-react-template/common"
+	"gin-template/common"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"strings"
 )

@@ -31,11 +31,11 @@ jobs:
       - name: Build Backend
         run: |
           go mod download
-          go build -ldflags "-s -w -extldflags '-static' -X 'gin-react-template/common.Version=${git describe --tags}'" -o gin-react-template.exe
+          go build -ldflags "-s -w -extldflags '-static' -X 'gin-template/common.Version=${git describe --tags}'" -o gin-template.exe
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: gin-react-template.exe
+          files: gin-template.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

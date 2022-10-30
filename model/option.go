@@ -2,7 +2,7 @@ package model
 
 import (
 	"errors"
-	"gin-react-template/common"
+	"gin-template/common"
 	"strconv"
 	"strings"
 )

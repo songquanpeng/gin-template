@@ -2,8 +2,8 @@ package controller
 
 import (
 	"fmt"
-	"gin-react-template/common"
-	"gin-react-template/model"
+	"gin-template/common"
+	"gin-template/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

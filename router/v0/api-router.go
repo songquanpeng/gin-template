@@ -1,8 +1,8 @@
 package v0
 
 import (
-	"gin-react-template/controller"
-	"gin-react-template/middleware"
+	"gin-template/controller"
+	"gin-template/middleware"
 	"github.com/gin-gonic/gin"
 )
 

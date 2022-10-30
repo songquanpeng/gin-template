@@ -2,8 +2,8 @@ package router
 
 import (
 	"embed"
-	"gin-react-template/middleware"
-	"gin-react-template/router/v0"
+	"gin-template/middleware"
+	"gin-template/router/v0"
 	"github.com/gin-gonic/gin"
 )
 

@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"context"
-	"gin-react-template/common"
+	"gin-template/common"
 	"github.com/gin-gonic/gin"
 	"strings"
 	"time"

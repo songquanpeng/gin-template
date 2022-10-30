@@ -80,7 +80,7 @@ var VideoServePath = "upload"
 
 var SessionSecret = uuid.New().String()
 
-var SQLitePath = ".gin-react-template.db"
+var SQLitePath = ".gin-template.db"
 
 func init() {
 	flag.Parse()

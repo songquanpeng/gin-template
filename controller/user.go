@@ -2,8 +2,8 @@ package controller
 
 import (
 	"encoding/json"
-	"gin-react-template/common"
-	"gin-react-template/model"
+	"gin-template/common"
+	"gin-template/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

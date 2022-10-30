@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"gin-react-template/common"
-	"gin-react-template/model"
+	"gin-template/common"
+	"gin-template/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"

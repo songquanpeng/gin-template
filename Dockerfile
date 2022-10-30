@@ -15,11 +15,11 @@ WORKDIR /build
 COPY . .
 COPY --from=builder /build/build ./web/build
 RUN go mod download
-RUN go build -ldflags "-s -w -extldflags '-static'" -o gin-react-template
+RUN go build -ldflags "-s -w -extldflags '-static'" -o gin-template
 
 FROM scratch
 
 ENV PORT=3000
-COPY --from=builder2 /build/gin-react-template /
+COPY --from=builder2 /build/gin-template /
 EXPOSE 3000
-ENTRYPOINT ["/gin-react-template"]
+ENTRYPOINT ["/gin-template"]

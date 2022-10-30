@@ -2,9 +2,9 @@ package main
 
 import (
 	"embed"
-	"gin-react-template/common"
-	"gin-react-template/model"
-	"gin-react-template/router"
+	"gin-template/common"
+	"gin-template/model"
+	"gin-template/router"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"

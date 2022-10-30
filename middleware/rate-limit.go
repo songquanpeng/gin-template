@@ -3,7 +3,7 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"gin-react-template/common"
+	"gin-template/common"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
