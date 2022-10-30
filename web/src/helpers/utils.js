@@ -49,9 +49,29 @@ if (isMobile()) {
   // showNoticeOptions.transition = 'flip';
 }
 
-export function showError(message) {
-  console.error(message);
-  toast.error('错误：' + message, showErrorOptions);
+export function showError(error) {
+  console.error(error);
+  if (error.message) {
+    if (error.name === 'AxiosError') {
+      switch (error.message) {
+        case 'Request failed with status code 429':
+          toast.error('错误：请求次数过多，请稍后再试！', showErrorOptions);
+          break;
+        case 'Request failed with status code 500':
+          toast.error('错误：服务器内部错误，请联系管理员！', showErrorOptions);
+          break;
+        case 'Request failed with status code 405':
+          toast.info('本站仅作演示之用，无服务端！');
+          break;
+        default:
+          toast.error('错误：' + error.message, showErrorOptions);
+      }
+      return;
+    }
+    toast.error('错误：' + error.message, showErrorOptions);
+  } else {
+    toast.error('错误：' + error, showErrorOptions);
+  }
 }
 
 export function showSuccess(message) {

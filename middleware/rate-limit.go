@@ -11,7 +11,9 @@ import (
 
 var timeFormat = "2006-01-02T15:04:05.000Z"
 
-var keyExpirationDuration = 10 * time.Minute
+var keyExpirationDuration = 1 * time.Minute
+
+var inMemoryRateLimiter common.InMemoryRateLimiter
 
 func redisRateLimiter(c *gin.Context, maxRequestPerMinute int, mark string) {
 	ctx := context.Background()
@@ -59,8 +61,12 @@ func redisRateLimiter(c *gin.Context, maxRequestPerMinute int, mark string) {
 }
 
 func memoryRateLimiter(c *gin.Context, maxRequestPerMinute int, mark string) {
-	// TODO: memoryRateLimiter
-	c.Next()
+	key := mark + c.ClientIP()
+	if !inMemoryRateLimiter.Request(key, maxRequestPerMinute) {
+		c.Status(http.StatusTooManyRequests)
+		c.Abort()
+		return
+	}
 }
 
 func rateLimitFactory(maxRequestPerMinute int, mark string) func(c *gin.Context) {
@@ -69,8 +75,10 @@ func rateLimitFactory(maxRequestPerMinute int, mark string) func(c *gin.Context)
 			redisRateLimiter(c, maxRequestPerMinute, mark)
 		}
 	} else {
+		// It's safe to call multi times.
+		inMemoryRateLimiter.Init(keyExpirationDuration)
 		return func(c *gin.Context) {
-			c.Next()
+			memoryRateLimiter(c, maxRequestPerMinute, mark)
 		}
 	}
 }
@@ -88,5 +96,9 @@ func CriticalRateLimit() func(c *gin.Context) {
 }
 
 func DownloadRateLimit() func(c *gin.Context) {
-	return rateLimitFactory(common.DownloadRateLimit, "CM")
+	return rateLimitFactory(common.DownloadRateLimit, "DW")
+}
+
+func UploadRateLimit() func(c *gin.Context) {
+	return rateLimitFactory(common.UploadRateLimit, "UP")
 }

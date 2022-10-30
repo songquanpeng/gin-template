@@ -19,8 +19,8 @@ func SetApiRouter(router *gin.Engine) {
 
 		userRoute := apiRouter.Group("/user")
 		{
-			userRoute.POST("/register", controller.Register)
-			userRoute.POST("/login", controller.Login)
+			userRoute.POST("/register", middleware.CriticalRateLimit(), controller.Register)
+			userRoute.POST("/login", middleware.CriticalRateLimit(), controller.Login)
 			userRoute.GET("/logout", controller.Logout)
 
 			selfRoute := userRoute.Group("/")
@@ -51,8 +51,8 @@ func SetApiRouter(router *gin.Engine) {
 		}
 		fileRoute := apiRouter.Group("/file")
 		{
-			fileRoute.GET("/:id", controller.DownloadFile)
-			fileRoute.POST("/", middleware.UserAuth(), controller.UploadFile)
+			fileRoute.GET("/:id", middleware.DownloadRateLimit(), controller.DownloadFile)
+			fileRoute.POST("/", middleware.UserAuth(), middleware.UploadRateLimit(), controller.UploadFile)
 			fileRoute.DELETE("/:id", middleware.UserAuth(), controller.DeleteFile)
 		}
 	}

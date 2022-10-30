@@ -7,12 +7,11 @@
 + [x] Email verification & password reset.
 + [x] Request rate limitation.
 + [x] Use GitHub Actions to build releases & Docker images. 
-+ [x] Mobile friendly.
-
++ [x] Mobile friendly UI.
 
 ## Usage
 Environment variables:
-1. `REDIS_CONN_STRING`: if set, will enable rate limitation.
+1. `REDIS_CONN_STRING`: if set, will use Redis as the store of rate limitation instead of memory.
    + Example: `REDIS_CONN_STRING=redis://default:redispw@localhost:49153`
 2. `SESSION_SECRET`: if set, will fix session secret.
    + Example: `SESSION_SECRET=random_string`

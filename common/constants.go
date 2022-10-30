@@ -50,6 +50,7 @@ var (
 var (
 	GlobalApiRateLimit = 20
 	GlobalWebRateLimit = 60
+	UploadRateLimit    = 10
 	DownloadRateLimit  = 10
 	CriticalRateLimit  = 3
 )
