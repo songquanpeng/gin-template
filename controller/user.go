@@ -74,6 +74,7 @@ func setupLogin(user *model.User, c *gin.Context) {
 		return
 	}
 	user.Password = ""
+	user.Token = ""
 	c.JSON(http.StatusOK, gin.H{
 		"message": "",
 		"success": true,
