@@ -116,6 +116,13 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+	if err := common.Validate.Struct(&user); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
 	if common.EmailVerificationEnabled {
 		if user.Email == "" || user.VerificationCode == "" {
 			c.JSON(http.StatusOK, gin.H{

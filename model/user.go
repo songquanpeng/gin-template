@@ -8,8 +8,8 @@ import (
 
 type User struct {
 	Id               int    `json:"id"`
-	Username         string `json:"username" gorm:"unique;"`
-	Password         string `json:"password" gorm:"not null;"`
+	Username         string `json:"username" gorm:"unique;" validate:"printascii"`
+	Password         string `json:"password" gorm:"not null;" validate:"min=8"`
 	DisplayName      string `json:"display_name"`
 	Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, common
 	Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
