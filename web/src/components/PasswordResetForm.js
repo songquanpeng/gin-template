@@ -1,11 +1,10 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, Form, Grid, Header, Image, Segment } from 'semantic-ui-react';
-import { showError, showSuccess } from '../helpers';
+import { API, showError, showSuccess } from '../helpers';
 
 const PasswordResetForm = () => {
   const [inputs, setInputs] = useState({
-    email: ''
+    email: '',
   });
   const { email } = inputs;
 
@@ -13,13 +12,13 @@ const PasswordResetForm = () => {
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setInputs(inputs => ({ ...inputs, [name]: value }));
+    setInputs((inputs) => ({ ...inputs, [name]: value }));
   }
 
   async function handleSubmit(e) {
     setLoading(true);
     if (!email) return;
-    const res = await axios.get(`/api/reset_password?email=${email}`);
+    const res = await API.get(`/api/reset_password?email=${email}`);
     const { success, message } = res.data;
     if (success) {
       showSuccess('重置邮件发送成功，请检查邮箱！');
@@ -31,22 +30,29 @@ const PasswordResetForm = () => {
   }
 
   return (
-    <Grid textAlign='center' style={{ marginTop: '48px' }}>
+    <Grid textAlign="center" style={{ marginTop: '48px' }}>
       <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as='h2' color='teal' textAlign='center'>
-          <Image src='/logo.png' /> 密码重置
+        <Header as="h2" color="teal" textAlign="center">
+          <Image src="/logo.png" /> 密码重置
         </Header>
-        <Form size='large'>
+        <Form size="large">
           <Segment>
             <Form.Input
               fluid
-              icon='mail'
-              iconPosition='left'
-              placeholder='邮箱地址'
-              name='email'
+              icon="mail"
+              iconPosition="left"
+              placeholder="邮箱地址"
+              name="email"
               value={email}
-              onChange={handleChange} />
-            <Button color='teal' fluid size='large' onClick={handleSubmit} loading={loading}>
+              onChange={handleChange}
+            />
+            <Button
+              color="teal"
+              fluid
+              size="large"
+              onClick={handleSubmit}
+              loading={loading}
+            >
               提交
             </Button>
           </Segment>
@@ -55,6 +61,5 @@ const PasswordResetForm = () => {
     </Grid>
   );
 };
-
 
 export default PasswordResetForm;

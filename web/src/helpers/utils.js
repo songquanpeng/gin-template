@@ -27,7 +27,8 @@ export async function copy(text) {
 }
 
 export function isMobile() {
-  return navigator.userAgentData.mobile;
+  if ('userAgentData' in navigator) return navigator.userAgentData.mobile;
+  return window.innerWidth <= 600;
 }
 
 let showErrorOptions = { autoClose: toastConstants.ERROR_TIMEOUT };

@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Grid, Header, Placeholder, Segment } from 'semantic-ui-react';
-import axios from 'axios';
-import { showError, showNotice } from '../../helpers';
+import { API, showError, showNotice } from '../../helpers';
 
 const Home = () => {
   const displayNotice = async () => {
-    const res = await axios.get('/api/notice');
+    const res = await API.get('/api/notice');
     const { success, message, data } = res.data;
     if (success) {
       let oldNotice = localStorage.getItem('notice');
@@ -21,57 +20,59 @@ const Home = () => {
   useEffect(() => {
     displayNotice().then();
   }, []);
-  return <>
-    <Segment>
-      <Header as='h3'>示例标题</Header>
-      <Grid columns={3} stackable>
-        <Grid.Column>
-          <Segment raised>
-            <Placeholder>
-              <Placeholder.Header image>
-                <Placeholder.Line />
-                <Placeholder.Line />
-              </Placeholder.Header>
-              <Placeholder.Paragraph>
-                <Placeholder.Line length='medium' />
-                <Placeholder.Line length='short' />
-              </Placeholder.Paragraph>
-            </Placeholder>
-          </Segment>
-        </Grid.Column>
+  return (
+    <>
+      <Segment>
+        <Header as="h3">示例标题</Header>
+        <Grid columns={3} stackable>
+          <Grid.Column>
+            <Segment raised>
+              <Placeholder>
+                <Placeholder.Header image>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Header>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line length="medium" />
+                  <Placeholder.Line length="short" />
+                </Placeholder.Paragraph>
+              </Placeholder>
+            </Segment>
+          </Grid.Column>
 
-        <Grid.Column>
-          <Segment raised>
-            <Placeholder>
-              <Placeholder.Header image>
-                <Placeholder.Line />
-                <Placeholder.Line />
-              </Placeholder.Header>
-              <Placeholder.Paragraph>
-                <Placeholder.Line length='medium' />
-                <Placeholder.Line length='short' />
-              </Placeholder.Paragraph>
-            </Placeholder>
-          </Segment>
-        </Grid.Column>
+          <Grid.Column>
+            <Segment raised>
+              <Placeholder>
+                <Placeholder.Header image>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Header>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line length="medium" />
+                  <Placeholder.Line length="short" />
+                </Placeholder.Paragraph>
+              </Placeholder>
+            </Segment>
+          </Grid.Column>
 
-        <Grid.Column>
-          <Segment raised>
-            <Placeholder>
-              <Placeholder.Header image>
-                <Placeholder.Line />
-                <Placeholder.Line />
-              </Placeholder.Header>
-              <Placeholder.Paragraph>
-                <Placeholder.Line length='medium' />
-                <Placeholder.Line length='short' />
-              </Placeholder.Paragraph>
-            </Placeholder>
-          </Segment>
-        </Grid.Column>
-      </Grid>
-    </Segment>
-  </>;
+          <Grid.Column>
+            <Segment raised>
+              <Placeholder>
+                <Placeholder.Header image>
+                  <Placeholder.Line />
+                  <Placeholder.Line />
+                </Placeholder.Header>
+                <Placeholder.Paragraph>
+                  <Placeholder.Line length="medium" />
+                  <Placeholder.Line length="short" />
+                </Placeholder.Paragraph>
+              </Placeholder>
+            </Segment>
+          </Grid.Column>
+        </Grid>
+      </Segment>
+    </>
+  );
 };
 
 export default Home;

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Label, Pagination, Table } from 'semantic-ui-react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { showError, showSuccess } from '../helpers';
+import { API, showError, showSuccess } from '../helpers';
 
 const itemsPerPage = 10;
 
@@ -11,11 +10,11 @@ function renderRole(role) {
     case 1:
       return <Label>普通用户</Label>;
     case 10:
-      return <Label color='yellow'>管理员</Label>;
+      return <Label color="yellow">管理员</Label>;
     case 100:
-      return <Label color='orange'>超级管理员</Label>;
+      return <Label color="orange">超级管理员</Label>;
     default:
-      return <Label color='red'>未知身份</Label>;
+      return <Label color="red">未知身份</Label>;
   }
 }
 
@@ -25,12 +24,12 @@ const UsersTable = () => {
   const [activePage, setActivePage] = useState(1);
 
   const loadUsers = async () => {
-    const res = await axios.get('/api/user');
+    const res = await API.get('/api/user');
     const { success, message, data } = res.data;
     if (success) {
       setUsers(data);
     } else {
-      showError(message)
+      showError(message);
     }
     setLoading(false);
   };
@@ -40,15 +39,18 @@ const UsersTable = () => {
   };
 
   useEffect(() => {
-    loadUsers().then().catch(reason => {
-      showError(reason)
-    });
+    loadUsers()
+      .then()
+      .catch((reason) => {
+        showError(reason);
+      });
   }, []);
 
   const manageUser = (username, action) => {
     (async () => {
-      const res = await axios.post('/api/user/manage', {
-        username, action
+      const res = await API.post('/api/user/manage', {
+        username,
+        action,
       });
       const { success, message } = res.data;
       if (success) {
@@ -86,8 +88,9 @@ const UsersTable = () => {
         </Table.Header>
 
         <Table.Body>
-          {
-            users.slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage).map((user, idx) => {
+          {users
+            .slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)
+            .map((user, idx) => {
               return (
                 <Table.Row key={user.id}>
                   <Table.Cell>{user.username}</Table.Cell>
@@ -97,36 +100,69 @@ const UsersTable = () => {
                   <Table.Cell>{renderStatus(user.status, user.id)}</Table.Cell>
                   <Table.Cell>
                     <div>
-                      <Button size={'small'} positive onClick={() => {
-                        manageUser(user.username, 'promote');
-                      }}>提升</Button>
-                      <Button size={'small'} color={'yellow'} onClick={() => {
-                        manageUser(user.username, 'demote');
-                      }}>降级</Button>
-                      <Button size={'small'} negative onClick={() => {
-                        manageUser(user.username, 'delete');
-                      }}>删除</Button>
-                      <Button size={'small'} onClick={() => {
-                        manageUser(user.username, user.status === 1 ? 'disable' : 'enable');
-                      }}>{user.status === 1 ? '禁用' : '启用'}</Button>
-                      <Button size={'small'} as={Link} to={'/user/edit/' + user.id}>编辑</Button>
+                      <Button
+                        size={'small'}
+                        positive
+                        onClick={() => {
+                          manageUser(user.username, 'promote');
+                        }}
+                      >
+                        提升
+                      </Button>
+                      <Button
+                        size={'small'}
+                        color={'yellow'}
+                        onClick={() => {
+                          manageUser(user.username, 'demote');
+                        }}
+                      >
+                        降级
+                      </Button>
+                      <Button
+                        size={'small'}
+                        negative
+                        onClick={() => {
+                          manageUser(user.username, 'delete');
+                        }}
+                      >
+                        删除
+                      </Button>
+                      <Button
+                        size={'small'}
+                        onClick={() => {
+                          manageUser(
+                            user.username,
+                            user.status === 1 ? 'disable' : 'enable'
+                          );
+                        }}
+                      >
+                        {user.status === 1 ? '禁用' : '启用'}
+                      </Button>
+                      <Button
+                        size={'small'}
+                        as={Link}
+                        to={'/user/edit/' + user.id}
+                      >
+                        编辑
+                      </Button>
                     </div>
                   </Table.Cell>
                 </Table.Row>
               );
-            })
-          }
+            })}
         </Table.Body>
 
         <Table.Footer>
           <Table.Row>
-            <Table.HeaderCell colSpan='6'>
-              <Button size='small' as={Link} to='/user/add'>添加新的用户</Button>
+            <Table.HeaderCell colSpan="6">
+              <Button size="small" as={Link} to="/user/add">
+                添加新的用户
+              </Button>
               <Pagination
-                floated='right'
+                floated="right"
                 activePage={activePage}
                 onPageChange={onPaginationChange}
-                size='small'
+                size="small"
                 siblingRange={1}
                 totalPages={Math.ceil(users.length / itemsPerPage)}
               />
