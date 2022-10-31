@@ -45,13 +45,26 @@ var (
 	ImageDownloadPermission = RoleGuestUser
 )
 
+// All duration's unit is seconds
+// Shouldn't larger then RateLimitKeyExpirationDuration
 var (
-	GlobalApiRateLimit = 20
-	GlobalWebRateLimit = 60
-	UploadRateLimit    = 10
-	DownloadRateLimit  = 10
-	CriticalRateLimit  = 3
+	GlobalApiRateLimitNum            = 20
+	GlobalApiRateLimitDuration int64 = 60
+
+	GlobalWebRateLimitNum            = 20
+	GlobalWebRateLimitDuration int64 = 60
+
+	UploadRateLimitNum            = 10
+	UploadRateLimitDuration int64 = 60
+
+	DownloadRateLimitNum            = 10
+	DownloadRateLimitDuration int64 = 60
+
+	CriticalRateLimitNum            = 5
+	CriticalRateLimitDuration int64 = 10 * 60
 )
+
+var RateLimitKeyExpirationDuration = 20 * time.Minute
 
 const (
 	UserStatusEnabled  = 1 // don't use 0, 0 is the default value!
