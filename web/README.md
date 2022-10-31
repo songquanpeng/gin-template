@@ -13,6 +13,8 @@ npm run build
 If you want to change the default server, please set `REACT_APP_SERVER` environment variables before build,
 for example: `REACT_APP_SERVER=http://your.domain.com`.
 
+Before you start editing, make sure your `Actions on Save` options have `Optimize imports` & `Run Prettier` enabled.
+
 ## Reference
 
 1. https://github.com/OIerDb-ng/OIerDb
