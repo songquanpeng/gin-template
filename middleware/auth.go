@@ -14,6 +14,7 @@ func authHelper(c *gin.Context, minRole int) {
 	role := session.Get("role")
 	id := session.Get("id")
 	status := session.Get("status")
+	authByToken := false
 	if username == nil {
 		// Check token
 		token := c.Request.Header.Get("Authorization")
@@ -40,6 +41,7 @@ func authHelper(c *gin.Context, minRole int) {
 			c.Abort()
 			return
 		}
+		authByToken = true
 	}
 	if status.(int) == common.UserStatusDisabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -60,6 +62,7 @@ func authHelper(c *gin.Context, minRole int) {
 	c.Set("username", username)
 	c.Set("role", role)
 	c.Set("id", id)
+	c.Set("authByToken", authByToken)
 	c.Next()
 }
 
@@ -81,9 +84,18 @@ func RootAuth() func(c *gin.Context) {
 	}
 }
 
+// NoTokenAuth You should always use this after normal auth middlewares.
 func NoTokenAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.Request.Header.Set("Authorization", "")
+		authByToken := c.GetBool("authByToken")
+		if authByToken {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "本接口不支持使用 token 进行验证",
+			})
+			c.Abort()
+			return
+		}
 		c.Next()
 	}
 }
