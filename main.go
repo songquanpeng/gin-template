@@ -8,6 +8,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
+	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -58,6 +59,13 @@ func main() {
 		store := cookie.NewStore([]byte(common.SessionSecret))
 		server.Use(sessions.Sessions("session", store))
 	}
+
+	// TODO: CORS setting
+	config := cors.DefaultConfig()
+	// if you want to allow all origins, comment the following two lines
+	config.AllowAllOrigins = false
+	config.AllowedOrigins = []string{"https://gin-template.vercel.app"}
+	server.Use(cors.New(config))
 
 	router.SetRouter(server, buildFS, indexPage)
 	var port = os.Getenv("PORT")
