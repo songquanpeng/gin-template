@@ -9,6 +9,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 	"log"
 	"os"
 	"strconv"
@@ -29,7 +30,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	defer func(db *gorm.DB) {
+		err := db.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}(db)
 
 	// Initialize Redis
 	err = common.InitRedisClient()
@@ -54,21 +60,21 @@ func main() {
 	}
 
 	router.SetRouter(server, buildFS, indexPage)
-	var realPort = os.Getenv("PORT")
-	if realPort == "" {
-		realPort = strconv.Itoa(*common.Port)
+	var port = os.Getenv("PORT")
+	if port == "" {
+		port = strconv.Itoa(*common.Port)
 	}
-	if *common.Host == "localhost" {
-		ip := common.GetIp()
-		if ip != "" {
-			*common.Host = ip
-		}
-	}
-	serverUrl := "http://" + *common.Host + ":" + realPort + "/"
-	if !*common.NoBrowser {
-		common.OpenBrowser(serverUrl)
-	}
-	err = server.Run(":" + realPort)
+	//if *common.Host == "localhost" {
+	//	ip := common.GetIp()
+	//	if ip != "" {
+	//		*common.Host = ip
+	//	}
+	//}
+	//serverUrl := "http://" + *common.Host + ":" + port + "/"
+	//if !*common.NoBrowser {
+	//	common.OpenBrowser(serverUrl)
+	//}
+	err = server.Run(":" + port)
 	if err != nil {
 		log.Println(err)
 	}
