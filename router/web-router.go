@@ -2,10 +2,10 @@ package router
 
 import (
 	"embed"
+	"gin-template/common"
+	"gin-template/middleware"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/songquanpeng/gin-template/common"
-	"github.com/songquanpeng/gin-template/middleware"
 	"net/http"
 )
 

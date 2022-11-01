@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/songquanpeng/gin-template/common"
+	"gin-template/common"
 	_ "gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"os"

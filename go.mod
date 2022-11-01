@@ -1,4 +1,4 @@
-module github.com/songquanpeng/gin-template
+module gin-template
 
 // +heroku goVersion go1.18
 go 1.18

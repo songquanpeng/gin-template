@@ -2,7 +2,7 @@ package model
 
 import (
 	"errors"
-	"github.com/songquanpeng/gin-template/common"
+	"gin-template/common"
 	"strconv"
 	"strings"
 )
