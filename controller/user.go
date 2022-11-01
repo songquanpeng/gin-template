@@ -233,7 +233,7 @@ func GenerateToken(c *gin.Context) {
 		return
 	}
 
-	if err := user.Update(); err != nil {
+	if err := user.Update(false); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
@@ -300,7 +300,8 @@ func UpdateUser(c *gin.Context) {
 		})
 		return
 	}
-	if err := updatedUser.Update(); err != nil {
+	updatePassword := updatedUser.Password != ""
+	if err := updatedUser.Update(updatePassword); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
@@ -329,8 +330,9 @@ func UpdateSelf(c *gin.Context) {
 	user.Role = c.GetInt("role")
 	user.Status = c.GetInt("status")
 
+	updatePassword := user.Password != ""
 	// TODO: check Display Name to avoid XSS attack
-	if err := user.Update(); err != nil {
+	if err := user.Update(updatePassword); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
@@ -498,7 +500,7 @@ func ManageUser(c *gin.Context) {
 		user.Role = common.RoleCommonUser
 	}
 
-	if err := user.Update(); err != nil {
+	if err := user.Update(false); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),

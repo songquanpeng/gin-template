@@ -58,9 +58,9 @@ func (user *User) Insert() error {
 	return err
 }
 
-func (user *User) Update() error {
+func (user *User) Update(updatePassword bool) error {
 	var err error
-	if user.Password != "" {
+	if updatePassword {
 		user.Password, err = common.Password2Hash(user.Password)
 		if err != nil {
 			return err
