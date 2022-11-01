@@ -11,15 +11,24 @@ import (
 
 var DB *gorm.DB
 
-func createRootAccount() {
+func createRootAccountIfNeed() error {
 	var user User
-	DB.Where(User{Role: common.RoleRootUser}).Attrs(User{
-		Username:    "root",
-		Password:    "123456",
-		Role:        common.RoleRootUser,
-		Status:      common.UserStatusEnabled,
-		DisplayName: "Root User",
-	}).FirstOrCreate(&user)
+	DB.First(&user)
+	if user.Status != common.UserStatusEnabled {
+		hashedPassword, err := common.Password2Hash("123456")
+		if err != nil {
+			return err
+		}
+		rootUser := User{
+			Username:    "root",
+			Password:    hashedPassword,
+			Role:        common.RoleRootUser,
+			Status:      common.UserStatusEnabled,
+			DisplayName: "Root User",
+		}
+		DB.Create(&rootUser)
+	}
+	return nil
 }
 
 func CountTable(tableName string) (num int) {
@@ -40,7 +49,7 @@ func InitDB() (db *gorm.DB, err error) {
 		db.AutoMigrate(&File{})
 		db.AutoMigrate(&User{})
 		db.AutoMigrate(&Option{})
-		createRootAccount()
+		err = createRootAccountIfNeed()
 		return DB, err
 	} else {
 		log.Fatal(err)

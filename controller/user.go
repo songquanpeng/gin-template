@@ -47,19 +47,19 @@ func Login(c *gin.Context) {
 		Username: username,
 		Password: password,
 	}
-	user.FillUserByUsernameAndPassword()
-	setupLogin(&user, c)
-}
-
-func setupLogin(user *model.User, c *gin.Context) {
-	if user.Status != common.UserStatusEnabled {
+	err = user.ValidateAndFill()
+	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "用户名或密码错误，或者该用户已被封禁",
+			"message": err.Error(),
 			"success": false,
 		})
 		return
 	}
+	setupLogin(&user, c)
+}
 
+// setup session & cookies and then return user info
+func setupLogin(user *model.User, c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("id", user.Id)
 	session.Set("username", user.Username)

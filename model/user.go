@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"gin-template/common"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"strings"
@@ -48,12 +49,24 @@ func QueryUsers(query string, startIdx int) (users []*User, err error) {
 
 func (user *User) Insert() error {
 	var err error
+	if user.Password != "" {
+		user.Password, err = common.Password2Hash(user.Password)
+		if err != nil {
+			return err
+		}
+	}
 	err = DB.Create(user).Error
 	return err
 }
 
 func (user *User) Update() error {
 	var err error
+	if user.Password != "" {
+		user.Password, err = common.Password2Hash(user.Password)
+		if err != nil {
+			return err
+		}
+	}
 	err = DB.Model(user).Updates(user).Error
 	return err
 }
@@ -64,11 +77,18 @@ func (user *User) Delete() error {
 	return err
 }
 
-func (user *User) FillUserByUsernameAndPassword() {
+// ValidateAndFill check password & user status
+func (user *User) ValidateAndFill() (err error) {
 	// When querying with struct, GORM will only query with non-zero fields,
 	// that means if your field’s value is 0, '', false or other zero values,
 	// it won’t be used to build query conditions
-	DB.Where(User{Username: user.Username, Password: user.Password}).First(user)
+	password := user.Password
+	DB.Where(User{Username: user.Username}).First(user)
+	okay := common.ValidatePasswordAndHash(password, user.Password)
+	if !okay || user.Status != common.UserStatusEnabled {
+		return errors.New("用户名或密码错误，或者该用户已被封禁")
+	}
+	return nil
 }
 
 func (user *User) FillUserByEmail() {
@@ -100,6 +120,10 @@ func IsUsernameAlreadyTaken(username string) bool {
 }
 
 func ResetUserPasswordByEmail(email string, password string) error {
-	err := DB.Model(&User{}).Where("email = ?", email).Update("password", password).Error
+	hashedPassword, err := common.Password2Hash(password)
+	if err != nil {
+		return err
+	}
+	err = DB.Model(&User{}).Where("email = ?", email).Update("password", hashedPassword).Error
 	return err
 }
