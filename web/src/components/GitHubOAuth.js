@@ -1,8 +1,7 @@
-import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { showError, showSuccess } from '../helpers';
+import { API, showError, showSuccess } from '../helpers';
 import { UserContext } from '../context/User';
 
 const GitHubOAuth = () => {
@@ -13,7 +12,7 @@ const GitHubOAuth = () => {
   let navigate = useNavigate();
 
   const sendCode = async (code) => {
-    const res = await axios.get(`/api/oauth/github?code=${code}`);
+    const res = await API.get(`/api/oauth/github?code=${code}`);
     const { success, message, data } = res.data;
     if (success) {
       userDispatch({ type: 'login', payload: data });
@@ -30,15 +29,13 @@ const GitHubOAuth = () => {
     sendCode(code).then();
   }, []);
 
-
   return (
     <Segment style={{ minHeight: '300px' }}>
       <Dimmer active inverted>
-        <Loader size='large'>Processing</Loader>
+        <Loader size="large">Processing</Loader>
       </Dimmer>
     </Segment>
   );
 };
-
 
 export default GitHubOAuth;

@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+} from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { showError, showInfo, showSuccess } from '../helpers';
+import { API, showError, showInfo, showSuccess } from '../helpers';
 
 const RegisterForm = () => {
   const [inputs, setInputs] = useState({
@@ -10,7 +17,7 @@ const RegisterForm = () => {
     password: '',
     password2: '',
     email: '',
-    verification_code: ''
+    verification_code: '',
   });
   const { username, password, password2 } = inputs;
 
@@ -29,7 +36,7 @@ const RegisterForm = () => {
   function handleChange(e) {
     const { name, value } = e.target;
     console.log(name, value);
-    setInputs(inputs => ({ ...inputs, [name]: value }));
+    setInputs((inputs) => ({ ...inputs, [name]: value }));
   }
 
   async function handleSubmit(e) {
@@ -38,24 +45,20 @@ const RegisterForm = () => {
       return;
     }
     if (username && password) {
-      try {
-        const res = await axios.post('/api/user/register', inputs);
-        const { success, message } = res.data;
-        if (success) {
-          navigate('/login');
-          showSuccess('注册成功！');
-        } else {
-          showError(message);
-        }
-      } catch (e) {
-        showError(e);
+      const res = await API.post('/api/user/register', inputs);
+      const { success, message } = res.data;
+      if (success) {
+        navigate('/login');
+        showSuccess('注册成功！');
+      } else {
+        showError(message);
       }
     }
   }
 
   const sendVerificationCode = async () => {
     if (inputs.email === '') return;
-    const res = await axios.get(`/api/verification?email=${inputs.email}`);
+    const res = await API.get(`/api/verification?email=${inputs.email}`);
     const { success, message } = res.data;
     if (success) {
       showSuccess('验证码发送成功，请检查你的邮箱！');
@@ -65,68 +68,75 @@ const RegisterForm = () => {
   };
 
   return (
-    <Grid textAlign='center' style={{ marginTop: '48px' }}>
+    <Grid textAlign="center" style={{ marginTop: '48px' }}>
       <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as='h2' color='teal' textAlign='center'>
-          <Image src='/logo.png' /> 新用户注册
+        <Header as="h2" color="teal" textAlign="center">
+          <Image src="/logo.png" /> 新用户注册
         </Header>
-        <Form size='large'>
+        <Form size="large">
           <Segment>
             <Form.Input
               fluid
-              icon='user'
-              iconPosition='left'
-              placeholder='输入用户名'
+              icon="user"
+              iconPosition="left"
+              placeholder="输入用户名"
               onChange={handleChange}
-              name='username'
+              name="username"
             />
             <Form.Input
               fluid
-              icon='lock'
-              iconPosition='left'
-              placeholder='输入密码'
+              icon="lock"
+              iconPosition="left"
+              placeholder="输入密码"
               onChange={handleChange}
-              name='password'
-              type='password'
+              name="password"
+              type="password"
             />
             <Form.Input
               fluid
-              icon='lock'
-              iconPosition='left'
-              placeholder='再次输入密码'
+              icon="lock"
+              iconPosition="left"
+              placeholder="再次输入密码"
               onChange={handleChange}
-              name='password2'
-              type='password'
+              name="password2"
+              type="password"
             />
-            {
-              showEmailVerification ? <>
+            {showEmailVerification ? (
+              <>
                 <Form.Input
                   fluid
-                  icon='mail'
-                  iconPosition='left'
-                  placeholder='输入邮箱地址'
+                  icon="mail"
+                  iconPosition="left"
+                  placeholder="输入邮箱地址"
                   onChange={handleChange}
-                  name='email'
-                  type='email'
-                  action={<Button onClick={sendVerificationCode}>获取验证码</Button>}
+                  name="email"
+                  type="email"
+                  action={
+                    <Button onClick={sendVerificationCode}>获取验证码</Button>
+                  }
                 />
                 <Form.Input
                   fluid
-                  icon='lock'
-                  iconPosition='left'
-                  placeholder='输入验证码'
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="输入验证码"
                   onChange={handleChange}
-                  name='verification_code'
+                  name="verification_code"
                 />
-              </> : <></>
-            }
-            <Button color='teal' fluid size='large' onClick={handleSubmit}>
+              </>
+            ) : (
+              <></>
+            )}
+            <Button color="teal" fluid size="large" onClick={handleSubmit}>
               注册
             </Button>
           </Segment>
         </Form>
         <Message>
-          已有有账户了？<Link to='/login' className='btn btn-link'>点击登录</Link>
+          已有有账户了？
+          <Link to="/login" className="btn btn-link">
+            点击登录
+          </Link>
         </Message>
       </Grid.Column>
     </Grid>

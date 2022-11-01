@@ -21,16 +21,16 @@ type FileDeleteRequest struct {
 
 func UploadFile(c *gin.Context) {
 	uploadPath := common.UploadPath
-	saveToDatabase := true
-	path := c.PostForm("path")
-	if path != "" { // Upload to explorer's path
-		uploadPath = filepath.Join(common.ExplorerRootPath, path)
-		if !strings.HasPrefix(uploadPath, common.ExplorerRootPath) {
-			// In this case the given path is not valid, so we reset it to ExplorerRootPath.
-			uploadPath = common.ExplorerRootPath
-		}
-		saveToDatabase = false
-	}
+	//saveToDatabase := true
+	//path := c.PostForm("path")
+	//if path != "" { // Upload to explorer's path
+	//	uploadPath = filepath.Join(common.ExplorerRootPath, path)
+	//	if !strings.HasPrefix(uploadPath, common.ExplorerRootPath) {
+	//		// In this case the given path is not valid, so we reset it to ExplorerRootPath.
+	//		uploadPath = common.ExplorerRootPath
+	//	}
+	//	saveToDatabase = false
+	//}
 
 	description := c.PostForm("description")
 	if description == "" {
@@ -68,18 +68,17 @@ func UploadFile(c *gin.Context) {
 			c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
 			return
 		}
-		if saveToDatabase {
-			fileObj := &model.File{
-				Description: description,
-				Uploader:    uploader,
-				Time:        currentTime,
-				Link:        link,
-				Filename:    filename,
-			}
-			err = fileObj.Insert()
-			if err != nil {
-				_ = fmt.Errorf(err.Error())
-			}
+		// save to database
+		fileObj := &model.File{
+			Description: description,
+			Uploader:    uploader,
+			Time:        currentTime,
+			Link:        link,
+			Filename:    filename,
+		}
+		err = fileObj.Insert()
+		if err != nil {
+			_ = fmt.Errorf(err.Error())
 		}
 	}
 	c.Redirect(http.StatusSeeOther, "./")

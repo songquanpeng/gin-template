@@ -9,8 +9,7 @@ import NotFound from './pages/NotFound';
 import Setting from './pages/Setting';
 import EditUser from './pages/User/EditUser';
 import AddUser from './pages/User/AddUser';
-import axios from 'axios';
-import { showError } from './helpers';
+import { API, showError } from './helpers';
 import PasswordResetForm from './components/PasswordResetForm';
 import GitHubOAuth from './components/GitHubOAuth';
 
@@ -19,7 +18,7 @@ const About = lazy(() => import('./pages/About'));
 
 function App() {
   const loadStatus = async () => {
-    const res = await axios.get('/api/status');
+    const res = await API.get('/api/status');
     const { success, message, data } = res.data;
     if (success) {
       localStorage.setItem('status', JSON.stringify(data));
@@ -35,7 +34,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path='/'
+        path="/"
         element={
           <Suspense fallback={<Loading></Loading>}>
             <Home />
@@ -43,7 +42,7 @@ function App() {
         }
       />
       <Route
-        path='/user'
+        path="/user"
         element={
           <PrivateRoute>
             <User />
@@ -51,7 +50,7 @@ function App() {
         }
       />
       <Route
-        path='/user/edit/:id'
+        path="/user/edit/:id"
         element={
           <Suspense fallback={<Loading></Loading>}>
             <EditUser />
@@ -59,7 +58,7 @@ function App() {
         }
       />
       <Route
-        path='/user/edit'
+        path="/user/edit"
         element={
           <Suspense fallback={<Loading></Loading>}>
             <EditUser />
@@ -67,35 +66,47 @@ function App() {
         }
       />
       <Route
-        path='/user/add'
+        path="/user/add"
         element={
           <Suspense fallback={<Loading></Loading>}>
             <AddUser />
           </Suspense>
         }
       />
-      <Route path='/login' element={
-        <Suspense fallback={<Loading></Loading>}>
-          <LoginForm />
-        </Suspense>
-      } />
-      <Route path='/register' element={
-        <Suspense fallback={<Loading></Loading>}>
-          <RegisterForm />
-        </Suspense>
-      } />
-      <Route path='/reset' element={
-        <Suspense fallback={<Loading></Loading>}>
-          <PasswordResetForm />
-        </Suspense>
-      } />
-      <Route path='/oauth/github' element={
-        <Suspense fallback={<Loading></Loading>}>
-          <GitHubOAuth />
-        </Suspense>
-      } />
       <Route
-        path='/setting'
+        path="/login"
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <LoginForm />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <RegisterForm />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/reset"
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <PasswordResetForm />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/oauth/github"
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <GitHubOAuth />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/setting"
         element={
           <PrivateRoute>
             <Suspense fallback={<Loading></Loading>}>
@@ -105,14 +116,14 @@ function App() {
         }
       />
       <Route
-        path='/about'
+        path="/about"
         element={
           <Suspense fallback={<Loading></Loading>}>
             <About />
           </Suspense>
         }
       />
-      <Route path='*' element={NotFound} />
+      <Route path="*" element={NotFound} />
     </Routes>
   );
 }

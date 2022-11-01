@@ -74,6 +74,7 @@ func setupLogin(user *model.User, c *gin.Context) {
 		return
 	}
 	user.Password = ""
+	user.Token = ""
 	c.JSON(http.StatusOK, gin.H{
 		"message": "",
 		"success": true,
@@ -112,6 +113,13 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "无效的参数",
+		})
+		return
+	}
+	if err := common.Validate.Struct(&user); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
 		})
 		return
 	}

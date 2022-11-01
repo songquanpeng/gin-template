@@ -37,7 +37,7 @@ func GetNotice(c *gin.Context) {
 
 func SendEmailVerification(c *gin.Context) {
 	email := c.Query("email")
-	if email == "" {
+	if err := common.Validate.Var(email, "required,email"); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "无效的参数",
@@ -74,10 +74,17 @@ func SendEmailVerification(c *gin.Context) {
 
 func SendPasswordResetEmail(c *gin.Context) {
 	email := c.Query("email")
-	if email == "" || !model.IsEmailAlreadyTaken(email) {
+	if err := common.Validate.Var(email, "required,email"); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "无效的参数",
+		})
+		return
+	}
+	if !model.IsEmailAlreadyTaken(email) {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "该邮箱地址未注册",
 		})
 		return
 	}

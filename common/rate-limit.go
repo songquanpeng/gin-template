@@ -41,17 +41,19 @@ func (l *InMemoryRateLimiter) clearExpiredItems() {
 	}
 }
 
-func (l *InMemoryRateLimiter) Request(key string, maxRequestPerMinute int) bool {
+// Request parameter duration's unit is seconds
+func (l *InMemoryRateLimiter) Request(key string, maxRequestNum int, duration int64) bool {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
+	// [old <-- new]
 	queue, ok := l.store[key]
 	now := time.Now().Unix()
 	if ok {
-		if len(*queue) < maxRequestPerMinute {
+		if len(*queue) < maxRequestNum {
 			*queue = append(*queue, now)
 			return true
 		} else {
-			if now-(*queue)[0] >= 60 {
+			if now-(*queue)[0] >= duration {
 				*queue = (*queue)[1:]
 				*queue = append(*queue, now)
 				return true
@@ -60,7 +62,7 @@ func (l *InMemoryRateLimiter) Request(key string, maxRequestPerMinute int) bool 
 			}
 		}
 	} else {
-		s := make([]int64, 0, maxRequestPerMinute)
+		s := make([]int64, 0, maxRequestNum)
 		l.store[key] = &s
 		*(l.store[key]) = append(*(l.store[key]), now)
 	}
