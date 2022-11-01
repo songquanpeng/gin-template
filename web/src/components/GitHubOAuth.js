@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API, showError, showSuccess } from '../helpers';
@@ -8,10 +8,12 @@ const GitHubOAuth = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [userState, userDispatch] = useContext(UserContext);
+  const [prompt, setPrompt] = useState('处理中...');
+  const [processing, setProcessing] = useState(true);
 
   let navigate = useNavigate();
 
-  const sendCode = async (code) => {
+  const sendCode = async (code, count) => {
     const res = await API.get(`/api/oauth/github?code=${code}`);
     const { success, message, data } = res.data;
     if (success) {
@@ -21,18 +23,27 @@ const GitHubOAuth = () => {
       showSuccess('登录成功！');
     } else {
       showError(message);
+      if (count === 3) {
+        setPrompt(`登录失败，重定向至登录界面中...`);
+        navigate('/login');
+        return;
+      }
+      count++;
+      setPrompt(`出现错误，第 ${count} 次重试中...`);
+      await new Promise(resolve => setTimeout(resolve, count * 2000));
+      await sendCode(code, count);
     }
   };
 
   useEffect(() => {
     let code = searchParams.get('code');
-    sendCode(code).then();
+    sendCode(code, 0).then();
   }, []);
 
   return (
     <Segment style={{ minHeight: '300px' }}>
       <Dimmer active inverted>
-        <Loader size="large">Processing</Loader>
+        <Loader size='large'>{prompt}</Loader>
       </Dimmer>
     </Segment>
   );
