@@ -133,7 +133,7 @@ const RegisterForm = () => {
           </Segment>
         </Form>
         <Message>
-          已有有账户了？
+          已有账户？
           <Link to="/login" className="btn btn-link">
             点击登录
           </Link>
