@@ -3,7 +3,6 @@ package model
 import (
 	"errors"
 	"gin-template/common"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"strings"
 )
 

@@ -2,9 +2,9 @@ package model
 
 import (
 	"gin-template/common"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 	"log"
 	"os"
 )
@@ -13,8 +13,8 @@ var DB *gorm.DB
 
 func createRootAccountIfNeed() error {
 	var user User
-	DB.First(&user)
-	if user.Status != common.UserStatusEnabled {
+	//if user.Status != common.UserStatusEnabled {
+	if err := DB.First(&user).Error; err != nil {
 		hashedPassword, err := common.Password2Hash("123456")
 		if err != nil {
 			return err
@@ -31,28 +31,51 @@ func createRootAccountIfNeed() error {
 	return nil
 }
 
-func CountTable(tableName string) (num int) {
+func CountTable(tableName string) (num int64) {
 	DB.Table(tableName).Count(&num)
 	return
 }
 
-func InitDB() (db *gorm.DB, err error) {
+func InitDB() (err error) {
+	var db *gorm.DB
 	if os.Getenv("SQL_DSN") != "" {
 		// Use MySQL
-		db, err = gorm.Open("mysql", os.Getenv("SQL_DSN"))
+		db, err = gorm.Open(mysql.Open(os.Getenv("SQL_DSN")), &gorm.Config{
+			PrepareStmt: true, // precompile SQL
+		})
 	} else {
 		// Use SQLite
-		db, err = gorm.Open("sqlite3", common.SQLitePath)
+		db, err = gorm.Open(sqlite.Open(common.SQLitePath), &gorm.Config{
+			PrepareStmt: true, // precompile SQL
+		})
 	}
 	if err == nil {
 		DB = db
-		db.AutoMigrate(&File{})
-		db.AutoMigrate(&User{})
-		db.AutoMigrate(&Option{})
+		err := db.AutoMigrate(&File{})
+		if err != nil {
+			return err
+		}
+		err = db.AutoMigrate(&User{})
+		if err != nil {
+			return err
+		}
+		err = db.AutoMigrate(&Option{})
+		if err != nil {
+			return err
+		}
 		err = createRootAccountIfNeed()
-		return DB, err
+		return err
 	} else {
 		log.Fatal(err)
 	}
-	return nil, err
+	return err
+}
+
+func CloseDB() error {
+	sqlDB, err := DB.DB()
+	if err != nil {
+		return err
+	}
+	err = sqlDB.Close()
+	return err
 }

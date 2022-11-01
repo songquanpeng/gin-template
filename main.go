@@ -10,7 +10,6 @@ import (
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"log"
 	"os"
 	"strconv"
@@ -27,16 +26,16 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	// Initialize SQL Database
-	db, err := model.InitDB()
+	err := model.InitDB()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func(db *gorm.DB) {
-		err := db.Close()
+	defer func() {
+		err := model.CloseDB()
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
-	}(db)
+	}()
 
 	// Initialize Redis
 	err = common.InitRedisClient()
