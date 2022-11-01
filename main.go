@@ -62,6 +62,7 @@ func main() {
 
 	// TODO: CORS setting
 	config := cors.DefaultConfig()
+	config.AllowedHeaders = []string{"*"}
 	// if you want to allow all origins, comment the following two lines
 	config.AllowAllOrigins = false
 	config.AllowedOrigins = []string{"https://gin-template.vercel.app"}
