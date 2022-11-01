@@ -2,11 +2,11 @@ package controller
 
 import (
 	"encoding/json"
-	"gin-template/common"
-	"gin-template/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/songquanpeng/gin-template/common"
+	"github.com/songquanpeng/gin-template/model"
 	"net/http"
 	"strconv"
 	"strings"

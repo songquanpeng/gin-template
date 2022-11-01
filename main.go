@@ -2,14 +2,14 @@ package main
 
 import (
 	"embed"
-	"gin-template/common"
-	"gin-template/model"
-	"gin-template/router"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/songquanpeng/gin-template/common"
+	"github.com/songquanpeng/gin-template/model"
+	"github.com/songquanpeng/gin-template/router"
 	"log"
 	"os"
 	"strconv"
@@ -64,7 +64,7 @@ func main() {
 	config.AllowedHeaders = []string{"*"}
 	// if you want to allow all origins, comment the following two lines
 	config.AllowAllOrigins = false
-	config.AllowedOrigins = []string{"https://gin-template.vercel.app"}
+	config.AllowedOrigins = []string{"https://github.com/songquanpeng/gin-template.vercel.app"}
 	server.Use(cors.New(config))
 
 	router.SetRouter(server, buildFS, indexPage)

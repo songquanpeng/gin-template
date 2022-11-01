@@ -10,6 +10,10 @@
 + [x] Mobile friendly UI.
 
 ## Usage
+Install: `go install github/songquanpeng/gin-template@latest`
+
+Or download built binaries from GitHub release.
+
 Environment variables:
 1. `REDIS_CONN_STRING`: if set, will use Redis as the store of rate limitation instead of memory.
    + Example: `REDIS_CONN_STRING=redis://default:redispw@localhost:49153`

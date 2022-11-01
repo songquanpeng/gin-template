@@ -2,9 +2,9 @@ package controller
 
 import (
 	"fmt"
-	"gin-template/common"
-	"gin-template/model"
 	"github.com/gin-gonic/gin"
+	"github.com/songquanpeng/gin-template/common"
+	"github.com/songquanpeng/gin-template/model"
 	"net/http"
 )
 
