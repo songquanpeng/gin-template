@@ -52,7 +52,7 @@ const EditUser = () => {
     if (success) {
       showSuccess('用户信息更新成功！');
     } else {
-      showError('错误：');
+      showError(message);
     }
   };
 
