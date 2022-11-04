@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
 
-import { Container, Icon, Menu } from 'semantic-ui-react';
+import { Button, Container, Icon, Menu, Segment } from 'semantic-ui-react';
 import { API, isAdmin, isMobile, showSuccess } from '../helpers';
 import '../index.css';
 
@@ -36,12 +36,115 @@ const Header = () => {
   let navigate = useNavigate();
   let size = isMobile() ? 'large' : '';
 
+  const [showSidebar, setShowSidebar] = useState(false);
+
   async function logout() {
+    setShowSidebar(false);
     await API.get('/api/user/logout');
     showSuccess('注销成功!');
     userDispatch({ type: 'logout' });
     localStorage.removeItem('user');
     navigate('/login');
+  }
+
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
+  const renderButtons = (isMobile) => {
+    return headerButtons.map((button) => {
+      if (button.admin && !isAdmin()) return <></>;
+      if (isMobile) {
+        return (
+          <Menu.Item
+            onClick={() => {
+              navigate(button.to);
+              setShowSidebar(false);
+            }}
+          >
+            {button.name}
+          </Menu.Item>
+        );
+      }
+      return (
+        <Menu.Item key={button.name} as={Link} to={button.to}>
+          <Icon name={button.icon} />
+          {button.name}
+        </Menu.Item>
+      );
+    });
+  };
+
+  if (isMobile()) {
+    return (
+      <>
+        <Menu
+          borderless
+          size={size}
+          style={
+            showSidebar
+              ? {
+                  borderBottom: 'none',
+                  marginBottom: '0',
+                  borderTop: 'none',
+                  height: '51px',
+                }
+              : { borderTop: 'none', height: '52px' }
+          }
+        >
+          <Container>
+            <Menu.Item as={Link} to="/">
+              <img
+                src="/logo.png"
+                alt="logo"
+                style={{ marginRight: '0.75em' }}
+              />
+              <div style={{ fontSize: '20px' }}>
+                <b>项目模板</b>
+              </div>
+            </Menu.Item>
+            <Menu.Menu position="right">
+              <Menu.Item onClick={toggleSidebar}>
+                <Icon name={showSidebar ? 'close' : 'sidebar'} />
+              </Menu.Item>
+            </Menu.Menu>
+          </Container>
+        </Menu>
+        {showSidebar ? (
+          <Segment style={{ marginTop: 0, borderTop: '0' }}>
+            <Menu secondary vertical style={{ width: '100%', margin: 0 }}>
+              {renderButtons(true)}
+              <Menu.Item>
+                {userState.user ? (
+                  <Button onClick={logout}>注销</Button>
+                ) : (
+                  <>
+                    <Button
+                      onClick={() => {
+                        setShowSidebar(false);
+                        navigate('/login');
+                      }}
+                    >
+                      登录
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setShowSidebar(false);
+                        navigate('/register');
+                      }}
+                    >
+                      注册
+                    </Button>
+                  </>
+                )}
+              </Menu.Item>
+            </Menu>
+          </Segment>
+        ) : (
+          <></>
+        )}
+      </>
+    );
   }
 
   return (
@@ -54,15 +157,7 @@ const Header = () => {
               <b>项目模板</b>
             </div>
           </Menu.Item>
-          {headerButtons.map((button) => {
-            if (button.admin && !isAdmin()) return <></>;
-            return (
-              <Menu.Item key={button.name} as={Link} to={button.to}>
-                <Icon name={button.icon} />
-                {button.name}
-              </Menu.Item>
-            );
-          })}
+          {renderButtons(false)}
           <Menu.Menu position="right">
             {userState.user ? (
               <Menu.Item

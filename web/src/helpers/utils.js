@@ -27,7 +27,6 @@ export async function copy(text) {
 }
 
 export function isMobile() {
-  if ('userAgentData' in navigator) return navigator.userAgentData.mobile;
   return window.innerWidth <= 600;
 }
 
