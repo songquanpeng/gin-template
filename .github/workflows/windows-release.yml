@@ -28,6 +28,8 @@ jobs:
           cd ..
       - name: Set up Go
         uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
       - name: Build Backend
         run: |
           go mod download
