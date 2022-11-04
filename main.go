@@ -22,25 +22,27 @@ var buildFS embed.FS
 var indexPage []byte
 
 func main() {
+	common.SetupGinLog()
+	common.SysLog("system started")
 	if os.Getenv("GIN_MODE") != "debug" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	// Initialize SQL Database
 	err := model.InitDB()
 	if err != nil {
-		log.Fatal(err)
+		common.FatalLog(err)
 	}
 	defer func() {
 		err := model.CloseDB()
 		if err != nil {
-			log.Fatal(err)
+			common.FatalLog(err)
 		}
 	}()
 
 	// Initialize Redis
 	err = common.InitRedisClient()
 	if err != nil {
-		log.Fatal(err.Error())
+		common.FatalLog(err)
 	}
 
 	// Initialize options

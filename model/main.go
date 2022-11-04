@@ -5,7 +5,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
 	"os"
 )
 
@@ -48,6 +47,7 @@ func InitDB() (err error) {
 		db, err = gorm.Open(sqlite.Open(common.SQLitePath), &gorm.Config{
 			PrepareStmt: true, // precompile SQL
 		})
+		common.SysLog("SQL_DSN not set, using SQLite as database")
 	}
 	if err == nil {
 		DB = db
@@ -66,7 +66,7 @@ func InitDB() (err error) {
 		err = createRootAccountIfNeed()
 		return err
 	} else {
-		log.Fatal(err)
+		common.FatalLog(err)
 	}
 	return err
 }
