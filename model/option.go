@@ -34,6 +34,7 @@ func InitOptionMap() {
 	common.OptionMap["SMTPAccount"] = ""
 	common.OptionMap["SMTPToken"] = ""
 	common.OptionMap["Notice"] = ""
+	common.OptionMap["FooterHTML"] = common.FooterHTML
 	common.OptionMap["ServerAddress"] = ""
 	common.OptionMap["GitHubClientId"] = ""
 	common.OptionMap["GitHubClientSecret"] = ""
@@ -103,5 +104,7 @@ func updateOptionMap(key string, value string) {
 		common.GitHubClientId = value
 	case "GitHubClientSecret":
 		common.GitHubClientSecret = value
+	case "FooterHTML":
+		common.FooterHTML = value
 	}
 }

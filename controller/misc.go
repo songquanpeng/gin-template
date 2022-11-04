@@ -19,6 +19,7 @@ func GetStatus(c *gin.Context) {
 			"github_oauth":       common.GitHubOAuthEnabled,
 			"github_client_id":   common.GitHubClientId,
 			"system_name":        common.SystemName,
+			"footer_html":        common.FooterHTML,
 		},
 	})
 	return

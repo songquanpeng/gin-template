@@ -19,9 +19,10 @@ const About = lazy(() => import('./pages/About'));
 function App() {
   const loadStatus = async () => {
     const res = await API.get('/api/status');
-    const { success, message, data } = res.data;
+    const { success, data } = res.data;
     if (success) {
       localStorage.setItem('status', JSON.stringify(data));
+      localStorage.setItem('footer_html', data.footer_html);
     } else {
       showError('无法正常连接至服务器！');
     }

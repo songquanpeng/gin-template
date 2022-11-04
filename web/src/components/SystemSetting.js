@@ -15,6 +15,7 @@ const SystemSetting = () => {
     SMTPAccount: '',
     SMTPToken: '',
     ServerAddress: '',
+    FooterHTML: '',
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -69,7 +70,8 @@ const SystemSetting = () => {
       name.startsWith('SMTP') ||
       name === 'ServerAddress' ||
       name === 'GitHubClientId' ||
-      name === 'GitHubClientSecret'
+      name === 'GitHubClientSecret' ||
+      name === 'FooterHTML'
     ) {
       setInputs((inputs) => ({ ...inputs, [name]: value }));
     } else {
@@ -131,6 +133,22 @@ const SystemSetting = () => {
           </Form.Group>
           <Form.Button onClick={submitServerAddress}>
             更新服务器地址
+          </Form.Button>
+          <Form.Group widths="equal">
+            <Form.Input
+              label="页脚 HTML"
+              placeholder="留空则使用默认页脚"
+              value={inputs.FooterHTML}
+              name="FooterHTML"
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Button
+            onClick={() => {
+              updateOption('FooterHTML', inputs.FooterHTML).then();
+            }}
+          >
+            设置页脚 HTML
           </Form.Button>
           <Form.Group widths="equal">
             <Form.TextArea
