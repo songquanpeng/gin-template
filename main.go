@@ -3,12 +3,12 @@ package main
 import (
 	"embed"
 	"gin-template/common"
+	"gin-template/middleware"
 	"gin-template/model"
 	"gin-template/router"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
-	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"os"
@@ -50,6 +50,7 @@ func main() {
 
 	// Initialize HTTP server
 	server := gin.Default()
+	server.Use(middleware.CORS())
 
 	// Initialize session store
 	if common.RedisEnabled {
@@ -60,8 +61,6 @@ func main() {
 		store := cookie.NewStore([]byte(common.SessionSecret))
 		server.Use(sessions.Sessions("session", store))
 	}
-
-	server.Use(cors.Default())
 
 	router.SetRouter(server, buildFS, indexPage)
 	var port = os.Getenv("PORT")
