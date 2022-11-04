@@ -61,13 +61,7 @@ func main() {
 		server.Use(sessions.Sessions("session", store))
 	}
 
-	// TODO: CORS setting
-	config := cors.DefaultConfig()
-	config.AllowedHeaders = []string{"*"}
-	// if you want to allow all origins, comment the following two lines
-	config.AllowAllOrigins = false
-	config.AllowedOrigins = []string{"https://gin-template.vercel.app"}
-	server.Use(cors.New(config))
+	server.Use(cors.Default())
 
 	router.SetRouter(server, buildFS, indexPage)
 	var port = os.Getenv("PORT")
