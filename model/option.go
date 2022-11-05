@@ -30,6 +30,7 @@ func InitOptionMap() {
 	common.OptionMap["RegisterEnabled"] = strconv.FormatBool(common.RegisterEnabled)
 	common.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(common.EmailVerificationEnabled)
 	common.OptionMap["GitHubOAuthEnabled"] = strconv.FormatBool(common.GitHubOAuthEnabled)
+	common.OptionMap["WeChatLoginEnabled"] = strconv.FormatBool(common.WeChatLoginEnabled)
 	common.OptionMap["SMTPServer"] = ""
 	common.OptionMap["SMTPAccount"] = ""
 	common.OptionMap["SMTPToken"] = ""
@@ -38,6 +39,9 @@ func InitOptionMap() {
 	common.OptionMap["ServerAddress"] = ""
 	common.OptionMap["GitHubClientId"] = ""
 	common.OptionMap["GitHubClientSecret"] = ""
+	common.OptionMap["WeChatServerAddress"] = ""
+	common.OptionMap["WeChatServerToken"] = ""
+	common.OptionMap["WeChatAccountQRCodeImageURL"] = ""
 	common.OptionMapRWMutex.Unlock()
 	options, _ := AllOption()
 	for _, option := range options {
@@ -106,5 +110,11 @@ func updateOptionMap(key string, value string) {
 		common.GitHubClientSecret = value
 	case "FooterHTML":
 		common.FooterHTML = value
+	case "WeChatServerAddress":
+		common.WeChatServerAddress = value
+	case "WeChatServerToken":
+		common.WeChatServerToken = value
+	case "WeChatAccountQRCodeImageURL":
+		common.WeChatAccountQRCodeImageURL = value
 	}
 }

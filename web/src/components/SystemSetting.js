@@ -16,6 +16,10 @@ const SystemSetting = () => {
     SMTPToken: '',
     ServerAddress: '',
     FooterHTML: '',
+    WeChatLoginEnabled: '',
+    WeChatServerAddress: '',
+    WeChatServerToken: '',
+    WeChatAccountQRCodeImageURL: '',
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -46,6 +50,7 @@ const SystemSetting = () => {
       case 'RegisterEnabled':
       case 'EmailVerificationEnabled':
       case 'GitHubOAuthEnabled':
+      case 'WeChatLoginEnabled':
         value = inputs[key] === 'true' ? 'false' : 'true';
         break;
       default:
@@ -71,7 +76,10 @@ const SystemSetting = () => {
       name === 'ServerAddress' ||
       name === 'GitHubClientId' ||
       name === 'GitHubClientSecret' ||
-      name === 'FooterHTML'
+      name === 'FooterHTML' ||
+      name === 'WeChatServerAddress' ||
+      name === 'WeChatServerToken' ||
+      name === 'WeChatAccountQRCodeImageURL'
     ) {
       setInputs((inputs) => ({ ...inputs, [name]: value }));
     } else {
@@ -103,6 +111,27 @@ const SystemSetting = () => {
       inputs.SMTPToken !== ''
     ) {
       await updateOption('SMTPToken', inputs.SMTPToken);
+    }
+  };
+
+  const submitWeChat = async () => {
+    if (originInputs['WeChatServerAddress'] !== inputs.WeChatServerAddress) {
+      await updateOption('WeChatServerAddress', inputs.WeChatServerAddress);
+    }
+    if (
+      originInputs['WeChatAccountQRCodeImageURL'] !==
+      inputs.WeChatAccountQRCodeImageURL
+    ) {
+      await updateOption(
+        'WeChatAccountQRCodeImageURL',
+        inputs.WeChatAccountQRCodeImageURL
+      );
+    }
+    if (
+      originInputs['WeChatServerToken'] !== inputs.WeChatServerToken &&
+      inputs.WeChatServerToken !== ''
+    ) {
+      await updateOption('WeChatServerToken', inputs.WeChatServerToken);
     }
   };
 
@@ -186,6 +215,12 @@ const SystemSetting = () => {
               name="GitHubOAuthEnabled"
               onChange={handleInputChange}
             />
+            <Form.Checkbox
+              checked={inputs.WeChatLoginEnabled === 'true'}
+              label="允许通过微信登录"
+              name="WeChatLoginEnabled"
+              onChange={handleInputChange}
+            />
           </Form.Group>
           <Form.Group widths={3}>
             <Form.Input
@@ -232,6 +267,31 @@ const SystemSetting = () => {
           <Form.Button onClick={submitGitHubOAuth}>
             保存 GitHub OAuth 设置
           </Form.Button>
+          <Form.Group widths={3}>
+            <Form.Input
+              label="WeChat Server 服务器地址"
+              name="WeChatServerAddress"
+              onChange={handleInputChange}
+              autoComplete="off"
+              value={inputs.WeChatServerAddress}
+            />
+            <Form.Input
+              label="WeChat Server 访问凭证"
+              name="WeChatServerToken"
+              type="password"
+              onChange={handleInputChange}
+              autoComplete="off"
+              value={inputs.WeChatServerToken}
+            />
+            <Form.Input
+              label="微信公众号二维码图片链接"
+              name="WeChatAccountQRCodeImageURL"
+              onChange={handleInputChange}
+              autoComplete="off"
+              value={inputs.WeChatAccountQRCodeImageURL}
+            />
+          </Form.Group>
+          <Form.Button onClick={submitWeChat}>保存微信登录设置</Form.Button>
         </Form>
       </Grid.Column>
     </Grid>

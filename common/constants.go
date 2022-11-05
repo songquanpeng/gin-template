@@ -24,6 +24,7 @@ var PasswordLoginEnabled = true
 var RegisterEnabled = true
 var EmailVerificationEnabled = false
 var GitHubOAuthEnabled = false
+var WeChatLoginEnabled = false
 
 var SMTPServer = ""
 var SMTPAccount = ""
@@ -31,6 +32,10 @@ var SMTPToken = ""
 
 var GitHubClientId = ""
 var GitHubClientSecret = ""
+
+var WeChatServerAddress = ""
+var WeChatServerToken = ""
+var WeChatAccountQRCodeImageURL = ""
 
 const (
 	RoleGuestUser  = 0
