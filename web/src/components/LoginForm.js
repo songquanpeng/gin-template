@@ -164,7 +164,7 @@ const LoginForm = () => {
         >
           <Modal.Content>
             <Modal.Description>
-              <Image src={status.wechat_qrcode} wrapped />
+              <Image src={status.wechat_qrcode} fluid />
               <div style={{ textAlign: 'center' }}>
                 <p>
                   微信扫码关注公众号，输入「验证码」获取验证码（三分钟内有效）
