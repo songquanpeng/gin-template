@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"html/template"
 	"log"
 	"net"
@@ -123,4 +124,10 @@ func IntMax(a int, b int) int {
 	} else {
 		return b
 	}
+}
+
+func GetUUID() string {
+	code := uuid.New().String()
+	code = strings.Replace(code, "-", "", -1)
+	return code
 }

@@ -65,17 +65,26 @@ func WeChatAuth(c *gin.Context) {
 		})
 		return
 	}
-	if !model.IsWeChatIdAlreadyTaken(wechatId) {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "用户未注册，请先注册",
-		})
-		return
-	}
 	user := model.User{
 		WeChatId: wechatId,
 	}
-	user.FillUserByWeChatId()
+	if model.IsWeChatIdAlreadyTaken(wechatId) {
+		user.FillUserByWeChatId()
+	} else {
+		user.Username = "wechat_" + common.GetUUID()
+		user.DisplayName = "WeChat User"
+		user.Role = common.RoleCommonUser
+		user.Status = common.UserStatusEnabled
+
+		if err := user.Insert(); err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": err.Error(),
+			})
+			return
+		}
+	}
+
 	if user.Status != common.UserStatusEnabled {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "用户已被封禁",
