@@ -1,6 +1,21 @@
 # Gin Template
 > Template for Gin & React projects.
 
+<p>
+  <a href="https://raw.githubusercontent.com/songquanpeng/gin-template/main/LICENSE">
+    <img src="https://img.shields.io/github/license/songquanpeng/gin-template?color=brightgreen" alt="license">
+  </a>
+  <a href="https://github.com/songquanpeng/gin-template/releases/latest">
+    <img src="https://img.shields.io/github/v/release/songquanpeng/gin-template?color=brightgreen&include_prereleases" alt="release">
+  </a>
+  <a href="https://github.com/songquanpeng/gin-template/releases/latest">
+    <img src="https://img.shields.io/github/downloads/songquanpeng/gin-template/total?color=brightgreen&include_prereleases" alt="release">
+  </a>
+  <a href="https://goreportcard.com/report/github.com/songquanpeng/go-file">
+    <img src="https://goreportcard.com/badge/github.com/songquanpeng/gin-template" alt="GoReportCard">
+  </a>
+</p>
+
 ## Features
 + [x] Built-in user management.
 + [x] [GitHub OAuth login](https://github.com/settings/applications/new).
