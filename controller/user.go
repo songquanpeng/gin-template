@@ -325,19 +325,17 @@ func UpdateSelf(c *gin.Context) {
 		})
 		return
 	}
-	// User cannot change its id, role, status itself
-	user.Id = c.GetInt("id")
-	user.Role = c.GetInt("role")
-	user.Status = c.GetInt("status")
 
-	// User cannot change its Email, GitHub ID & WeChat ID without verification
-	user.Email = ""
-	user.GitHubId = ""
-	user.WeChatId = ""
+	cleanUser := model.User{
+		Id:          c.GetInt("id"),
+		Username:    user.Username,
+		Password:    user.Password,
+		DisplayName: user.DisplayName,
+	}
 
 	updatePassword := user.Password != ""
 	// TODO: check Display Name to avoid XSS attack
-	if err := user.Update(updatePassword); err != nil {
+	if err := cleanUser.Update(updatePassword); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
