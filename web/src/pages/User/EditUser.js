@@ -11,8 +11,10 @@ const EditUser = () => {
     username: '',
     display_name: '',
     password: '',
+    github_id: '',
+    wechat_id: '',
   });
-  const { username, display_name, password } = inputs;
+  const { username, display_name, password, github_id, wechat_id } = inputs;
   const handleInputChange = (e, { name, value }) => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
@@ -34,11 +36,7 @@ const EditUser = () => {
     setLoading(false);
   };
   useEffect(() => {
-    loadUser()
-      .then()
-      .catch((reason) => {
-        showError(reason);
-      });
+    loadUser().then();
   }, []);
 
   const submit = async () => {
@@ -90,6 +88,24 @@ const EditUser = () => {
               onChange={handleInputChange}
               value={display_name}
               autoComplete="off"
+            />
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+              label="已绑定的 GitHub 账户"
+              name="github_id"
+              value={github_id}
+              autoComplete="off"
+              readOnly
+            />
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+              label="已绑定的微信账户"
+              name="wechat_id"
+              value={wechat_id}
+              autoComplete="off"
+              readOnly
             />
           </Form.Field>
           <Button onClick={submit}>提交</Button>

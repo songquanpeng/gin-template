@@ -92,6 +92,10 @@ func (user *User) ValidateAndFill() (err error) {
 	return nil
 }
 
+func (user *User) FillUserById() {
+	DB.Where(User{Id: user.Id}).First(user)
+}
+
 func (user *User) FillUserByEmail() {
 	DB.Where(User{Email: user.Email}).First(user)
 }

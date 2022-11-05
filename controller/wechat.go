@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"gin-template/common"
 	"gin-template/model"
@@ -16,6 +17,37 @@ type wechatLoginResponse struct {
 	Data    string `json:"data"`
 }
 
+func getWeChatIdByCode(code string) (string, error) {
+	if code == "" {
+		return "", errors.New("无效的参数")
+	}
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/wechat/user?code=%s", common.WeChatServerAddress, code), nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Authorization", common.WeChatServerToken)
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+	httpResponse, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer httpResponse.Body.Close()
+	var res wechatLoginResponse
+	err = json.NewDecoder(httpResponse.Body).Decode(&res)
+	if err != nil {
+		return "", err
+	}
+	if !res.Success {
+		return "", errors.New(res.Message)
+	}
+	if res.Data == "" {
+		return "", errors.New("验证码错误或已过期")
+	}
+	return res.Data, nil
+}
+
 func WeChatLogin(c *gin.Context) {
 	if !common.WeChatLoginEnabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -25,58 +57,14 @@ func WeChatLogin(c *gin.Context) {
 		return
 	}
 	code := c.Query("code")
-	if code == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "无效的参数",
-			"success": false,
-		})
-		return
-	}
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/wechat/user?code=%s", common.WeChatServerAddress, code), nil)
+	wechatId, err := getWeChatIdByCode(code)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"success": false,
 			"message": err.Error(),
-		})
-		return
-	}
-	req.Header.Set("Authorization", common.WeChatServerToken)
-	client := http.Client{
-		Timeout: 5 * time.Second,
-	}
-	httpResponse, err := client.Do(req)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": err.Error(),
 		})
 		return
 	}
-	defer httpResponse.Body.Close()
-	var res wechatLoginResponse
-	err = json.NewDecoder(httpResponse.Body).Decode(&res)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	if !res.Success {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": res.Message,
-		})
-		return
-	}
-	if res.Data == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": "验证码错误或已过期",
-		})
-		return
-	}
-	wechatId := res.Data
 	if !model.IsWeChatIdAlreadyTaken(wechatId) {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -96,4 +84,42 @@ func WeChatLogin(c *gin.Context) {
 		return
 	}
 	setupLogin(&user, c)
+}
+
+func WeChatBind(c *gin.Context) {
+	code := c.Query("code")
+	wechatId, err := getWeChatIdByCode(code)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": err.Error(),
+			"success": false,
+		})
+		return
+	}
+	if model.IsWeChatIdAlreadyTaken(wechatId) {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "该微信账号已被绑定",
+		})
+		return
+	}
+	id := c.GetInt("id")
+	user := model.User{
+		Id: id,
+	}
+	user.FillUserById()
+	user.WeChatId = wechatId
+	err = user.Update(false)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+	})
+	return
 }
