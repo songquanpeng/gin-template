@@ -7,6 +7,7 @@ import {
   Header,
   Image,
   Message,
+  Modal,
   Segment,
 } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +18,7 @@ const LoginForm = () => {
   const [inputs, setInputs] = useState({
     username: '',
     password: '',
+    wechat_verification_code: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const { username, password } = inputs;
@@ -33,10 +35,32 @@ const LoginForm = () => {
     }
   }, []);
 
+  const [showWeChatLoginModal, setShowWeChatLoginModal] = useState(false);
+
   const onGitHubOAuthClicked = () => {
     window.open(
       `https://github.com/login/oauth/authorize?client_id=${status.github_client_id}&scope=user:email`
     );
+  };
+
+  const onWeChatLoginClicked = () => {
+    setShowWeChatLoginModal(true);
+  };
+
+  const onSubmitWeChatVerificationCode = async () => {
+    const res = await API.get(
+      `/api/oauth/wechat?code=${inputs.wechat_verification_code}`
+    );
+    const { success, message, data } = res.data;
+    if (success) {
+      userDispatch({ type: 'login', payload: data });
+      localStorage.setItem('user', JSON.stringify(data));
+      navigate('/');
+      showSuccess('登录成功！');
+      setShowWeChatLoginModal(false);
+    } else {
+      showError(message);
+    }
   };
 
   function handleChange(e) {
@@ -105,19 +129,67 @@ const LoginForm = () => {
             点击注册
           </Link>
         </Message>
-        {status.github_oauth ? (
+        {status.github_oauth || status.wechat_login ? (
           <>
             <Divider horizontal>Or</Divider>
-            <Button
-              circular
-              color="black"
-              icon="github"
-              onClick={onGitHubOAuthClicked}
-            />
+            {status.github_oauth ? (
+              <Button
+                circular
+                color="black"
+                icon="github"
+                onClick={onGitHubOAuthClicked}
+              />
+            ) : (
+              <></>
+            )}
+            {status.wechat_login ? (
+              <Button
+                circular
+                color="green"
+                icon="wechat"
+                onClick={onWeChatLoginClicked}
+              />
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <></>
         )}
+        <Modal
+          onClose={() => setShowWeChatLoginModal(false)}
+          onOpen={() => setShowWeChatLoginModal(true)}
+          open={showWeChatLoginModal}
+          size={'mini'}
+        >
+          <Modal.Content>
+            <Modal.Description>
+              <Image src={status.wechat_qrcode} wrapped />
+              <div style={{ textAlign: 'center' }}>
+                <p>
+                  微信扫码关注公众号，输入「验证码」获取验证码（三分钟内有效）
+                </p>
+              </div>
+              <Form size="large">
+                <Form.Input
+                  fluid
+                  placeholder="验证码"
+                  name="wechat_verification_code"
+                  value={inputs.wechat_verification_code}
+                  onChange={handleChange}
+                />
+                <Button
+                  color="teal"
+                  fluid
+                  size="large"
+                  onClick={onSubmitWeChatVerificationCode}
+                >
+                  登录
+                </Button>
+              </Form>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
       </Grid.Column>
     </Grid>
   );

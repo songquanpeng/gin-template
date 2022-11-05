@@ -154,7 +154,7 @@ const SystemSetting = () => {
           <Form.Group widths="equal">
             <Form.Input
               label="服务器地址"
-              placeholder="例如：https://yourdomain.com"
+              placeholder="例如：https://yourdomain.com（注意没有最后的斜杠）"
               value={inputs.ServerAddress}
               name="ServerAddress"
               onChange={handleInputChange}
@@ -271,6 +271,7 @@ const SystemSetting = () => {
             <Form.Input
               label="WeChat Server 服务器地址"
               name="WeChatServerAddress"
+              placeholder="例如：https://yourdomain.com（注意没有最后的斜杠）"
               onChange={handleInputChange}
               autoComplete="off"
               value={inputs.WeChatServerAddress}

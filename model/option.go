@@ -116,5 +116,7 @@ func updateOptionMap(key string, value string) {
 		common.WeChatServerToken = value
 	case "WeChatAccountQRCodeImageURL":
 		common.WeChatAccountQRCodeImageURL = value
+	case "WeChatLoginEnabled":
+		common.WeChatLoginEnabled = boolValue
 	}
 }
