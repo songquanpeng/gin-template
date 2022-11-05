@@ -6,13 +6,14 @@ import (
 	"gin-template/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func GetOptions(c *gin.Context) {
 	var options []*model.Option
 	common.OptionMapRWMutex.Lock()
 	for k, v := range common.OptionMap {
-		if k == "SMTPToken" || k == "GitHubClientSecret" {
+		if strings.Contains(k, "Token") || strings.Contains(k, "Secret") {
 			continue
 		}
 		options = append(options, &model.Option{
@@ -43,6 +44,12 @@ func UpdateOption(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "无法启用 GitHub OAuth，请先填入 GitHub Client ID 以及 GitHub Client Secret！",
+		})
+		return
+	} else if option.Key == "WeChatLoginEnabled" && option.Value == "true" && common.WeChatServerAddress == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "无法启用微信登录，请先填入微信登录相关配置信息！",
 		})
 		return
 	}

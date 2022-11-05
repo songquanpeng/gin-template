@@ -8,13 +8,15 @@ import (
 
 type User struct {
 	Id               int    `json:"id"`
-	Username         string `json:"username" gorm:"unique;uniqueIndex" validate:"printascii"`
+	Username         string `json:"username" gorm:"unique;index" validate:"printascii"`
 	Password         string `json:"password" gorm:"not null;" validate:"min=8"`
 	DisplayName      string `json:"display_name"`
 	Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, common
 	Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
 	Token            string `json:"token;" gorm:"index"`
 	Email            string `json:"email" gorm:"index"`
+	GitHubId         string `json:"github_id" gorm:"column:github_id;index"`
+	WeChatId         string `json:"wechat_id" gorm:"column:wechat_id;index"`
 	VerificationCode string `json:"verification_code" gorm:"-:all"`
 }
 
@@ -94,6 +96,14 @@ func (user *User) FillUserByEmail() {
 	DB.Where(User{Email: user.Email}).First(user)
 }
 
+func (user *User) FillUserByGitHubId() {
+	DB.Where(User{GitHubId: user.GitHubId}).First(user)
+}
+
+func (user *User) FillUserByWeChatId() {
+	DB.Where(User{WeChatId: user.WeChatId}).First(user)
+}
+
 func (user *User) FillUserByUsername() {
 	DB.Where(User{Username: user.Username}).First(user)
 }
@@ -112,6 +122,14 @@ func ValidateUserToken(token string) (user *User) {
 
 func IsEmailAlreadyTaken(email string) bool {
 	return DB.Where("email = ?", email).Find(&User{}).RowsAffected == 1
+}
+
+func IsWeChatIdAlreadyTaken(wechatId string) bool {
+	return DB.Where("wechat_id = ?", wechatId).Find(&User{}).RowsAffected == 1
+}
+
+func IsGitHubIdAlreadyTaken(githubId string) bool {
+	return DB.Where("github_id = ?", githubId).Find(&User{}).RowsAffected == 1
 }
 
 func IsUsernameAlreadyTaken(username string) bool {

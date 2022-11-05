@@ -119,11 +119,13 @@ func GitHubOAuth(c *gin.Context) {
 			})
 			return
 		}
-		user.Username = "github_" + githubUser.Login
-		if model.IsUsernameAlreadyTaken(user.Username) {
-			user.FillUserByUsername()
+		user.GitHubId = githubUser.Login
+		if model.IsGitHubIdAlreadyTaken(user.GitHubId) {
+			user.FillUserByGitHubId()
 		} else {
+			user.Username = "github_" + githubUser.Login
 			user.DisplayName = githubUser.Name
+			user.Email = githubUser.Email
 			user.Role = common.RoleCommonUser
 			user.Status = common.UserStatusEnabled
 

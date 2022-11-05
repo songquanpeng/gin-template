@@ -330,6 +330,11 @@ func UpdateSelf(c *gin.Context) {
 	user.Role = c.GetInt("role")
 	user.Status = c.GetInt("status")
 
+	// User cannot change its Email, GitHub ID & WeChat ID without verification
+	user.Email = ""
+	user.GitHubId = ""
+	user.WeChatId = ""
+
 	updatePassword := user.Password != ""
 	// TODO: check Display Name to avoid XSS attack
 	if err := user.Update(updatePassword); err != nil {

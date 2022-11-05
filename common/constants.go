@@ -12,6 +12,8 @@ var SystemName = "项目模板"
 var ServerAddress = "http://localhost:3000"
 var FooterHTML = ""
 
+// Any options with "Secret", "Token" in its key won't be return by GetOptions
+
 var SessionSecret = uuid.New().String()
 var SQLitePath = ".gin-template.db"
 
