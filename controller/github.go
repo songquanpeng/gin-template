@@ -113,38 +113,34 @@ func GitHubOAuth(c *gin.Context) {
 		})
 		return
 	}
-	user := model.User{
-		Email: githubUser.Email,
+	if githubUser.Login == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "返回值非法，用户字段为空",
+		})
+		return
 	}
-	if githubUser.Email != "" && model.IsEmailAlreadyTaken(githubUser.Email) {
-		user.FillUserByEmail()
+	user := model.User{
+		GitHubId: githubUser.Login,
+	}
+	if model.IsGitHubIdAlreadyTaken(user.GitHubId) {
+		user.FillUserByGitHubId()
 	} else {
-		if githubUser.Login == "" {
+		user.Username = "github_" + githubUser.Login
+		user.DisplayName = githubUser.Name
+		user.Email = githubUser.Email
+		user.Role = common.RoleCommonUser
+		user.Status = common.UserStatusEnabled
+
+		if err := user.Insert(); err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
-				"message": "返回值非法，用户字段为空",
+				"message": err.Error(),
 			})
 			return
 		}
-		user.GitHubId = githubUser.Login
-		if model.IsGitHubIdAlreadyTaken(user.GitHubId) {
-			user.FillUserByGitHubId()
-		} else {
-			user.Username = "github_" + githubUser.Login
-			user.DisplayName = githubUser.Name
-			user.Email = githubUser.Email
-			user.Role = common.RoleCommonUser
-			user.Status = common.UserStatusEnabled
-
-			if err := user.Insert(); err != nil {
-				c.JSON(http.StatusOK, gin.H{
-					"success": false,
-					"message": err.Error(),
-				})
-				return
-			}
-		}
 	}
+
 	if user.Status != common.UserStatusEnabled {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "用户已被封禁",
