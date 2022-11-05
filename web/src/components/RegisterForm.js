@@ -40,6 +40,10 @@ const RegisterForm = () => {
   }
 
   async function handleSubmit(e) {
+    if (password.length < 8) {
+      showInfo('密码长度不得小于 8 位！');
+      return;
+    }
     if (password !== password2) {
       showInfo('两次输入的密码不一致');
       return;
