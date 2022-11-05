@@ -68,8 +68,8 @@ var (
 	DownloadRateLimitNum            = 10
 	DownloadRateLimitDuration int64 = 60
 
-	CriticalRateLimitNum            = 5
-	CriticalRateLimitDuration int64 = 10 * 60
+	CriticalRateLimitNum            = 10
+	CriticalRateLimitDuration int64 = 20 * 60
 )
 
 var RateLimitKeyExpirationDuration = 20 * time.Minute
