@@ -24,6 +24,13 @@ type GitHubUser struct {
 }
 
 func GitHubOAuth(c *gin.Context) {
+	if !common.GitHubOAuthEnabled {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "管理员未开启通过 GitHub 登录以及注册",
+		})
+		return
+	}
 	code := c.Query("code")
 	if code == "" {
 		c.JSON(http.StatusOK, gin.H{
@@ -128,14 +135,6 @@ func GitHubOAuth(c *gin.Context) {
 			user.Email = githubUser.Email
 			user.Role = common.RoleCommonUser
 			user.Status = common.UserStatusEnabled
-
-			if !common.RegisterEnabled {
-				c.JSON(http.StatusOK, gin.H{
-					"success": false,
-					"message": "管理员关闭了新用户注册",
-				})
-				return
-			}
 
 			if err := user.Insert(); err != nil {
 				c.JSON(http.StatusOK, gin.H{

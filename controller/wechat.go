@@ -48,10 +48,10 @@ func getWeChatIdByCode(code string) (string, error) {
 	return res.Data, nil
 }
 
-func WeChatLogin(c *gin.Context) {
-	if !common.WeChatLoginEnabled {
+func WeChatAuth(c *gin.Context) {
+	if !common.WeChatAuthEnabled {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "管理员未开启微信登录",
+			"message": "管理员未开启通过微信登录以及注册",
 			"success": false,
 		})
 		return

@@ -5,7 +5,7 @@ import { API, showError } from '../helpers';
 const SystemSetting = () => {
   let [inputs, setInputs] = useState({
     PasswordLoginEnabled: '',
-    RegisterEnabled: '',
+    PasswordRegisterEnabled: '',
     EmailVerificationEnabled: '',
     GitHubOAuthEnabled: '',
     GitHubClientId: '',
@@ -16,7 +16,7 @@ const SystemSetting = () => {
     SMTPToken: '',
     ServerAddress: '',
     FooterHTML: '',
-    WeChatLoginEnabled: '',
+    WeChatAuthEnabled: '',
     WeChatServerAddress: '',
     WeChatServerToken: '',
     WeChatAccountQRCodeImageURL: '',
@@ -47,10 +47,10 @@ const SystemSetting = () => {
     setLoading(true);
     switch (key) {
       case 'PasswordLoginEnabled':
-      case 'RegisterEnabled':
+      case 'PasswordRegisterEnabled':
       case 'EmailVerificationEnabled':
       case 'GitHubOAuthEnabled':
-      case 'WeChatLoginEnabled':
+      case 'WeChatAuthEnabled':
         value = inputs[key] === 'true' ? 'false' : 'true';
         break;
       default:
@@ -198,9 +198,9 @@ const SystemSetting = () => {
               onChange={handleInputChange}
             />
             <Form.Checkbox
-              checked={inputs.RegisterEnabled === 'true'}
-              label="允许新用户注册"
-              name="RegisterEnabled"
+              checked={inputs.PasswordRegisterEnabled === 'true'}
+              label="允许通过密码进行注册"
+              name="PasswordRegisterEnabled"
               onChange={handleInputChange}
             />
             <Form.Checkbox
@@ -211,14 +211,14 @@ const SystemSetting = () => {
             />
             <Form.Checkbox
               checked={inputs.GitHubOAuthEnabled === 'true'}
-              label="允许通过 GitHub 账户登录"
+              label="允许通过 GitHub 账户登录 & 注册"
               name="GitHubOAuthEnabled"
               onChange={handleInputChange}
             />
             <Form.Checkbox
-              checked={inputs.WeChatLoginEnabled === 'true'}
-              label="允许通过微信登录"
-              name="WeChatLoginEnabled"
+              checked={inputs.WeChatAuthEnabled === 'true'}
+              label="允许通过微信登录 & 注册"
+              name="WeChatAuthEnabled"
               onChange={handleInputChange}
             />
           </Form.Group>

@@ -100,7 +100,7 @@ func Logout(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
-	if !common.RegisterEnabled {
+	if !common.PasswordRegisterEnabled {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "管理员关闭了新用户注册",
 			"success": false,

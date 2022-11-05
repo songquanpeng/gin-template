@@ -27,10 +27,10 @@ func InitOptionMap() {
 	common.OptionMap["ImageUploadPermission"] = strconv.Itoa(common.ImageUploadPermission)
 	common.OptionMap["ImageDownloadPermission"] = strconv.Itoa(common.ImageDownloadPermission)
 	common.OptionMap["PasswordLoginEnabled"] = strconv.FormatBool(common.PasswordLoginEnabled)
-	common.OptionMap["RegisterEnabled"] = strconv.FormatBool(common.RegisterEnabled)
+	common.OptionMap["PasswordRegisterEnabled"] = strconv.FormatBool(common.PasswordRegisterEnabled)
 	common.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(common.EmailVerificationEnabled)
 	common.OptionMap["GitHubOAuthEnabled"] = strconv.FormatBool(common.GitHubOAuthEnabled)
-	common.OptionMap["WeChatLoginEnabled"] = strconv.FormatBool(common.WeChatLoginEnabled)
+	common.OptionMap["WeChatAuthEnabled"] = strconv.FormatBool(common.WeChatAuthEnabled)
 	common.OptionMap["SMTPServer"] = ""
 	common.OptionMap["SMTPAccount"] = ""
 	common.OptionMap["SMTPToken"] = ""
@@ -88,8 +88,8 @@ func updateOptionMap(key string, value string) {
 	}
 	boolValue := value == "true"
 	switch key {
-	case "RegisterEnabled":
-		common.RegisterEnabled = boolValue
+	case "PasswordRegisterEnabled":
+		common.PasswordRegisterEnabled = boolValue
 	case "PasswordLoginEnabled":
 		common.PasswordLoginEnabled = boolValue
 	case "EmailVerificationEnabled":
@@ -116,7 +116,7 @@ func updateOptionMap(key string, value string) {
 		common.WeChatServerToken = value
 	case "WeChatAccountQRCodeImageURL":
 		common.WeChatAccountQRCodeImageURL = value
-	case "WeChatLoginEnabled":
-		common.WeChatLoginEnabled = boolValue
+	case "WeChatAuthEnabled":
+		common.WeChatAuthEnabled = boolValue
 	}
 }
