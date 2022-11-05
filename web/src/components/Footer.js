@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { Container, Segment } from 'semantic-ui-react';
 
 const Footer = () => {
-  const [footerHTML, setFooterHTML] = useState('');
+  const [Footer, setFooter] = useState('');
   useEffect(() => {
-    let savedFooterHTML = localStorage.getItem('footer_html');
-    if (!savedFooterHTML) savedFooterHTML = '';
-    setFooterHTML(savedFooterHTML);
+    let savedFooter = localStorage.getItem('footer_html');
+    if (!savedFooter) savedFooter = '';
+    setFooter(savedFooter);
   });
 
   return (
     <Segment vertical>
       <Container textAlign="center">
-        {footerHTML === '' ? (
+        {Footer === '' ? (
           <div className="custom-footer">
             <a
               href="https://github.com/songquanpeng/gin-template"
@@ -33,7 +33,7 @@ const Footer = () => {
         ) : (
           <div
             className="custom-footer"
-            dangerouslySetInnerHTML={{ __html: footerHTML }}
+            dangerouslySetInnerHTML={{ __html: Footer }}
           ></div>
         )}
       </Container>

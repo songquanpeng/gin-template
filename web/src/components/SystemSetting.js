@@ -15,7 +15,7 @@ const SystemSetting = () => {
     SMTPAccount: '',
     SMTPToken: '',
     ServerAddress: '',
-    FooterHTML: '',
+    Footer: '',
     WeChatAuthEnabled: '',
     WeChatServerAddress: '',
     WeChatServerToken: '',
@@ -76,7 +76,6 @@ const SystemSetting = () => {
       name === 'ServerAddress' ||
       name === 'GitHubClientId' ||
       name === 'GitHubClientSecret' ||
-      name === 'FooterHTML' ||
       name === 'WeChatServerAddress' ||
       name === 'WeChatServerToken' ||
       name === 'WeChatAccountQRCodeImageURL'
@@ -85,10 +84,6 @@ const SystemSetting = () => {
     } else {
       await updateOption(name, value);
     }
-  };
-
-  const submitNotice = async () => {
-    await updateOption('Notice', inputs.Notice);
   };
 
   const submitServerAddress = async () => {
@@ -163,33 +158,6 @@ const SystemSetting = () => {
           <Form.Button onClick={submitServerAddress}>
             更新服务器地址
           </Form.Button>
-          <Form.Group widths="equal">
-            <Form.Input
-              label="页脚 HTML"
-              placeholder="留空则使用默认页脚"
-              value={inputs.FooterHTML}
-              name="FooterHTML"
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          <Form.Button
-            onClick={() => {
-              updateOption('FooterHTML', inputs.FooterHTML).then();
-            }}
-          >
-            设置页脚 HTML
-          </Form.Button>
-          <Form.Group widths="equal">
-            <Form.TextArea
-              label="公告"
-              placeholder="在此输入新的公告"
-              value={inputs.Notice}
-              name="Notice"
-              onChange={handleInputChange}
-              style={{ minHeight: 150, fontFamily: 'JetBrains Mono, Consolas' }}
-            />
-          </Form.Group>
-          <Form.Button onClick={submitNotice}>保存公告</Form.Button>
           <Form.Group inline>
             <Form.Checkbox
               checked={inputs.PasswordLoginEnabled === 'true'}
