@@ -10,7 +10,7 @@ type User struct {
 	Id               int    `json:"id"`
 	Username         string `json:"username" gorm:"unique;index" validate:"printascii"`
 	Password         string `json:"password" gorm:"not null;" validate:"min=8"`
-	DisplayName      string `json:"display_name"`
+	DisplayName      string `json:"display_name" gorm:"index"`
 	Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, common
 	Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
 	Token            string `json:"token;" gorm:"index"`
@@ -22,6 +22,11 @@ type User struct {
 
 func GetAllUsers() (users []*User, err error) {
 	err = DB.Select([]string{"id", "username", "display_name", "role", "status", "email"}).Find(&users).Error
+	return users, err
+}
+
+func SearchUsers(keyword string) (users []*User, err error) {
+	err = DB.Select([]string{"id", "username", "display_name", "role", "status", "email"}).Where("id = ? or username LIKE ? or email LIKE ? or display_name LIKE ?", keyword, keyword+"%", keyword+"%", keyword+"%").Find(&users).Error
 	return users, err
 }
 
@@ -40,12 +45,6 @@ func DeleteUserById(id int) (err error) {
 	user := User{Id: id}
 	err = DB.Delete(&user).Error
 	return err
-}
-
-func QueryUsers(query string, startIdx int) (users []*User, err error) {
-	query = strings.ToLower(query)
-	err = DB.Limit(common.ItemsPerPage).Offset(startIdx).Where("username LIKE ? or display_name LIKE ?", "%"+query+"%", "%"+query+"%").Order("id desc").Find(&users).Error
-	return users, err
 }
 
 func (user *User) Insert() error {

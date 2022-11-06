@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Label, Pagination, Table } from 'semantic-ui-react';
+import { Button, Form, Label, Pagination, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { API, showError, showSuccess } from '../helpers';
 
@@ -22,6 +22,8 @@ const UsersTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activePage, setActivePage] = useState(1);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searching, setSearching] = useState(false);
 
   const loadUsers = async () => {
     const res = await API.get('/api/user');
@@ -73,8 +75,36 @@ const UsersTable = () => {
     }
   };
 
+  const searchUsers = async () => {
+    setSearching(true);
+    const res = await API.get(`/api/user/search?keyword=${searchKeyword}`);
+    const { success, message, data } = res.data;
+    if (success) {
+      setUsers(data);
+    } else {
+      showError(message);
+    }
+    setSearching(false);
+  };
+
+  const handleKeywordChange = async (e, { name, value }) => {
+    setSearchKeyword(value);
+  };
+
   return (
     <>
+      <Form onSubmit={searchUsers}>
+        <Form.Input
+          icon="search"
+          fluid
+          iconPosition="left"
+          placeholder="搜索用户的 ID，用户名，显示名称，以及邮箱地址 ..."
+          value={searchKeyword}
+          loading={searching}
+          onChange={handleKeywordChange}
+        />
+      </Form>
+
       <Table basic>
         <Table.Header>
           <Table.Row>
@@ -155,7 +185,7 @@ const UsersTable = () => {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="6">
-              <Button size="small" as={Link} to="/user/add">
+              <Button size="small" as={Link} to="/user/add" loading={loading}>
                 添加新的用户
               </Button>
               <Pagination

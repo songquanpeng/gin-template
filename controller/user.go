@@ -179,6 +179,24 @@ func GetAllUsers(c *gin.Context) {
 	return
 }
 
+func SearchUsers(c *gin.Context) {
+	keyword := c.Query("keyword")
+	users, err := model.SearchUsers(keyword)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    users,
+	})
+	return
+}
+
 func GetUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
