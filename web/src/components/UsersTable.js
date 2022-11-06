@@ -91,6 +91,20 @@ const UsersTable = () => {
     setSearchKeyword(value);
   };
 
+  const sortUser = (key) => {
+    if (users.length === 0) return;
+    setLoading(true);
+    let sortedUsers = [...users];
+    sortedUsers.sort((a, b) => {
+      return ('' + a[key]).localeCompare(b[key]);
+    });
+    if (sortedUsers[0].id === users[0].id) {
+      sortedUsers.reverse();
+    }
+    setUsers(sortedUsers);
+    setLoading(false);
+  };
+
   return (
     <>
       <Form onSubmit={searchUsers}>
@@ -108,11 +122,46 @@ const UsersTable = () => {
       <Table basic>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>用户名</Table.HeaderCell>
-            <Table.HeaderCell>显示名称</Table.HeaderCell>
-            <Table.HeaderCell>邮箱地址</Table.HeaderCell>
-            <Table.HeaderCell>用户角色</Table.HeaderCell>
-            <Table.HeaderCell>状态</Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                sortUser('username');
+              }}
+            >
+              用户名
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                sortUser('display_name');
+              }}
+            >
+              显示名称
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                sortUser('email');
+              }}
+            >
+              邮箱地址
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                sortUser('role');
+              }}
+            >
+              用户角色
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                sortUser('status');
+              }}
+            >
+              状态
+            </Table.HeaderCell>
             <Table.HeaderCell>操作</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
