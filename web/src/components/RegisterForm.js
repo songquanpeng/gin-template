@@ -83,7 +83,7 @@ const RegisterForm = () => {
               fluid
               icon="user"
               iconPosition="left"
-              placeholder="输入用户名"
+              placeholder="输入用户名，最长 12 位"
               onChange={handleChange}
               name="username"
             />
@@ -91,16 +91,7 @@ const RegisterForm = () => {
               fluid
               icon="lock"
               iconPosition="left"
-              placeholder="输入密码"
-              onChange={handleChange}
-              name="password"
-              type="password"
-            />
-            <Form.Input
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="再次输入密码"
+              placeholder="输入密码，最短 8 位，最长 20 位"
               onChange={handleChange}
               name="password2"
               type="password"

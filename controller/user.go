@@ -119,7 +119,7 @@ func Register(c *gin.Context) {
 	if err := common.Validate.Struct(&user); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": err.Error(),
+			"message": "输入不合法 " + err.Error(),
 		})
 		return
 	}
@@ -295,6 +295,13 @@ func UpdateUser(c *gin.Context) {
 		})
 		return
 	}
+	if err := common.Validate.Struct(&updatedUser); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "输入不合法 " + err.Error(),
+		})
+		return
+	}
 	originUser, err := model.GetUserById(updatedUser.Id, false)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -344,6 +351,14 @@ func UpdateSelf(c *gin.Context) {
 		return
 	}
 
+	if err := common.Validate.Struct(&user); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "输入不合法 " + err.Error(),
+		})
+		return
+	}
+
 	cleanUser := model.User{
 		Id:          c.GetInt("id"),
 		Username:    user.Username,
@@ -352,7 +367,6 @@ func UpdateSelf(c *gin.Context) {
 	}
 
 	updatePassword := user.Password != ""
-	// TODO: check Display Name to avoid XSS attack
 	if err := cleanUser.Update(updatePassword); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
