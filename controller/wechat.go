@@ -8,6 +8,7 @@ import (
 	"gin-template/model"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -71,7 +72,7 @@ func WeChatAuth(c *gin.Context) {
 	if model.IsWeChatIdAlreadyTaken(wechatId) {
 		user.FillUserByWeChatId()
 	} else {
-		user.Username = "wechat_" + common.GetUUID()
+		user.Username = "wechat_" + strconv.Itoa(model.GetMaxUserId()+1)
 		user.DisplayName = "WeChat User"
 		user.Role = common.RoleCommonUser
 		user.Status = common.UserStatusEnabled
