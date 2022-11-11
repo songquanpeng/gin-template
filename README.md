@@ -27,14 +27,17 @@
 
 ## Usage
 1. Download built binaries from [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) or build from source:
-   1. `git clone https://github.com/songquanpeng/gin-template.git`
-   2. `go mod download`
-   3. `go build -ldflags "-s -w" -o gin-template`
+   ```shell
+   git clone https://github.com/songquanpeng/gin-template.git
+   go mod download
+   go build -ldflags "-s -w" -o gin-template
+   ````
 2. Run it: 
-   1. `chmod u+x gin-template`
-   2. `./gin-template --port 3000 --log-dir ./logs`
+   ```shell
+   chmod u+x gin-template
+   ./gin-template --port 3000 --log-dir ./logs
+   ```
 3. Command line arguments:
-
 4. The username for the initial account is `root` and the password is `123456`.
 
 ## Basic Configurations
