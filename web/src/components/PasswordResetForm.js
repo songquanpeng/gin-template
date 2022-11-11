@@ -16,8 +16,8 @@ const PasswordResetForm = () => {
   }
 
   async function handleSubmit(e) {
-    setLoading(true);
     if (!email) return;
+    setLoading(true);
     const res = await API.get(`/api/reset_password?email=${email}`);
     const { success, message } = res.data;
     if (success) {

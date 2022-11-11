@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"gin-template/common"
 	"gin-template/model"
@@ -104,10 +105,10 @@ func SendPasswordResetEmail(c *gin.Context) {
 	}
 	code := common.GenerateVerificationCode(0)
 	common.RegisterVerificationCodeWithKey(email, code, common.PasswordResetPurpose)
-	link := fmt.Sprintf("%s/api/user/reset?email=%s&token=%s", common.ServerAddress, email, code)
+	link := fmt.Sprintf("%s/user/reset?email=%s&token=%s", common.ServerAddress, email, code)
 	subject := fmt.Sprintf("%s密码重置", common.SystemName)
 	content := fmt.Sprintf("<p>您好，你正在进行%s密码重置。</p>"+
-		"<p>点击<a href='%s'>此处</a>系统后系统将为你生成一个新的密码，如不需要请勿点击。</p>"+
+		"<p>点击<a href='%s'>此处</a>进行密码重置。</p>"+
 		"<p>重置链接 %d 分钟内有效，如果不是本人操作，请忽略。</p>", common.SystemName, link, common.VerificationValidMinutes)
 	err := common.SendEmail(subject, email, content)
 	if err != nil {
@@ -124,17 +125,22 @@ func SendPasswordResetEmail(c *gin.Context) {
 	return
 }
 
-func SendNewPasswordEmail(c *gin.Context) {
-	email := c.Query("email")
-	token := c.Query("token")
-	if email == "" || token == "" {
+type PasswordResetRequest struct {
+	Email string `json:"email"`
+	Token string `json:"token"`
+}
+
+func ResetPassword(c *gin.Context) {
+	var req PasswordResetRequest
+	err := json.NewDecoder(c.Request.Body).Decode(&req)
+	if req.Email == "" || req.Token == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "无效的参数",
 		})
 		return
 	}
-	if !common.VerifyCodeWithKey(email, token, common.PasswordResetPurpose) {
+	if !common.VerifyCodeWithKey(req.Email, req.Token, common.PasswordResetPurpose) {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": "重置链接非法或已过期",
@@ -142,11 +148,7 @@ func SendNewPasswordEmail(c *gin.Context) {
 		return
 	}
 	password := common.GenerateVerificationCode(12)
-	subject := fmt.Sprintf("%s密码已重置", common.SystemName)
-	content := fmt.Sprintf("<p>您好，系统已为您重置了密码。</p>"+
-		"<p>新的密码为：<strong>%s</strong></p>"+
-		"<p>请及时登录系统修改密码。</p>", password)
-	err := common.SendEmail(subject, email, content)
+	err = model.ResetUserPasswordByEmail(req.Email, password)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -154,15 +156,11 @@ func SendNewPasswordEmail(c *gin.Context) {
 		})
 		return
 	}
-	err = model.ResetUserPasswordByEmail(email, password)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"success": false,
-			"message": err.Error(),
-		})
-		return
-	}
-	common.DeleteKey(email, common.PasswordResetPurpose)
-	c.Redirect(http.StatusSeeOther, "/")
+	common.DeleteKey(req.Email, common.PasswordResetPurpose)
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    password,
+	})
 	return
 }

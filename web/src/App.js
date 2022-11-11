@@ -12,6 +12,7 @@ import AddUser from './pages/User/AddUser';
 import { API, showError } from './helpers';
 import PasswordResetForm from './components/PasswordResetForm';
 import GitHubOAuth from './components/GitHubOAuth';
+import PasswordResetConfirm from './components/PasswordResetConfirm';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -71,6 +72,14 @@ function App() {
         element={
           <Suspense fallback={<Loading></Loading>}>
             <AddUser />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/user/reset"
+        element={
+          <Suspense fallback={<Loading></Loading>}>
+            <PasswordResetConfirm />
           </Suspense>
         }
       />
