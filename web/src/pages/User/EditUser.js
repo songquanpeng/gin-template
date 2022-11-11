@@ -13,8 +13,9 @@ const EditUser = () => {
     password: '',
     github_id: '',
     wechat_id: '',
+    email:''
   });
-  const { username, display_name, password, github_id, wechat_id } = inputs;
+  const { username, display_name, password, github_id, wechat_id, email } = inputs;
   const handleInputChange = (e, { name, value }) => {
     setInputs((inputs) => ({ ...inputs, [name]: value }));
   };
@@ -104,6 +105,15 @@ const EditUser = () => {
               label="已绑定的微信账户"
               name="wechat_id"
               value={wechat_id}
+              autoComplete="off"
+              readOnly
+            />
+          </Form.Field>
+          <Form.Field>
+            <Form.Input
+              label="已绑定的邮箱账户"
+              name="email"
+              value={email}
               autoComplete="off"
               readOnly
             />

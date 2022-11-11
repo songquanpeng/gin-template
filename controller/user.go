@@ -269,7 +269,7 @@ func GenerateToken(c *gin.Context) {
 
 func GetSelf(c *gin.Context) {
 	id := c.GetInt("id")
-	user, err := model.GetUserById(id, true)
+	user, err := model.GetUserById(id, false)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -543,6 +543,38 @@ func ManageUser(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+	})
+	return
+}
+
+func EmailBind(c *gin.Context) {
+	email := c.Query("email")
+	code := c.Query("code")
+	if !common.VerifyCodeWithKey(email, code, common.EmailVerificationPurpose) {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "验证码错误！",
+		})
+		return
+	}
+	id := c.GetInt("id")
+	user := model.User{
+		Id: id,
+	}
+	user.FillUserById()
+	user.Email = email
+	// no need to check if this email already taken, because we have used verification code to check it
+	err := user.Update(false)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
