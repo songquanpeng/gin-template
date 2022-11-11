@@ -17,10 +17,15 @@ const GitHubOAuth = () => {
     const res = await API.get(`/api/oauth/github?code=${code}`);
     const { success, message, data } = res.data;
     if (success) {
-      userDispatch({ type: 'login', payload: data });
-      localStorage.setItem('user', JSON.stringify(data));
-      navigate('/');
-      showSuccess('登录成功！');
+      if (message === 'bind') {
+        showSuccess('绑定成功！');
+        navigate('/setting');
+      } else {
+        userDispatch({ type: 'login', payload: data });
+        localStorage.setItem('user', JSON.stringify(data));
+        showSuccess('登录成功！');
+        navigate('/');
+      }
     } else {
       showError(message);
       if (count === 0) {

@@ -172,6 +172,9 @@ func GitHubBind(c *gin.Context) {
 		})
 		return
 	}
-	c.Redirect(http.StatusSeeOther, "/setting")
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "bind",
+	})
 	return
 }
