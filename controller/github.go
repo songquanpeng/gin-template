@@ -59,12 +59,10 @@ func getGitHubUserInfoByCode(code string) (*GitHubUser, error) {
 		return nil, err
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", oAuthResponse.AccessToken))
-	if err != nil {
-		return nil, err
-	}
 	res2, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		common.SysLog(err.Error())
+		return nil, errors.New("无法连接至 GitHub 服务器，请稍后重试！")
 	}
 	defer res2.Body.Close()
 	var githubUser GitHubUser
@@ -73,7 +71,7 @@ func getGitHubUserInfoByCode(code string) (*GitHubUser, error) {
 		return nil, err
 	}
 	if githubUser.Login == "" {
-		return nil, errors.New("返回值非法，用户字段为空")
+		return nil, errors.New("返回值非法，用户字段为空，请稍后重试！")
 	}
 	return &githubUser, nil
 }

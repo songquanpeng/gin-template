@@ -82,7 +82,7 @@ const PersonalSetting = () => {
   };
 
   return (
-    <>
+    <div style={{ lineHeight: '40px' }}>
       <Button as={Link} to={`/user/edit/`}>
         更新个人信息
       </Button>
@@ -165,7 +165,7 @@ const PersonalSetting = () => {
           </Modal.Description>
         </Modal.Content>
       </Modal>
-    </>
+    </div>
   );
 };
 
