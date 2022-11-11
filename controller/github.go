@@ -46,7 +46,8 @@ func getGitHubUserInfoByCode(code string) (*GitHubUser, error) {
 	}
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		common.SysLog(err.Error())
+		return nil, errors.New("无法连接至 GitHub 服务器，请稍后重试！")
 	}
 	defer res.Body.Close()
 	var oAuthResponse GitHubOAuthResponse
