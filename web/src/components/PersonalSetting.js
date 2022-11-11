@@ -7,7 +7,7 @@ const PersonalSetting = () => {
   const [inputs, setInputs] = useState({
     wechat_verification_code: '',
     email_verification_code: '',
-    email: ''
+    email: '',
   });
   const [status, setStatus] = useState({});
   const [showWeChatBindModal, setShowWeChatBindModal] = useState(false);
@@ -48,6 +48,12 @@ const PersonalSetting = () => {
     } else {
       showError(message);
     }
+  };
+
+  const openGitHubOAuth = () => {
+    window.open(
+      `https://github.com/login/oauth/authorize?client_id=${status.github_client_id}&scope=user:email`
+    );
   };
 
   const sendVerificationCode = async () => {
@@ -117,6 +123,7 @@ const PersonalSetting = () => {
           </Modal.Description>
         </Modal.Content>
       </Modal>
+      <Button onClick={openGitHubOAuth}>绑定 GitHub 账号</Button>
       <Button
         onClick={() => {
           setShowEmailBindModal(true);
@@ -136,10 +143,10 @@ const PersonalSetting = () => {
             <Form size='large'>
               <Form.Input
                 fluid
-                placeholder="输入邮箱地址"
+                placeholder='输入邮箱地址'
                 onChange={handleInputChange}
-                name="email"
-                type="email"
+                name='email'
+                type='email'
                 action={
                   <Button onClick={sendVerificationCode}>获取验证码</Button>
                 }

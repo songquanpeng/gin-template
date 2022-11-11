@@ -23,14 +23,14 @@ const GitHubOAuth = () => {
       showSuccess('登录成功！');
     } else {
       showError(message);
-      if (count === 3) {
+      if (count === 0) {
         setPrompt(`登录失败，重定向至登录界面中...`);
         navigate('/login');
         return;
       }
       count++;
       setPrompt(`出现错误，第 ${count} 次重试中...`);
-      await new Promise(resolve => setTimeout(resolve, count * 2000));
+      await new Promise((resolve) => setTimeout(resolve, count * 2000));
       await sendCode(code, count);
     }
   };

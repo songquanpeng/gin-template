@@ -23,6 +23,7 @@ func GetStatus(c *gin.Context) {
 			"footer_html":        common.Footer,
 			"wechat_qrcode":      common.WeChatAccountQRCodeImageURL,
 			"wechat_login":       common.WeChatAuthEnabled,
+			"server_address":     common.ServerAddress,
 		},
 	})
 	return

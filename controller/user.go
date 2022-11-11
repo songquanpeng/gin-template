@@ -84,7 +84,7 @@ func setupLogin(user *model.User, c *gin.Context) {
 
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
-	session.Options(sessions.Options{MaxAge: -1})
+	session.Clear()
 	err := session.Save()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

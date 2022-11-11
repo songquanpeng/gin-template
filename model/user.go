@@ -20,6 +20,12 @@ type User struct {
 	VerificationCode string `json:"verification_code" gorm:"-:all"`
 }
 
+func GetMaxUserId() int {
+	var user User
+	DB.Last(&user)
+	return user.Id
+}
+
 func GetAllUsers() (users []*User, err error) {
 	err = DB.Select([]string{"id", "username", "display_name", "role", "status", "email"}).Find(&users).Error
 	return users, err
