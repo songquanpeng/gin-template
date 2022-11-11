@@ -13,7 +13,7 @@ type User struct {
 	DisplayName      string `json:"display_name" gorm:"index" validate:"max=20"`
 	Role             int    `json:"role" gorm:"type:int;default:1"`   // admin, common
 	Status           int    `json:"status" gorm:"type:int;default:1"` // enabled, disabled
-	Token            string `json:"token;" gorm:"index"`
+	Token            string `json:"token" gorm:"index"`
 	Email            string `json:"email" gorm:"index" validate:"max=50"`
 	GitHubId         string `json:"github_id" gorm:"column:github_id;index"`
 	WeChatId         string `json:"wechat_id" gorm:"column:wechat_id;index"`
