@@ -18,7 +18,7 @@
 
 ## Features
 + [x] Built-in user management.
-+ [x] Built-int file management.
++ [x] Built-in file management.
 + [x] [GitHub OAuth](https://github.com/settings/applications/new).
 + [x] WeChat official account authorization (need [wechat-server](https://github.com/songquanpeng/wechat-server)).
 + [x] Email verification & password reset.
