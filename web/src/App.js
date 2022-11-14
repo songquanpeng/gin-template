@@ -14,6 +14,7 @@ import PasswordResetForm from './components/PasswordResetForm';
 import GitHubOAuth from './components/GitHubOAuth';
 import PasswordResetConfirm from './components/PasswordResetConfirm';
 import { UserContext } from './context/User';
+import File from './pages/File';
 
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -52,6 +53,14 @@ function App() {
           <Suspense fallback={<Loading></Loading>}>
             <Home />
           </Suspense>
+        }
+      />
+      <Route
+        path='/file'
+        element={
+          <PrivateRoute>
+            <File />
+          </PrivateRoute>
         }
       />
       <Route

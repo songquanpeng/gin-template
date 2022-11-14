@@ -11,11 +11,12 @@ import (
 
 type File struct {
 	Id              int    `json:"id"`
-	Filename        string `json:"filename"`
+	Filename        string `json:"filename" gorm:"index"`
 	Description     string `json:"description"`
-	Uploader        string `json:"uploader"`
-	Link            string `json:"link" gorm:"unique"`
-	Time            string `json:"time"`
+	Uploader        string `json:"uploader"  gorm:"index"`
+	UploaderId      int    `json:"uploader_id"  gorm:"index"`
+	Link            string `json:"link" gorm:"unique;index"`
+	UploadTime      string `json:"upload_time"`
 	DownloadCounter int    `json:"download_counter"`
 }
 
@@ -23,6 +24,12 @@ func GetAllFiles() ([]*File, error) {
 	var files []*File
 	var err error
 	err = DB.Find(&files).Error
+	return files, err
+}
+
+func SearchFiles(keyword string) (files []*File, err error) {
+	err = DB.Select([]string{"id", "filename", "description", "uploader", "uploader_id", "link", "upload_time", "download_counter"}).Where(
+		"filename LIKE ? or uploader LIKE ? or uploader_id = ?", keyword+"%", keyword+"%", keyword).Find(&files).Error
 	return files, err
 }
 
