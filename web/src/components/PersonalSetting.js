@@ -30,7 +30,7 @@ const PersonalSetting = () => {
     const { success, message, data } = res.data;
     if (success) {
       await copy(data);
-      showSuccess(`令牌已重置并已复制到剪切板：${data}`);
+      showSuccess(`令牌已重置并已复制到剪贴板：${data}`);
     } else {
       showError(message);
     }

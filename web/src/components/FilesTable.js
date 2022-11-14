@@ -9,7 +9,7 @@ import {
   Segment,
   Table,
 } from 'semantic-ui-react';
-import { API, showError, showSuccess } from '../helpers';
+import { API, copy, showError, showSuccess } from '../helpers';
 import { useDropzone } from 'react-dropzone';
 
 const itemsPerPage = 10;
@@ -51,6 +51,12 @@ const FilesTable = () => {
     linkElement.download = filename;
     linkElement.href = '/upload/' + link;
     linkElement.click();
+  };
+
+  const copyLink = (link) => {
+    let url = window.location.origin + '/upload/' + link;
+    copy(url).then();
+    showSuccess('链接已复制到剪贴板');
   };
 
   const deleteFile = (id) => {
@@ -214,6 +220,14 @@ const FilesTable = () => {
                         }}
                       >
                         删除
+                      </Button>
+                      <Button
+                        size={'small'}
+                        onClick={() => {
+                          copyLink(file.link);
+                        }}
+                      >
+                        复制链接
                       </Button>
                     </div>
                   </Table.Cell>

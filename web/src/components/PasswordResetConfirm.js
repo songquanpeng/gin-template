@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 const PasswordResetConfirm = () => {
   const [inputs, setInputs] = useState({
     email: '',
-    token: ''
+    token: '',
   });
   const { email, token } = inputs;
 
@@ -15,11 +15,11 @@ const PasswordResetConfirm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   useEffect(() => {
     let token = searchParams.get('token');
-    let email = searchParams.get('email')
+    let email = searchParams.get('email');
     setInputs({
       token,
-      email
-    })
+      email,
+    });
   }, []);
 
   async function handleSubmit(e) {
@@ -27,13 +27,13 @@ const PasswordResetConfirm = () => {
     setLoading(true);
     const res = await API.post(`/api/user/reset`, {
       email,
-      token
+      token,
     });
     const { success, message } = res.data;
     if (success) {
       let password = res.data.data;
       await copy(password);
-      showSuccess(`密码已重置并已复制到剪切板：${password}`);
+      showSuccess(`密码已重置并已复制到剪贴板：${password}`);
     } else {
       showError(message);
     }
@@ -50,10 +50,10 @@ const PasswordResetConfirm = () => {
           <Segment>
             <Form.Input
               fluid
-              icon="mail"
-              iconPosition="left"
-              placeholder="邮箱地址"
-              name="email"
+              icon='mail'
+              iconPosition='left'
+              placeholder='邮箱地址'
+              name='email'
               value={email}
               readOnly
             />
