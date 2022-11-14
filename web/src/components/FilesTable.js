@@ -185,7 +185,11 @@ const FilesTable = () => {
             .map((file, idx) => {
               return (
                 <Table.Row key={file.id}>
-                  <Table.Cell>{file.filename}</Table.Cell>
+                  <Table.Cell>
+                    <a href={'/upload/' + file.link} target='_blank'>
+                      {file.filename}
+                    </a>
+                  </Table.Cell>
                   <Popup
                     content={'上传者 ID：' + file.uploader_id}
                     trigger={<Table.Cell>{file.uploader}</Table.Cell>}
