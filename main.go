@@ -69,16 +69,6 @@ func main() {
 	if port == "" {
 		port = strconv.Itoa(*common.Port)
 	}
-	//if *common.Host == "localhost" {
-	//	ip := common.GetIp()
-	//	if ip != "" {
-	//		*common.Host = ip
-	//	}
-	//}
-	//serverUrl := "http://" + *common.Host + ":" + port + "/"
-	//if !*common.NoBrowser {
-	//	common.OpenBrowser(serverUrl)
-	//}
 	err = server.Run(":" + port)
 	if err != nil {
 		log.Println(err)
