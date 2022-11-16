@@ -9,7 +9,7 @@ import NotFound from './pages/NotFound';
 import Setting from './pages/Setting';
 import EditUser from './pages/User/EditUser';
 import AddUser from './pages/User/AddUser';
-import { API, showError } from './helpers';
+import { API, showError, showNotice } from './helpers';
 import PasswordResetForm from './components/PasswordResetForm';
 import GitHubOAuth from './components/GitHubOAuth';
 import PasswordResetConfirm from './components/PasswordResetConfirm';
@@ -35,6 +35,13 @@ function App() {
     if (success) {
       localStorage.setItem('status', JSON.stringify(data));
       localStorage.setItem('footer_html', data.footer_html);
+      let currentVersion = localStorage.getItem('version');
+      if (currentVersion !== data.version) {
+        localStorage.setItem('version', data.version);
+        showNotice(
+          `新版本可用：${data.version}，请使用快捷键 Shift + F5 刷新页面`
+        );
+      }
     } else {
       showError('无法正常连接至服务器！');
     }
