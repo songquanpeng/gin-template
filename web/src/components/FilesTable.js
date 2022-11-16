@@ -135,6 +135,7 @@ const FilesTable = () => {
         placeholder
         {...getRootProps({ className: 'dropzone' })}
         loading={uploading || loading}
+        style={{ cursor: 'pointer' }}
       >
         <Header icon>
           <Icon name='file outline' />

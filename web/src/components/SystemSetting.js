@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Grid } from 'semantic-ui-react';
+import { Divider, Form, Grid, Header } from 'semantic-ui-react';
 import { API, showError } from '../helpers';
 
 const SystemSetting = () => {
@@ -146,121 +146,163 @@ const SystemSetting = () => {
     <Grid columns={1}>
       <Grid.Column>
         <Form loading={loading}>
-          <Form.Group widths="equal">
+          <Header as='h3'>通用配置</Header>
+          <Form.Group widths='equal'>
             <Form.Input
-              label="服务器地址"
-              placeholder="例如：https://yourdomain.com（注意没有最后的斜杠）"
+              label='服务器地址'
+              placeholder='例如：https://yourdomain.com（注意没有最后的斜杠）'
               value={inputs.ServerAddress}
-              name="ServerAddress"
+              name='ServerAddress'
               onChange={handleInputChange}
             />
           </Form.Group>
           <Form.Button onClick={submitServerAddress}>
             更新服务器地址
           </Form.Button>
+          <Divider />
+          <Header as='h3'>配置登录注册方式</Header>
           <Form.Group inline>
             <Form.Checkbox
               checked={inputs.PasswordLoginEnabled === 'true'}
-              label="允许密码登录"
-              name="PasswordLoginEnabled"
+              label='允许通过密码进行登录'
+              name='PasswordLoginEnabled'
               onChange={handleInputChange}
             />
             <Form.Checkbox
               checked={inputs.PasswordRegisterEnabled === 'true'}
-              label="允许通过密码进行注册"
-              name="PasswordRegisterEnabled"
+              label='允许通过密码进行注册'
+              name='PasswordRegisterEnabled'
               onChange={handleInputChange}
             />
             <Form.Checkbox
               checked={inputs.EmailVerificationEnabled === 'true'}
-              label="强制邮箱验证"
-              name="EmailVerificationEnabled"
+              label='通过密码注册时需要进行邮箱验证'
+              name='EmailVerificationEnabled'
               onChange={handleInputChange}
             />
             <Form.Checkbox
               checked={inputs.GitHubOAuthEnabled === 'true'}
-              label="允许通过 GitHub 账户登录 & 注册"
-              name="GitHubOAuthEnabled"
+              label='允许通过 GitHub 账户登录 & 注册'
+              name='GitHubOAuthEnabled'
               onChange={handleInputChange}
             />
             <Form.Checkbox
               checked={inputs.WeChatAuthEnabled === 'true'}
-              label="允许通过微信登录 & 注册"
-              name="WeChatAuthEnabled"
+              label='允许通过微信登录 & 注册'
+              name='WeChatAuthEnabled'
               onChange={handleInputChange}
             />
           </Form.Group>
+          <Divider />
+          <Header as='h3'>
+            配置 SMTP
+            <Header.Subheader>用以支持系统的邮件发送</Header.Subheader>
+          </Header>
           <Form.Group widths={3}>
             <Form.Input
-              label="SMTP 服务器地址"
-              name="SMTPServer"
+              label='SMTP 服务器地址'
+              name='SMTPServer'
               onChange={handleInputChange}
-              autoComplete="off"
+              autoComplete='off'
               value={inputs.SMTPServer}
+              placeholder='例如：smtp.qq.com'
             />
             <Form.Input
-              label="SMTP 账户"
-              name="SMTPAccount"
+              label='SMTP 账户'
+              name='SMTPAccount'
               onChange={handleInputChange}
-              autoComplete="off"
+              autoComplete='off'
               value={inputs.SMTPAccount}
+              placeholder='通常是邮箱地址'
             />
             <Form.Input
-              label="SMTP 访问凭证"
-              name="SMTPToken"
+              label='SMTP 访问凭证'
+              name='SMTPToken'
               onChange={handleInputChange}
-              type="password"
-              autoComplete="off"
+              type='password'
+              autoComplete='off'
               value={inputs.SMTPToken}
+              placeholder='敏感信息不会发送到前端显示'
             />
           </Form.Group>
           <Form.Button onClick={submitSMTP}>保存 SMTP 设置</Form.Button>
+          <Divider />
+          <Header as='h3'>
+            配置 GitHub OAuth App
+            <Header.Subheader>
+              用以支持通过 GitHub 进行登录注册，
+              <a href='https://github.com/settings/developers' target='_blank'>
+                点击此处
+              </a>
+              管理你的 GitHub OAuth App
+            </Header.Subheader>
+          </Header>
           <Form.Group widths={3}>
             <Form.Input
-              label="GitHub Client ID"
-              name="GitHubClientId"
+              label='GitHub Client ID'
+              name='GitHubClientId'
               onChange={handleInputChange}
-              autoComplete="off"
+              autoComplete='off'
               value={inputs.GitHubClientId}
+              placeholder='输入你注册的 GitHub OAuth APP 的 ID'
             />
             <Form.Input
-              label="GitHub Client Secret"
-              name="GitHubClientSecret"
+              label='GitHub Client Secret'
+              name='GitHubClientSecret'
               onChange={handleInputChange}
-              type="password"
-              autoComplete="off"
+              type='password'
+              autoComplete='off'
               value={inputs.GitHubClientSecret}
+              placeholder='敏感信息不会发送到前端显示'
             />
           </Form.Group>
           <Form.Button onClick={submitGitHubOAuth}>
             保存 GitHub OAuth 设置
           </Form.Button>
+          <Divider />
+          <Header as='h3'>
+            配置 WeChat Server
+            <Header.Subheader>
+              用以支持通过微信进行登录注册，
+              <a
+                href='https://github.com/songquanpeng/wechat-server'
+                target='_blank'
+              >
+                点击此处
+              </a>
+              了解 WeChat Server
+            </Header.Subheader>
+          </Header>
           <Form.Group widths={3}>
             <Form.Input
-              label="WeChat Server 服务器地址"
-              name="WeChatServerAddress"
-              placeholder="例如：https://yourdomain.com（注意没有最后的斜杠）"
+              label='WeChat Server 服务器地址'
+              name='WeChatServerAddress'
+              placeholder='例如：https://yourdomain.com（注意没有最后的斜杠）'
               onChange={handleInputChange}
-              autoComplete="off"
+              autoComplete='off'
               value={inputs.WeChatServerAddress}
             />
             <Form.Input
-              label="WeChat Server 访问凭证"
-              name="WeChatServerToken"
-              type="password"
+              label='WeChat Server 访问凭证'
+              name='WeChatServerToken'
+              type='password'
               onChange={handleInputChange}
-              autoComplete="off"
+              autoComplete='off'
               value={inputs.WeChatServerToken}
+              placeholder='敏感信息不会发送到前端显示'
             />
             <Form.Input
-              label="微信公众号二维码图片链接"
-              name="WeChatAccountQRCodeImageURL"
+              label='微信公众号二维码图片链接'
+              name='WeChatAccountQRCodeImageURL'
               onChange={handleInputChange}
-              autoComplete="off"
+              autoComplete='off'
               value={inputs.WeChatAccountQRCodeImageURL}
+              placeholder='输入一个图片链接'
             />
           </Form.Group>
-          <Form.Button onClick={submitWeChat}>保存微信登录设置</Form.Button>
+          <Form.Button onClick={submitWeChat}>
+            保存 WeChat Server 设置
+          </Form.Button>
         </Form>
       </Grid.Column>
     </Grid>
