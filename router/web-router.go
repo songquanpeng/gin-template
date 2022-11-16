@@ -5,7 +5,7 @@ import (
 	"gin-template/common"
 	"gin-template/controller"
 	"gin-template/middleware"
-	"github.com/gin-gonic/contrib/static"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
