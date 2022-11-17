@@ -23,8 +23,11 @@
 + [x] WeChat official account authorization (need [wechat-server](https://github.com/songquanpeng/wechat-server)).
 + [x] Email verification & password reset.
 + [x] Request rate limit.
-+ [x] Use GitHub Actions to build releases & Docker images. 
++ [x] Static page cache.
 + [x] Mobile friendly UI.
++ [x] Token based authorization.
++ [x] Use GitHub Actions to build releases & Docker images.
++ [ ] Turnstile CAPTCHA
 
 ## Usage
 1. Download built binaries from [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) or build from source:
