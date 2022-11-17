@@ -22,7 +22,7 @@ type File struct {
 func GetAllFiles(startIdx int, num int) ([]*File, error) {
 	var files []*File
 	var err error
-	err = DB.Limit(num).Offset(startIdx).Find(&files).Error
+	err = DB.Order("id desc").Limit(num).Offset(startIdx).Find(&files).Error
 	return files, err
 }
 
