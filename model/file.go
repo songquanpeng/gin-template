@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 	"os"
 	"path"
-	"strings"
 )
 
 type File struct {
@@ -20,24 +19,16 @@ type File struct {
 	DownloadCounter int    `json:"download_counter"`
 }
 
-func GetAllFiles() ([]*File, error) {
+func GetAllFiles(startIdx int, num int) ([]*File, error) {
 	var files []*File
 	var err error
-	err = DB.Find(&files).Error
+	err = DB.Limit(num).Offset(startIdx).Find(&files).Error
 	return files, err
 }
 
 func SearchFiles(keyword string) (files []*File, err error) {
 	err = DB.Select([]string{"id", "filename", "description", "uploader", "uploader_id", "link", "upload_time", "download_counter"}).Where(
 		"filename LIKE ? or uploader LIKE ? or uploader_id = ?", keyword+"%", keyword+"%", keyword).Find(&files).Error
-	return files, err
-}
-
-func QueryFiles(query string, startIdx int) ([]*File, error) {
-	var files []*File
-	var err error
-	query = strings.ToLower(query)
-	err = DB.Limit(common.ItemsPerPage).Offset(startIdx).Where("filename LIKE ? or description LIKE ? or uploader LIKE ? or time LIKE ?", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%").Order("id desc").Find(&files).Error
 	return files, err
 }
 

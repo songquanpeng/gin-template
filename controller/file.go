@@ -13,7 +13,11 @@ import (
 )
 
 func GetAllFiles(c *gin.Context) {
-	files, err := model.GetAllFiles()
+	p, _ := strconv.Atoi(c.Query("p"))
+	if p < 0 {
+		p = 0
+	}
+	files, err := model.GetAllFiles(p*common.ItemsPerPage, common.ItemsPerPage)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,

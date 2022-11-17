@@ -26,8 +26,8 @@ func GetMaxUserId() int {
 	return user.Id
 }
 
-func GetAllUsers() (users []*User, err error) {
-	err = DB.Select([]string{"id", "username", "display_name", "role", "status", "email"}).Find(&users).Error
+func GetAllUsers(startIdx int, num int) (users []*User, err error) {
+	err = DB.Limit(num).Offset(startIdx).Select([]string{"id", "username", "display_name", "role", "status", "email"}).Find(&users).Error
 	return users, err
 }
 

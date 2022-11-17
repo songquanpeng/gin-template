@@ -163,7 +163,11 @@ func Register(c *gin.Context) {
 }
 
 func GetAllUsers(c *gin.Context) {
-	users, err := model.GetAllUsers()
+	p, _ := strconv.Atoi(c.Query("p"))
+	if p < 0 {
+		p = 0
+	}
+	users, err := model.GetAllUsers(p*common.ItemsPerPage, common.ItemsPerPage)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
@@ -553,10 +557,14 @@ func ManageUser(c *gin.Context) {
 		})
 		return
 	}
-
+	clearUser := model.User{
+		Role:   user.Role,
+		Status: user.Status,
+	}
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
+		"data":    clearUser,
 	})
 	return
 }

@@ -11,8 +11,7 @@ import {
 } from 'semantic-ui-react';
 import { API, copy, showError, showSuccess } from '../helpers';
 import { useDropzone } from 'react-dropzone';
-
-const itemsPerPage = 10;
+import { ITEMS_PER_PAGE } from '../constants';
 
 const FilesTable = () => {
   const [files, setFiles] = useState([]);
@@ -23,11 +22,17 @@ const FilesTable = () => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [uploading, setUploading] = useState(false);
 
-  const loadFiles = async () => {
-    const res = await API.get('/api/file');
+  const loadFiles = async (startIdx) => {
+    const res = await API.get(`/api/file/?p=${startIdx}`);
     const { success, message, data } = res.data;
     if (success) {
-      setFiles(data);
+      if (startIdx === 0) {
+        setFiles(data);
+      } else {
+        let newFiles = files;
+        newFiles.push(...data);
+        setFiles(newFiles);
+      }
     } else {
       showError(message);
     }
@@ -35,11 +40,17 @@ const FilesTable = () => {
   };
 
   const onPaginationChange = (e, { activePage }) => {
-    setActivePage(activePage);
+    (async () => {
+      if (activePage === Math.ceil(files.length / ITEMS_PER_PAGE) + 1) {
+        // In this case we have to load more data and then append them.
+        await loadFiles(activePage - 1);
+      }
+      setActivePage(activePage);
+    })();
   };
 
   useEffect(() => {
-    loadFiles()
+    loadFiles(0)
       .then()
       .catch((reason) => {
         showError(reason);
@@ -59,33 +70,42 @@ const FilesTable = () => {
     showSuccess('链接已复制到剪贴板');
   };
 
-  const deleteFile = (id) => {
-    (async () => {
-      const res = await API.delete(`/api/file/${id}`);
-      const { success, message } = res.data;
-      if (success) {
-        showSuccess('文件已删除！');
-        await loadFiles();
-      } else {
-        showError(message);
-      }
-    })();
+  const deleteFile = async (id, idx) => {
+    const res = await API.delete(`/api/file/${id}`);
+    const { success, message } = res.data;
+    if (success) {
+      let newFiles = [...files];
+      let realIdx = (activePage - 1) * ITEMS_PER_PAGE + idx;
+      newFiles[realIdx].deleted = true;
+      // newFiles.splice(idx, 1);
+      setFiles(newFiles);
+      showSuccess('文件已删除！');
+    } else {
+      showError(message);
+    }
   };
 
   const searchFiles = async () => {
+    if (searchKeyword === '') {
+      // if keyword is blank, load files instead.
+      await loadFiles(0);
+      setActivePage(1);
+      return;
+    }
     setSearching(true);
     const res = await API.get(`/api/file/search?keyword=${searchKeyword}`);
     const { success, message, data } = res.data;
     if (success) {
       setFiles(data);
+      setActivePage(1);
     } else {
       showError(message);
     }
     setSearching(false);
   };
 
-  const handleKeywordChange = async (e, { name, value }) => {
-    setSearchKeyword(value);
+  const handleKeywordChange = async (e, { value }) => {
+    setSearchKeyword(value.trim());
   };
 
   const sortFile = (key) => {
@@ -122,7 +142,8 @@ const FilesTable = () => {
     }
     setUploading(false);
     setSearchKeyword('');
-    loadFiles().then();
+    loadFiles(0).then();
+    setActivePage(1);
   };
 
   useEffect(() => {
@@ -188,8 +209,12 @@ const FilesTable = () => {
 
         <Table.Body>
           {files
-            .slice((activePage - 1) * itemsPerPage, activePage * itemsPerPage)
+            .slice(
+              (activePage - 1) * ITEMS_PER_PAGE,
+              activePage * ITEMS_PER_PAGE
+            )
             .map((file, idx) => {
+              if (file.deleted) return <></>;
               return (
                 <Table.Row key={file.id}>
                   <Table.Cell>
@@ -217,7 +242,7 @@ const FilesTable = () => {
                         size={'small'}
                         negative
                         onClick={() => {
-                          deleteFile(file.id);
+                          deleteFile(file.id, idx).then();
                         }}
                       >
                         删除
@@ -246,7 +271,10 @@ const FilesTable = () => {
                 onPageChange={onPaginationChange}
                 size='small'
                 siblingRange={1}
-                totalPages={Math.ceil(files.length / itemsPerPage)}
+                totalPages={
+                  Math.ceil(files.length / ITEMS_PER_PAGE) +
+                  (files.length % ITEMS_PER_PAGE === 0 ? 1 : 0)
+                }
               />
             </Table.HeaderCell>
           </Table.Row>
