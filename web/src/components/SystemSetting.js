@@ -20,6 +20,9 @@ const SystemSetting = () => {
     WeChatServerAddress: '',
     WeChatServerToken: '',
     WeChatAccountQRCodeImageURL: '',
+    TurnstileCheckEnabled: '',
+    TurnstileSiteKey: '',
+    TurnstileSecretKey: '',
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -51,6 +54,7 @@ const SystemSetting = () => {
       case 'EmailVerificationEnabled':
       case 'GitHubOAuthEnabled':
       case 'WeChatAuthEnabled':
+      case 'TurnstileCheckEnabled':
         value = inputs[key] === 'true' ? 'false' : 'true';
         break;
       default:
@@ -78,7 +82,9 @@ const SystemSetting = () => {
       name === 'GitHubClientSecret' ||
       name === 'WeChatServerAddress' ||
       name === 'WeChatServerToken' ||
-      name === 'WeChatAccountQRCodeImageURL'
+      name === 'WeChatAccountQRCodeImageURL' ||
+      name === 'TurnstileSiteKey' ||
+      name === 'TurnstileSecretKey'
     ) {
       setInputs((inputs) => ({ ...inputs, [name]: value }));
     } else {
@@ -142,6 +148,18 @@ const SystemSetting = () => {
     }
   };
 
+  const submitTurnstile = async () => {
+    if (originInputs['TurnstileSiteKey'] !== inputs.TurnstileSiteKey) {
+      await updateOption('TurnstileSiteKey', inputs.TurnstileSiteKey);
+    }
+    if (
+      originInputs['TurnstileSecretKey'] !== inputs.TurnstileSecretKey &&
+      inputs.TurnstileSecretKey !== ''
+    ) {
+      await updateOption('TurnstileSecretKey', inputs.TurnstileSecretKey);
+    }
+  };
+
   return (
     <Grid columns={1}>
       <Grid.Column>
@@ -160,7 +178,7 @@ const SystemSetting = () => {
             更新服务器地址
           </Form.Button>
           <Divider />
-          <Header as='h3'>配置登录注册方式</Header>
+          <Header as='h3'>配置登录注册</Header>
           <Form.Group inline>
             <Form.Checkbox
               checked={inputs.PasswordLoginEnabled === 'true'}
@@ -190,6 +208,14 @@ const SystemSetting = () => {
               checked={inputs.WeChatAuthEnabled === 'true'}
               label='允许通过微信登录 & 注册'
               name='WeChatAuthEnabled'
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Group inline>
+            <Form.Checkbox
+              checked={inputs.TurnstileCheckEnabled === 'true'}
+              label='启用 Turnstile 用户校验'
+              name='TurnstileCheckEnabled'
               onChange={handleInputChange}
             />
           </Form.Group>
@@ -302,6 +328,39 @@ const SystemSetting = () => {
           </Form.Group>
           <Form.Button onClick={submitWeChat}>
             保存 WeChat Server 设置
+          </Form.Button>
+          <Divider />
+          <Header as='h3'>
+            配置 Turnstile
+            <Header.Subheader>
+              用以支持用户校验，
+              <a href='https://dash.cloudflare.com/' target='_blank'>
+                点击此处
+              </a>
+              管理你的 Turnstile Sites
+            </Header.Subheader>
+          </Header>
+          <Form.Group widths={3}>
+            <Form.Input
+              label='Turnstile Site Key'
+              name='TurnstileSiteKey'
+              onChange={handleInputChange}
+              autoComplete='off'
+              value={inputs.TurnstileSiteKey}
+              placeholder='输入你注册的 Turnstile Site Key'
+            />
+            <Form.Input
+              label='Turnstile Secret Key'
+              name='TurnstileSecretKey'
+              onChange={handleInputChange}
+              type='password'
+              autoComplete='off'
+              value={inputs.TurnstileSecretKey}
+              placeholder='敏感信息不会发送到前端显示'
+            />
+          </Form.Group>
+          <Form.Button onClick={submitTurnstile}>
+            保存 Turnstile 设置
           </Form.Button>
         </Form>
       </Grid.Column>

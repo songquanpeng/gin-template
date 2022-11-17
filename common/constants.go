@@ -27,6 +27,7 @@ var PasswordRegisterEnabled = true
 var EmailVerificationEnabled = false
 var GitHubOAuthEnabled = false
 var WeChatAuthEnabled = false
+var TurnstileCheckEnabled = false
 
 var SMTPServer = ""
 var SMTPAccount = ""
@@ -38,6 +39,9 @@ var GitHubClientSecret = ""
 var WeChatServerAddress = ""
 var WeChatServerToken = ""
 var WeChatAccountQRCodeImageURL = ""
+
+var TurnstileSiteKey = ""
+var TurnstileSecretKey = ""
 
 const (
 	RoleGuestUser  = 0
