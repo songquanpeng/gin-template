@@ -100,9 +100,16 @@ func Logout(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
-	if !common.PasswordRegisterEnabled {
+	if !common.RegisterEnabled {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "管理员关闭了新用户注册",
+			"success": false,
+		})
+		return
+	}
+	if !common.PasswordRegisterEnabled {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "管理员关闭了通过密码进行注册，请使用第三方账户验证的形式进行注册",
 			"success": false,
 		})
 		return

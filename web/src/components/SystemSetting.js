@@ -23,6 +23,7 @@ const SystemSetting = () => {
     TurnstileCheckEnabled: '',
     TurnstileSiteKey: '',
     TurnstileSecretKey: '',
+    RegisterEnabled: '',
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -55,6 +56,7 @@ const SystemSetting = () => {
       case 'GitHubOAuthEnabled':
       case 'WeChatAuthEnabled':
       case 'TurnstileCheckEnabled':
+      case 'RegisterEnabled':
         value = inputs[key] === 'true' ? 'false' : 'true';
         break;
       default:
@@ -212,6 +214,12 @@ const SystemSetting = () => {
             />
           </Form.Group>
           <Form.Group inline>
+            <Form.Checkbox
+              checked={inputs.RegisterEnabled === 'true'}
+              label='允许新用户注册（此项为否时，新用户将无法以任何方式进行注册）'
+              name='RegisterEnabled'
+              onChange={handleInputChange}
+            />
             <Form.Checkbox
               checked={inputs.TurnstileCheckEnabled === 'true'}
               label='启用 Turnstile 用户校验'
