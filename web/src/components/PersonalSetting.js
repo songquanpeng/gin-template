@@ -16,6 +16,7 @@ const PersonalSetting = () => {
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
   const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let status = localStorage.getItem('status');
@@ -70,6 +71,7 @@ const PersonalSetting = () => {
       showInfo('请稍后几秒重试，Turnstile 正在检查用户环境！');
       return;
     }
+    setLoading(true);
     const res = await API.get(
       `/api/verification?email=${inputs.email}&turnstile=${turnstileToken}`
     );
@@ -79,10 +81,12 @@ const PersonalSetting = () => {
     } else {
       showError(message);
     }
+    setLoading(false);
   };
 
   const bindEmail = async () => {
     if (inputs.email_verification_code === '') return;
+    setLoading(true);
     const res = await API.get(
       `/api/oauth/email/bind?email=${inputs.email}&code=${inputs.email_verification_code}`
     );
@@ -93,6 +97,7 @@ const PersonalSetting = () => {
     } else {
       showError(message);
     }
+    setLoading(false);
   };
 
   return (
@@ -165,7 +170,9 @@ const PersonalSetting = () => {
                 name='email'
                 type='email'
                 action={
-                  <Button onClick={sendVerificationCode}>获取验证码</Button>
+                  <Button onClick={sendVerificationCode} loading={loading}>
+                    获取验证码
+                  </Button>
                 }
               />
               <Form.Input
@@ -185,7 +192,13 @@ const PersonalSetting = () => {
               ) : (
                 <></>
               )}
-              <Button color='teal' fluid size='large' onClick={bindEmail}>
+              <Button
+                color='teal'
+                fluid
+                size='large'
+                onClick={bindEmail}
+                loading={loading}
+              >
                 绑定
               </Button>
             </Form>
