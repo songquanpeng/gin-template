@@ -36,7 +36,7 @@ function App() {
       localStorage.setItem('status', JSON.stringify(data));
       localStorage.setItem('footer_html', data.footer_html);
       let currentVersion = localStorage.getItem('version');
-      if (currentVersion !== data.version) {
+      if (currentVersion && currentVersion !== data.version) {
         localStorage.setItem('version', data.version);
         showNotice(
           `新版本可用：${data.version}，请使用快捷键 Shift + F5 刷新页面`
