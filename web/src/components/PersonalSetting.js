@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Divider, Form, Header, Image, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { API, copy, showError, showSuccess } from '../helpers';
+import { API, copy, showError, showInfo, showSuccess } from '../helpers';
+import Turnstile from 'react-turnstile';
 
 const PersonalSetting = () => {
   const [inputs, setInputs] = useState({
@@ -12,12 +13,19 @@ const PersonalSetting = () => {
   const [status, setStatus] = useState({});
   const [showWeChatBindModal, setShowWeChatBindModal] = useState(false);
   const [showEmailBindModal, setShowEmailBindModal] = useState(false);
+  const [turnstileEnabled, setTurnstileEnabled] = useState(false);
+  const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   useEffect(() => {
     let status = localStorage.getItem('status');
     if (status) {
       status = JSON.parse(status);
       setStatus(status);
+      if (status.turnstile_check) {
+        setTurnstileEnabled(true);
+        setTurnstileSiteKey(status.turnstile_site_key);
+      }
     }
   }, []);
 
@@ -58,10 +66,16 @@ const PersonalSetting = () => {
 
   const sendVerificationCode = async () => {
     if (inputs.email === '') return;
-    const res = await API.get(`/api/verification?email=${inputs.email}`);
+    if (turnstileEnabled && turnstileToken === '') {
+      showInfo('请稍后几秒重试，Turnstile 正在检查用户环境！');
+      return;
+    }
+    const res = await API.get(
+      `/api/verification?email=${inputs.email}&turnstile=${turnstileToken}`
+    );
     const { success, message } = res.data;
     if (success) {
-      showSuccess('验证码发送成功，请检查你的邮箱！');
+      showSuccess('验证码发送成功，请检查邮箱！');
     } else {
       showError(message);
     }
@@ -161,6 +175,16 @@ const PersonalSetting = () => {
                 value={inputs.email_verification_code}
                 onChange={handleInputChange}
               />
+              {turnstileEnabled ? (
+                <Turnstile
+                  sitekey={turnstileSiteKey}
+                  onVerify={(token) => {
+                    setTurnstileToken(token);
+                  }}
+                />
+              ) : (
+                <></>
+              )}
               <Button color='teal' fluid size='large' onClick={bindEmail}>
                 绑定
               </Button>

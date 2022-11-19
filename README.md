@@ -27,7 +27,7 @@
 + [x] Mobile friendly UI.
 + [x] Token based authorization.
 + [x] Use GitHub Actions to build releases & Docker images.
-+ [ ] Turnstile CAPTCHA
++ [x] Cloudflare Turnstile user validation.
 
 ## Usage
 1. Download built binaries from [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) or build from source:
