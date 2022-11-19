@@ -42,9 +42,9 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 ## 功能
 + [x] 内置用户管理
 + [x] 内置文件管理
-+ [x] [GitHub 开放授权](https://github.com/settings/applications/new).
-+ [x] 微信公众号授权 (需要 [wechat-server](https://github.com/songquanpeng/wechat-server)).
-+ [x] 邮箱验证 & 密码重置
++ [x] [GitHub 开放授权](https://github.com/settings/applications/new)
++ [x] 微信公众号授权（需要 [wechat-server](https://github.com/songquanpeng/wechat-server)）
++ [x] 邮箱验证以及通过邮件进行密码重置
 + [x] 请求频率限制
 + [x] 静态文件缓存
 + [x] 移动端适配
