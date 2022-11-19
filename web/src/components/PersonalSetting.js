@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Image, Modal } from 'semantic-ui-react';
+import { Button, Divider, Form, Header, Image, Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { API, copy, showError, showSuccess } from '../helpers';
 
@@ -83,10 +83,13 @@ const PersonalSetting = () => {
 
   return (
     <div style={{ lineHeight: '40px' }}>
+      <Header as='h3'>通用设置</Header>
       <Button as={Link} to={`/user/edit/`}>
         更新个人信息
       </Button>
       <Button onClick={generateToken}>生成访问令牌</Button>
+      <Divider />
+      <Header as='h3'>账号绑定</Header>
       <Button
         onClick={() => {
           setShowWeChatBindModal(true);

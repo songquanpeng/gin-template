@@ -164,7 +164,7 @@ const SystemSetting = () => {
     <Grid columns={1}>
       <Grid.Column>
         <Form loading={loading}>
-          <Header as='h3'>通用配置</Header>
+          <Header as='h3'>通用设置</Header>
           <Form.Group widths='equal'>
             <Form.Input
               label='服务器地址'
