@@ -337,7 +337,7 @@ const SystemSetting = () => {
               <a href='https://dash.cloudflare.com/' target='_blank'>
                 点击此处
               </a>
-              管理你的 Turnstile Sites
+              管理你的 Turnstile Sites，推荐选择 Invisible Widget Type
             </Header.Subheader>
           </Header>
           <Form.Group widths={3}>
