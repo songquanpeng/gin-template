@@ -1,7 +1,20 @@
-# Gin Template
-> Template for Gin & React projects.
+<p align="right">
+   <strong>中文</strong> | <a href="./README.en.md">English</a>
+</p>
 
-<p>
+<p align="center">
+  <a href="https://github.com/songquanpeng/gin-template"><img src="https://raw.githubusercontent.com/songquanpeng/gin-template/main/web/public/logo.png" width="200" height="200" alt="gin-template logo"></a>
+</p>
+
+<div align="center">
+
+# Gin 项目模板
+
+_✨ 用于 Gin & React 项目的模板 ✨_
+
+</div>
+
+<p align="center">
   <a href="https://raw.githubusercontent.com/songquanpeng/gin-template/main/LICENSE">
     <img src="https://img.shields.io/github/license/songquanpeng/gin-template?color=brightgreen" alt="license">
   </a>
@@ -16,52 +29,61 @@
   </a>
 </p>
 
-## Features
-+ [x] Built-in user management.
-+ [x] Built-in file management.
-+ [x] [GitHub OAuth](https://github.com/settings/applications/new).
-+ [x] WeChat official account authorization (need [wechat-server](https://github.com/songquanpeng/wechat-server)).
-+ [x] Email verification & password reset.
-+ [x] Request rate limit.
-+ [x] Static page cache.
-+ [x] Mobile friendly UI.
-+ [x] Token based authorization.
-+ [x] Use GitHub Actions to build releases & Docker images.
-+ [x] Cloudflare Turnstile user validation.
+<p align="center">
+  <a href="https://github.com/songquanpeng/gin-template/releases">程序下载</a>
+  ·
+  <a href="https://github.com/songquanpeng/gin-template#用法">使用教程</a>
+  ·
+  <a href="https://github.com/songquanpeng/gin-template/issues">意见反馈</a>
+  ·
+  <a href="https://gin-template.vercel.app/">在线演示</a>
+</p>
 
-## Usage
-1. Download built binaries from [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) or build from source:
+## 功能
++ [x] 内置用户管理
++ [x] 内置文件管理
++ [x] [GitHub 开放授权](https://github.com/settings/applications/new).
++ [x] 微信公众号授权 (需要 [wechat-server](https://github.com/songquanpeng/wechat-server)).
++ [x] 邮箱验证 & 密码重置
++ [x] 请求频率限制
++ [x] 静态文件缓存
++ [x] 移动端适配
++ [x] 基于令牌的鉴权
++ [x] 使用 GitHub Actions 自动打包可执行文件与 Docker 镜像
++ [x] Cloudflare Turnstile 用户校验
+
+## 用法
+1. 从 [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) 下载可执行文件或者从源码编译：
    ```shell
    git clone https://github.com/songquanpeng/gin-template.git
    go mod download
    go build -ldflags "-s -w" -o gin-template
    ````
-2. Run it: 
+2. 运行：
    ```shell
    chmod u+x gin-template
    ./gin-template --port 3000 --log-dir ./logs
    ```
-3. Command line arguments:
-4. The username for the initial account is `root` and the password is `123456`.
+3. 访问 [http://localhost:3000/](http://localhost:3000/) 并登录。初始账号用户名为 `root`，密码为 `123456`。
 
-## Basic Configurations
-The system works out of the box.
+## 配置
+系统本身开箱即用。
 
-You can configure the system by set environment variables or specify command line arguments.
+你可以通过设置环境变量或者命令行参数进行配置。
 
-After the system is up, you can use the dashboard for further configuration.
+等到系统启动后，使用 `root` 用户登录系统并做进一步的配置。
 
-### Environment Variables
-1. `REDIS_CONN_STRING`: if set, will use Redis as the store of rate limitation instead of memory.
-   + Example: `REDIS_CONN_STRING=redis://default:redispw@localhost:49153`
-2. `SESSION_SECRET`: if set, will fix session secret.
-   + Example: `SESSION_SECRET=random_string`
-3. `SQL_DSN`: if set, will use target SQL database instead of SQLite.
-   + Example`SQL_DSN=root:123456@tcp(localhost:3306)/gofile`
+### 环境变量
+1. `REDIS_CONN_STRING`：设置之后将使用 Redis 作为请求频率限制的存储，而非使用内存存储。
+   + 例子：`REDIS_CONN_STRING=redis://default:redispw@localhost:49153`
+2. `SESSION_SECRET`：设置之后将使用固定的会话密钥，这样系统重新启动后已登录用户的 cookie 将依旧有效。
+   + 例子：`SESSION_SECRET=random_string`
+3. `SQL_DSN`：设置之后将使用指定数据库而非 SQLite。
+   + 例子：`SQL_DSN=root:123456@tcp(localhost:3306)/gin-template`
 
-### Command line Arguments
-1. `--port <port_number>`: specify the port number, if not set, will use `3000`.
-   1. Example: `--port 3000`
-2. `--log-dir <log_dir>`: specify the log dir, if not set, won't save log.
-   + Example: `--log-dir ./logs`
-3. `--version`: print version and exit.
+### 命令行参数
+1. `--port <port_number>`: 指定服务器监听的端口号，默认为 `3000`。
+   + 例子：`--port 3000`
+2. `--log-dir <log_dir>`: 指定日志文件夹，如果没有设置，日志将不会被保存。
+   + 例子：`--log-dir ./logs`
+3. `--version`: 打印系统版本号并退出。
