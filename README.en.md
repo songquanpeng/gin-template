@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/songquanpeng/gin-template"><img src="https://raw.githubusercontent.com/songquanpeng/gin-template/main/web/public/logo.png" width="200" height="200" alt="gin-template logo"></a>
+  <a href="https://github.com/songquanpeng/gin-template"><img src="https://raw.githubusercontent.com/songquanpeng/gin-template/main/web/public/logo.png" width="150" height="150" alt="gin-template logo"></a>
 </p>
 
 <div align="center">
