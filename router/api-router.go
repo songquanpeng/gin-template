@@ -55,11 +55,12 @@ func SetApiRouter(router *gin.Engine) {
 			optionRoute.PUT("/", controller.UpdateOption)
 		}
 		fileRoute := apiRouter.Group("/file")
+		fileRoute.Use(middleware.AdminAuth())
 		{
-			fileRoute.GET("/", middleware.AdminAuth(), controller.GetAllFiles)
-			fileRoute.GET("/search", middleware.AdminAuth(), controller.SearchFiles)
-			fileRoute.POST("/", middleware.AdminAuth(), middleware.UploadRateLimit(), controller.UploadFile)
-			fileRoute.DELETE("/:id", middleware.AdminAuth(), controller.DeleteFile)
+			fileRoute.GET("/", controller.GetAllFiles)
+			fileRoute.GET("/search", controller.SearchFiles)
+			fileRoute.POST("/", middleware.UploadRateLimit(), controller.UploadFile)
+			fileRoute.DELETE("/:id", controller.DeleteFile)
 		}
 	}
 }

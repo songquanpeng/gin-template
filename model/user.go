@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+// User if you add sensitive fields, don't forget to clean them in setupLogin function.
+// Otherwise, the sensitive information will be saved on local storage in plain text!
 type User struct {
 	Id               int    `json:"id"`
 	Username         string `json:"username" gorm:"unique;index" validate:"max=12"`
@@ -17,7 +19,7 @@ type User struct {
 	Email            string `json:"email" gorm:"index" validate:"max=50"`
 	GitHubId         string `json:"github_id" gorm:"column:github_id;index"`
 	WeChatId         string `json:"wechat_id" gorm:"column:wechat_id;index"`
-	VerificationCode string `json:"verification_code" gorm:"-:all"`
+	VerificationCode string `json:"verification_code" gorm:"-:all"` // this field is only for Email verification, don't save it to database!
 }
 
 func GetMaxUserId() int {
@@ -89,10 +91,13 @@ func (user *User) ValidateAndFill() (err error) {
 	// that means if your field’s value is 0, '', false or other zero values,
 	// it won’t be used to build query conditions
 	password := user.Password
+	if password == "" {
+		return errors.New("密码为空")
+	}
 	DB.Where(User{Username: user.Username}).First(user)
 	okay := common.ValidatePasswordAndHash(password, user.Password)
 	if !okay || user.Status != common.UserStatusEnabled {
-		return errors.New("用户名或密码错误，或者该用户已被封禁")
+		return errors.New("用户名或密码错误，或用户已被封禁")
 	}
 	return nil
 }

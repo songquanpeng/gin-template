@@ -36,7 +36,7 @@ func authHelper(c *gin.Context, minRole int) {
 		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
-				"message": "无权进行此操作，未登录或 token 无效",
+				"message": "无权进行此操作，token 无效",
 			})
 			c.Abort()
 			return
@@ -54,7 +54,7 @@ func authHelper(c *gin.Context, minRole int) {
 	if role.(int) < minRole {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "无权进行此操作，未登录或 token 无效，或没有权限",
+			"message": "无权进行此操作，权限不足",
 		})
 		c.Abort()
 		return

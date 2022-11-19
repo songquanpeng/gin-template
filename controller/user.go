@@ -141,7 +141,7 @@ func Register(c *gin.Context) {
 		if !common.VerifyCodeWithKey(user.Email, user.VerificationCode, common.EmailVerificationPurpose) {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
-				"message": "验证码错误！",
+				"message": "验证码错误或已过期",
 			})
 			return
 		}
@@ -161,7 +161,6 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "",
@@ -456,7 +455,6 @@ func DeleteSelf(c *gin.Context) {
 	return
 }
 
-// CreateUser Only admin user can call this, so we can trust it
 func CreateUser(c *gin.Context) {
 	var user model.User
 	err := json.NewDecoder(c.Request.Body).Decode(&user)
@@ -478,8 +476,13 @@ func CreateUser(c *gin.Context) {
 		})
 		return
 	}
-
-	if err := user.Insert(); err != nil {
+	// Even for admin users, we cannot fully trust them!
+	cleanUser := model.User{
+		Username:    user.Username,
+		Password:    user.Password,
+		DisplayName: user.DisplayName,
+	}
+	if err := cleanUser.Insert(); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
 			"message": err.Error(),
@@ -582,7 +585,7 @@ func EmailBind(c *gin.Context) {
 	if !common.VerifyCodeWithKey(email, code, common.EmailVerificationPurpose) {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "验证码错误！",
+			"message": "验证码错误或已过期",
 		})
 		return
 	}

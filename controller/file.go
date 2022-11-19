@@ -76,7 +76,7 @@ func UploadFile(c *gin.Context) {
 		filename := filepath.Base(file.Filename)
 		ext := filepath.Ext(filename)
 		link := common.GetUUID() + ext
-		savePath := filepath.Join(uploadPath, link)
+		savePath := filepath.Join(uploadPath, link) // both parts are checked, so this path should be safe to use
 		if err := c.SaveUploadedFile(file, savePath); err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,

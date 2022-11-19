@@ -12,9 +12,8 @@ import (
 
 func setWebRouter(router *gin.Engine, buildFS embed.FS, indexPage []byte) {
 	router.Use(middleware.GlobalWebRateLimit())
-	fileDownloadAuth := router.Group("/")
-	fileDownloadAuth.GET("/upload/:file", middleware.DownloadRateLimit(), controller.DownloadFile)
-	fileDownloadAuth.Use(middleware.DownloadRateLimit())
+	fileDownloadRoute := router.Group("/")
+	fileDownloadRoute.GET("/upload/:file", middleware.DownloadRateLimit(), controller.DownloadFile)
 	router.Use(middleware.Cache())
 	router.Use(static.Serve("/", common.EmbedFolder(buildFS, "web/build")))
 	router.NoRoute(func(c *gin.Context) {

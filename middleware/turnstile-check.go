@@ -26,7 +26,7 @@ func TurnstileCheck() gin.HandlerFunc {
 			if response == "" {
 				c.JSON(http.StatusOK, gin.H{
 					"success": false,
-					"message": "Turnstile Token 为空",
+					"message": "Turnstile token 为空",
 				})
 				c.Abort()
 				return
