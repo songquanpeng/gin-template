@@ -6,6 +6,7 @@ import {
   Icon,
   Pagination,
   Popup,
+  Progress,
   Segment,
   Table,
 } from 'semantic-ui-react';
@@ -21,6 +22,7 @@ const FilesTable = () => {
   const [searching, setSearching] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState('0');
 
   const loadFiles = async (startIdx) => {
     const res = await API.get(`/api/file/?p=${startIdx}`);
@@ -133,6 +135,10 @@ const FilesTable = () => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      onUploadProgress: (e) => {
+        let uploadProgress = ((e.loaded / e.total) * 100).toFixed(2);
+        setUploadProgress(uploadProgress);
+      },
     });
     const { success, message } = res.data;
     if (success) {
@@ -141,6 +147,7 @@ const FilesTable = () => {
       showError(message);
     }
     setUploading(false);
+    setUploadProgress('0');
     setSearchKeyword('');
     loadFiles(0).then();
     setActivePage(1);
@@ -164,6 +171,15 @@ const FilesTable = () => {
           <input {...getInputProps()} />
         </Header>
       </Segment>
+      {uploading ? (
+        <Progress
+          percent={uploadProgress}
+          success
+          progress='percent'
+        ></Progress>
+      ) : (
+        <></>
+      )}
       <Form onSubmit={searchFiles}>
         <Form.Input
           icon='search'
