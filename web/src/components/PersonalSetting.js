@@ -157,7 +157,8 @@ const PersonalSetting = () => {
         onClose={() => setShowEmailBindModal(false)}
         onOpen={() => setShowEmailBindModal(true)}
         open={showEmailBindModal}
-        size={'mini'}
+        size={'tiny'}
+        style={{ maxWidth: '450px' }}
       >
         <Modal.Header>绑定邮箱地址</Modal.Header>
         <Modal.Content>
@@ -170,7 +171,7 @@ const PersonalSetting = () => {
                 name='email'
                 type='email'
                 action={
-                  <Button onClick={sendVerificationCode} loading={loading}>
+                  <Button onClick={sendVerificationCode} disabled={loading}>
                     获取验证码
                   </Button>
                 }

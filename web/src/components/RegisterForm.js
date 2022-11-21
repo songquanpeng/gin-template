@@ -141,7 +141,7 @@ const RegisterForm = () => {
                   name='email'
                   type='email'
                   action={
-                    <Button onClick={sendVerificationCode} loading={loading}>
+                    <Button onClick={sendVerificationCode} disabled={loading}>
                       获取验证码
                     </Button>
                   }
