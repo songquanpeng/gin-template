@@ -17,7 +17,7 @@ COPY --from=builder /build/build ./web/build
 RUN go mod download
 RUN go build -ldflags "-s -w" -o gin-template
 
-FROM scratch
+FROM alpine
 
 ENV PORT=3000
 COPY --from=builder2 /build/gin-template /
