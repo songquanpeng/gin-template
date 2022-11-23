@@ -20,7 +20,7 @@ RUN go build -ldflags "-s -w" -o gin-template
 FROM scratch
 
 ENV PORT=3000
-WORKDIR /data
 COPY --from=builder2 /build/gin-template /
 EXPOSE 3000
+WORKDIR /data
 ENTRYPOINT ["/gin-template"]
