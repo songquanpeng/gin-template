@@ -24,7 +24,7 @@ _✨ 用于 Gin & React 项目的模板 ✨_
   <a href="https://github.com/songquanpeng/gin-template/releases/latest">
     <img src="https://img.shields.io/github/downloads/songquanpeng/gin-template/total?color=brightgreen&include_prereleases" alt="release">
   </a>
-  <a href="https://goreportcard.com/report/github.com/songquanpeng/go-file">
+  <a href="https://goreportcard.com/report/github.com/songquanpeng/gin-template">
     <img src="https://goreportcard.com/badge/github.com/songquanpeng/gin-template" alt="GoReportCard">
   </a>
 </p>
@@ -32,7 +32,7 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 <p align="center">
   <a href="https://github.com/songquanpeng/gin-template/releases">程序下载</a>
   ·
-  <a href="https://github.com/songquanpeng/gin-template#用法">使用教程</a>
+  <a href="https://github.com/songquanpeng/gin-template#部署">部署教程</a>
   ·
   <a href="https://github.com/songquanpeng/gin-template/issues">意见反馈</a>
   ·
@@ -52,7 +52,8 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 + [x] 使用 GitHub Actions 自动打包可执行文件与 Docker 镜像
 + [x] Cloudflare Turnstile 用户校验
 
-## 用法
+## 部署
+### 手动部署
 1. 从 [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) 下载可执行文件或者从源码编译：
    ```shell
    git clone https://github.com/songquanpeng/gin-template.git
@@ -65,6 +66,13 @@ _✨ 用于 Gin & React 项目的模板 ✨_
    ./gin-template --port 3000 --log-dir ./logs
    ```
 3. 访问 [http://localhost:3000/](http://localhost:3000/) 并登录。初始账号用户名为 `root`，密码为 `123456`。
+
+更加详细的部署教程[参见此处](https://iamazing.cn/page/how-to-deploy-a-website)。
+
+### 基于 Docker 进行部署
+执行：`docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
+
+数据将会保存在宿主机的 `/home/ubuntu/data/gin-template` 目录。
 
 ## 配置
 系统本身开箱即用。

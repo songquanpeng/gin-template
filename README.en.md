@@ -32,7 +32,7 @@ _✨ Template for Gin & React projects ✨_
 <p align="center">
   <a href="https://github.com/songquanpeng/gin-template/releases">Download</a>
   ·
-  <a href="https://github.com/songquanpeng/gin-template/blob/main/README.en.md#usage">Tutorial</a>
+  <a href="https://github.com/songquanpeng/gin-template/blob/main/README.en.md#deployment">Tutorial</a>
   ·
   <a href="https://github.com/songquanpeng/gin-template/issues">Feedback</a>
   ·
@@ -52,8 +52,9 @@ _✨ Template for Gin & React projects ✨_
 + [x] Use GitHub Actions to build releases & Docker images.
 + [x] Cloudflare Turnstile user validation.
 
-## Usage
-1. Download built binaries from [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) or build from source:
+## Deployment
+### Manual deployment
+1. Download built binary from [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) or build from source:
    ```shell
    git clone https://github.com/songquanpeng/gin-template.git
    go mod download
@@ -65,6 +66,11 @@ _✨ Template for Gin & React projects ✨_
    ./gin-template --port 3000 --log-dir ./logs
    ```
 3. Visit [http://localhost:3000/](http://localhost:3000/) and login. The username for the initial account is `root` and the password is `123456`.
+
+### Deploy with Docker
+Execute: `docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
+
+Data will be saved in `/home/ubuntu/data/gin-template`.
 
 ## Configurations
 The system works out of the box.
