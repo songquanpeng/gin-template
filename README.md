@@ -70,7 +70,7 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 更加详细的部署教程[参见此处](https://iamazing.cn/page/how-to-deploy-a-website)。
 
 ### 基于 Docker 进行部署
-执行：`docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
+执行：`docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data -v /etc/ssl/certs:/etc/ssl/certs:ro justsong/gin-template`
 
 数据将会保存在宿主机的 `/home/ubuntu/data/gin-template` 目录。
 

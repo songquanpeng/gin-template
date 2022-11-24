@@ -68,7 +68,7 @@ _✨ Template for Gin & React projects ✨_
 3. Visit [http://localhost:3000/](http://localhost:3000/) and login. The username for the initial account is `root` and the password is `123456`.
 
 ### Deploy with Docker
-Execute: `docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
+Execute: `docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data -v /etc/ssl/certs:/etc/ssl/certs:ro justsong/gin-template`
 
 Data will be saved in `/home/ubuntu/data/gin-template`.
 
