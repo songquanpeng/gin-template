@@ -593,10 +593,17 @@ func EmailBind(c *gin.Context) {
 	user := model.User{
 		Id: id,
 	}
-	user.FillUserById()
+	err := user.FillUserById()
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": err.Error(),
+		})
+		return
+	}
 	user.Email = email
 	// no need to check if this email already taken, because we have used verification code to check it
-	err := user.Update(false)
+	err = user.Update(false)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
