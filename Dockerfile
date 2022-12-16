@@ -20,6 +20,10 @@ RUN go build -ldflags "-s -w -X 'gin-template/common.Version=$(cat VERSION)' -ex
 
 FROM alpine
 
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache ca-certificates tzdata \
+    && update-ca-certificates 2>/dev/null || true
 ENV PORT=3000
 COPY --from=builder2 /build/gin-template /
 EXPOSE 3000
