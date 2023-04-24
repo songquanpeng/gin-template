@@ -21,6 +21,9 @@ _✨ 用于 Gin & React 项目的模板 ✨_
   <a href="https://github.com/songquanpeng/gin-template/releases/latest">
     <img src="https://img.shields.io/github/v/release/songquanpeng/gin-template?color=brightgreen&include_prereleases" alt="release">
   </a>
+  <a href="https://hub.docker.com/repository/docker/justsong/gin-template">
+    <img src="https://img.shields.io/docker/pulls/justsong/gin-template?color=brightgreen" alt="docker pull">
+  </a>
   <a href="https://github.com/songquanpeng/gin-template/releases/latest">
     <img src="https://img.shields.io/github/downloads/songquanpeng/gin-template/total?color=brightgreen&include_prereleases" alt="release">
   </a>
