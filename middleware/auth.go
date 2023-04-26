@@ -19,7 +19,7 @@ func authHelper(c *gin.Context, minRole int) {
 		// Check token
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			c.JSON(http.StatusOK, gin.H{
+			c.JSON(http.StatusUnauthorized, gin.H{
 				"success": false,
 				"message": "无权进行此操作，未登录或 token 无效",
 			})
