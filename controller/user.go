@@ -542,9 +542,23 @@ func ManageUser(c *gin.Context) {
 	switch req.Action {
 	case "disable":
 		user.Status = common.UserStatusDisabled
+		if user.Role == common.RoleRootUser {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "无法禁用超级管理员用户",
+			})
+			return
+		}
 	case "enable":
 		user.Status = common.UserStatusEnabled
 	case "delete":
+		if user.Role == common.RoleRootUser {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "无法删除超级管理员用户",
+			})
+			return
+		}
 		if err := user.Delete(); err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
@@ -560,8 +574,29 @@ func ManageUser(c *gin.Context) {
 			})
 			return
 		}
+		if user.Role >= common.RoleAdminUser {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "该用户已经是管理员",
+			})
+			return
+		}
 		user.Role = common.RoleAdminUser
 	case "demote":
+		if user.Role == common.RoleRootUser {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "无法降级超级管理员用户",
+			})
+			return
+		}
+		if user.Role == common.RoleCommonUser {
+			c.JSON(http.StatusOK, gin.H{
+				"success": false,
+				"message": "该用户已经是普通用户",
+			})
+			return
+		}
 		user.Role = common.RoleCommonUser
 	}
 
