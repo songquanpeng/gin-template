@@ -41,7 +41,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: gin-template.exe
-          draft: true
+          draft: false
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
