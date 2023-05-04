@@ -2,8 +2,15 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/User';
 
-import { Button, Container, Dropdown, Icon, Menu, Segment } from 'semantic-ui-react';
-import { API, isAdmin, isMobile, showSuccess } from '../helpers';
+import {
+  Button,
+  Container,
+  Dropdown,
+  Icon,
+  Menu,
+  Segment,
+} from 'semantic-ui-react';
+import { API, getSystemName, isAdmin, isMobile, showSuccess } from '../helpers';
 import '../index.css';
 
 // Header Buttons
@@ -42,6 +49,7 @@ const Header = () => {
   let navigate = useNavigate();
 
   const [showSidebar, setShowSidebar] = useState(false);
+  const systemName = getSystemName();
 
   async function logout() {
     setShowSidebar(false);
@@ -105,7 +113,7 @@ const Header = () => {
                 style={{ marginRight: '0.75em' }}
               />
               <div style={{ fontSize: '20px' }}>
-                <b>项目模板</b>
+                <b>{systemName}</b>
               </div>
             </Menu.Item>
             <Menu.Menu position='right'>
@@ -159,7 +167,7 @@ const Header = () => {
           <Menu.Item as={Link} to='/' className={'hide-on-mobile'}>
             <img src='/logo.png' alt='logo' style={{ marginRight: '0.75em' }} />
             <div style={{ fontSize: '20px' }}>
-              <b>项目模板</b>
+              <b>{systemName}</b>
             </div>
           </Menu.Item>
           {renderButtons(false)}

@@ -15,6 +15,16 @@ export function isRoot() {
   return user.role >= 100;
 }
 
+export function getSystemName() {
+  let system_name = localStorage.getItem('system_name');
+  if (!system_name) return '项目模板';
+  return system_name;
+}
+
+export function getFooterHTML() {
+  return localStorage.getItem('footer_html');
+}
+
 export async function copy(text) {
   let okay = true;
   try {

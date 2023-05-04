@@ -8,6 +8,7 @@ const OtherSetting = () => {
     Footer: '',
     Notice: '',
     About: '',
+    SystemName: '',
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -65,6 +66,10 @@ const OtherSetting = () => {
     await updateOption('Footer', inputs.Footer);
   };
 
+  const submitSystemName = async () => {
+    await updateOption('SystemName', inputs.SystemName);
+  };
+
   const submitAbout = async () => {
     await updateOption('About', inputs.About);
   };
@@ -109,6 +114,16 @@ const OtherSetting = () => {
           <Form.Button onClick={submitNotice}>保存公告</Form.Button>
           <Divider />
           <Header as='h3'>个性化设置</Header>
+          <Form.Group widths='equal'>
+            <Form.Input
+              label='系统名称'
+              placeholder='在此输入系统名称'
+              value={inputs.SystemName}
+              name='SystemName'
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Form.Button onClick={submitSystemName}>设置系统名称</Form.Button>
           <Form.Group widths='equal'>
             <Form.TextArea
               label='关于'
