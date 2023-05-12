@@ -12,6 +12,7 @@ const SystemSetting = () => {
     GitHubClientSecret: '',
     Notice: '',
     SMTPServer: '',
+    SMTPPort: '',
     SMTPAccount: '',
     SMTPToken: '',
     ServerAddress: '',
@@ -105,6 +106,12 @@ const SystemSetting = () => {
     }
     if (originInputs['SMTPAccount'] !== inputs.SMTPAccount) {
       await updateOption('SMTPAccount', inputs.SMTPAccount);
+    }
+    if (
+      originInputs['SMTPPort'] !== inputs.SMTPPort &&
+      inputs.SMTPPort !== ''
+    ) {
+      await updateOption('SMTPPort', inputs.SMTPPort);
     }
     if (
       originInputs['SMTPToken'] !== inputs.SMTPToken &&
@@ -232,20 +239,28 @@ const SystemSetting = () => {
             配置 SMTP
             <Header.Subheader>用以支持系统的邮件发送</Header.Subheader>
           </Header>
-          <Form.Group widths={3}>
+          <Form.Group widths={4}>
             <Form.Input
               label='SMTP 服务器地址'
               name='SMTPServer'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.SMTPServer}
               placeholder='例如：smtp.qq.com'
+            />
+            <Form.Input
+              label='SMTP 端口'
+              name='SMTPPort'
+              onChange={handleInputChange}
+              autoComplete='new-password'
+              value={inputs.SMTPPort}
+              placeholder='默认: 587'
             />
             <Form.Input
               label='SMTP 账户'
               name='SMTPAccount'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.SMTPAccount}
               placeholder='通常是邮箱地址'
             />
@@ -254,7 +269,7 @@ const SystemSetting = () => {
               name='SMTPToken'
               onChange={handleInputChange}
               type='password'
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.SMTPToken}
               placeholder='敏感信息不会发送到前端显示'
             />
@@ -281,7 +296,7 @@ const SystemSetting = () => {
               label='GitHub Client ID'
               name='GitHubClientId'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.GitHubClientId}
               placeholder='输入你注册的 GitHub OAuth APP 的 ID'
             />
@@ -290,7 +305,7 @@ const SystemSetting = () => {
               name='GitHubClientSecret'
               onChange={handleInputChange}
               type='password'
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.GitHubClientSecret}
               placeholder='敏感信息不会发送到前端显示'
             />
@@ -318,7 +333,7 @@ const SystemSetting = () => {
               name='WeChatServerAddress'
               placeholder='例如：https://yourdomain.com'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.WeChatServerAddress}
             />
             <Form.Input
@@ -326,7 +341,7 @@ const SystemSetting = () => {
               name='WeChatServerToken'
               type='password'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.WeChatServerToken}
               placeholder='敏感信息不会发送到前端显示'
             />
@@ -334,7 +349,7 @@ const SystemSetting = () => {
               label='微信公众号二维码图片链接'
               name='WeChatAccountQRCodeImageURL'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.WeChatAccountQRCodeImageURL}
               placeholder='输入一个图片链接'
             />
@@ -358,7 +373,7 @@ const SystemSetting = () => {
               label='Turnstile Site Key'
               name='TurnstileSiteKey'
               onChange={handleInputChange}
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.TurnstileSiteKey}
               placeholder='输入你注册的 Turnstile Site Key'
             />
@@ -367,7 +382,7 @@ const SystemSetting = () => {
               name='TurnstileSecretKey'
               onChange={handleInputChange}
               type='password'
-              autoComplete='off'
+              autoComplete='new-password'
               value={inputs.TurnstileSecretKey}
               placeholder='敏感信息不会发送到前端显示'
             />

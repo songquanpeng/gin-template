@@ -31,6 +31,7 @@ var TurnstileCheckEnabled = false
 var RegisterEnabled = true
 
 var SMTPServer = ""
+var SMTPPort = 587
 var SMTPAccount = ""
 var SMTPToken = ""
 
