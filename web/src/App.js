@@ -35,6 +35,9 @@ function App() {
     const res = await API.get('/api/status');
     const { success, data } = res.data;
     if (success) {
+      console.log(
+        `GitHub 仓库地址：https://github.com/songquanpeng/gin-template`
+      );
       localStorage.setItem('status', JSON.stringify(data));
       statusDispatch({ type: 'set', payload: data });
       localStorage.setItem('system_name', data.system_name);
