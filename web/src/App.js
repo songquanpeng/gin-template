@@ -42,6 +42,7 @@ function App() {
       statusDispatch({ type: 'set', payload: data });
       localStorage.setItem('system_name', data.system_name);
       localStorage.setItem('footer_html', data.footer_html);
+      localStorage.setItem('home_page_link', data.home_page_link);
       if (
         data.version !== process.env.REACT_APP_VERSION &&
         data.version !== 'v0.0.0' &&

@@ -11,6 +11,7 @@ var Version = "v0.0.0"            // this hard coding will be replaced automatic
 var SystemName = "项目模板"
 var ServerAddress = "http://localhost:3000"
 var Footer = ""
+var HomePageLink = ""
 
 // Any options with "Secret", "Token" in its key won't be return by GetOptions
 

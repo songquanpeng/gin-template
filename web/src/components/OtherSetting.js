@@ -9,6 +9,7 @@ const OtherSetting = () => {
     Notice: '',
     About: '',
     SystemName: '',
+    HomePageLink: '',
   });
   let originInputs = {};
   let [loading, setLoading] = useState(false);
@@ -70,6 +71,10 @@ const OtherSetting = () => {
     await updateOption('SystemName', inputs.SystemName);
   };
 
+  const submitHomePageLink = async () => {
+    await updateOption('HomePageLink', inputs.HomePageLink);
+  };
+
   const submitAbout = async () => {
     await updateOption('About', inputs.About);
   };
@@ -124,6 +129,17 @@ const OtherSetting = () => {
             />
           </Form.Group>
           <Form.Button onClick={submitSystemName}>设置系统名称</Form.Button>
+          <Form.Group widths='equal'>
+            <Form.Input
+              label='首页链接'
+              placeholder='在此输入首页链接，设置后将通过 iframe 方式嵌入该网页'
+              value={inputs.HomePageLink}
+              name='HomePageLink'
+              onChange={handleInputChange}
+              type='url'
+            />
+          </Form.Group>
+          <Form.Button onClick={submitHomePageLink}>设置首页链接</Form.Button>
           <Form.Group widths='equal'>
             <Form.TextArea
               label='关于'
