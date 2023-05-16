@@ -26,11 +26,11 @@ const SystemSetting = () => {
     TurnstileSecretKey: '',
     RegisterEnabled: '',
   });
-  let originInputs = {};
+  const [originInputs, setOriginInputs] = useState({});
   let [loading, setLoading] = useState(false);
 
   const getOptions = async () => {
-    const res = await API.get('/api/option');
+    const res = await API.get('/api/option/');
     const { success, message, data } = res.data;
     if (success) {
       let newInputs = {};
@@ -38,7 +38,7 @@ const SystemSetting = () => {
         newInputs[item.key] = item.value;
       });
       setInputs(newInputs);
-      originInputs = newInputs;
+      setOriginInputs(newInputs);
     } else {
       showError(message);
     }
@@ -63,7 +63,7 @@ const SystemSetting = () => {
       default:
         break;
     }
-    const res = await API.put('/api/option', {
+    const res = await API.put('/api/option/', {
       key,
       value,
     });
