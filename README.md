@@ -56,10 +56,19 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 + [x] Cloudflare Turnstile 用户校验
 
 ## 部署
+### 基于 Docker 进行部署
+执行：`docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
+
+数据将会保存在宿主机的 `/home/ubuntu/data/gin-template` 目录。
+
 ### 手动部署
 1. 从 [GitHub Releases](https://github.com/songquanpeng/gin-template/releases/latest) 下载可执行文件或者从源码编译：
    ```shell
    git clone https://github.com/songquanpeng/gin-template.git
+   cd gin-template/web
+   npm install
+   npm run build
+   cd ..
    go mod download
    go build -ldflags "-s -w" -o gin-template
    ````
@@ -71,11 +80,6 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 3. 访问 [http://localhost:3000/](http://localhost:3000/) 并登录。初始账号用户名为 `root`，密码为 `123456`。
 
 更加详细的部署教程[参见此处](https://iamazing.cn/page/how-to-deploy-a-website)。
-
-### 基于 Docker 进行部署
-执行：`docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
-
-数据将会保存在宿主机的 `/home/ubuntu/data/gin-template` 目录。
 
 ## 配置
 系统本身开箱即用。
