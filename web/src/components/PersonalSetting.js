@@ -140,7 +140,7 @@ const PersonalSetting = () => {
                 value={inputs.wechat_verification_code}
                 onChange={handleInputChange}
               />
-              <Button color='teal' fluid size='large' onClick={bindWeChat}>
+              <Button color='' fluid size='large' onClick={bindWeChat}>
                 绑定
               </Button>
             </Form>
@@ -198,7 +198,7 @@ const PersonalSetting = () => {
                 <></>
               )}
               <Button
-                color='teal'
+                color=''
                 fluid
                 size='large'
                 onClick={bindEmail}
