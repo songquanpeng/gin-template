@@ -6,7 +6,6 @@ import (
 	"gin-template/middleware"
 	"gin-template/model"
 	"gin-template/router"
-	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
@@ -51,7 +50,7 @@ func main() {
 
 	// Initialize HTTP server
 	server := gin.Default()
-	server.Use(gzip.Gzip(gzip.DefaultCompression))
+	//server.Use(gzip.Gzip(gzip.DefaultCompression))
 	server.Use(middleware.CORS())
 
 	// Initialize session store
