@@ -57,7 +57,7 @@ _✨ 用于 Gin & React 项目的模板 ✨_
 
 ## 部署
 ### 基于 Docker 进行部署
-执行：`docker run -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
+执行：`docker run --name gin-template -d --restart always -p 3000:3000 -v /home/ubuntu/data/gin-template:/data justsong/gin-template`
 
 数据将会保存在宿主机的 `/home/ubuntu/data/gin-template` 目录。
 
