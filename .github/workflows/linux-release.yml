@@ -6,8 +6,7 @@ on:
   push:
     tags:
       - '*'
-    tags-ignore:
-      - '*-alpha*'
+      - '!*-alpha*'
 jobs:
   release:
     runs-on: ubuntu-latest
