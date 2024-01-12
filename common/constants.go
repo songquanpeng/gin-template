@@ -1,9 +1,10 @@
 package common
 
 import (
-	"github.com/google/uuid"
 	"sync"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var StartTime = time.Now().Unix() // unit: second

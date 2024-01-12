@@ -2,8 +2,9 @@ package model
 
 import (
 	"errors"
-	"gin-template/common"
 	"strings"
+
+	"gin-template/common"
 )
 
 // User if you add sensitive fields, don't forget to clean them in setupLogin function.

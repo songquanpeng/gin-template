@@ -2,12 +2,13 @@ package common
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupGinLog() {

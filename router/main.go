@@ -2,6 +2,7 @@ package router
 
 import (
 	"embed"
+
 	"github.com/gin-gonic/gin"
 )
 

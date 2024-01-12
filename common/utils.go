@@ -2,7 +2,6 @@ package common
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"html/template"
 	"log"
 	"net"
@@ -10,6 +9,8 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 func OpenBrowser(url string) {

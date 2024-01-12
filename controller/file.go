@@ -2,14 +2,16 @@ package controller
 
 import (
 	"fmt"
-	"gin-template/common"
-	"gin-template/model"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+
+	"gin-template/common"
+	"gin-template/model"
+
+	"github.com/gin-gonic/gin"
 )
 
 func GetAllFiles(c *gin.Context) {

@@ -3,6 +3,7 @@ package router
 import (
 	"gin-template/controller"
 	"gin-template/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 
