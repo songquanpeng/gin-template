@@ -3,10 +3,12 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"gin-template/common"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+
+	"gin-template/common"
+
+	"github.com/gin-gonic/gin"
 )
 
 var timeFormat = "2006-01-02T15:04:05.000Z"

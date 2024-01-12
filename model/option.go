@@ -1,9 +1,10 @@
 package model
 
 import (
-	"gin-template/common"
 	"strconv"
 	"strings"
+
+	"gin-template/common"
 )
 
 type Option struct {
