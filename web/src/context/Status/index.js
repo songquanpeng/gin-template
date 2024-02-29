@@ -3,10 +3,9 @@
 import React from 'react';
 import { initialState, reducer } from './reducer';
 
-export const StatusContext = React.createContext({
-  state: initialState,
-  dispatch: () => null,
-});
+export const StatusContext = React.createContext([
+  initialState, () => null
+]);
 
 export const StatusProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
